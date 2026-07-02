@@ -53,7 +53,7 @@ Imports:
     rlang (>= 1.1.0),
     scales (>= 1.2.0),
     stats,
-    survival (>= 3.8-3),
+    survival (>= 3.8-8),
     tibble (>= 3.2.1),
     tidyr (>= 0.8.3),
     utils
@@ -82,6 +82,8 @@ Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     tidyverse/stringr, r-lib/svglite, r-lib/testthat, r-lib/withr
 Config/Needs/website: insightsengineering/nesttemplate
 Config/testthat/edition: 3
+Remotes: 
+    therneau/survival@master
 Encoding: UTF-8
 Language: en-US
 LazyData: true
