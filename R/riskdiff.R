@@ -46,7 +46,7 @@ add_riskdiff <- function(arm_x,
   checkmate::assert_character(col_label, len = length(arm_y))
 
   combodf <- tibble::tribble(~valname, ~label, ~levelcombo, ~exargs)
-  for (i in seq_len(length(arm_y))) {
+  for (i in seq_along(arm_y)) {
     combodf <- rbind(
       combodf,
       tibble::tribble(

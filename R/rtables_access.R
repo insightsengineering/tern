@@ -168,5 +168,5 @@ check_names_indices <- function(table_row,
     col_indices <- seq_len(ll)
   }
 
-  return(col_indices)
+  col_indices
 }

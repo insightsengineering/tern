@@ -212,7 +212,7 @@ g_ipp <- function(df,
       col = col
     )
 
-    return(p)
+    p
   } else if (plotting_choices == "split_by_max_obs") {
     id_vec <- unique(df[[id_var]])
     id_list <- split(
@@ -247,7 +247,7 @@ g_ipp <- function(df,
 
       plot_list[[i]] <- plots
     }
-    return(plot_list)
+    plot_list
   } else {
     ind_df <- split(df, df[[id_var]])
     plot_list <- lapply(
@@ -271,6 +271,6 @@ g_ipp <- function(df,
       }
     )
 
-    return(plot_list)
+    plot_list
   }
 }

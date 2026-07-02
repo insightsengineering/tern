@@ -35,7 +35,7 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
     rval <- c(min(x, na.rm = FALSE), max(x, na.rm = FALSE))
   }
 
-  return(rval)
+  rval
 }
 
 #' Utility function to create label for confidence interval

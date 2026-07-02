@@ -152,5 +152,5 @@ g_bland_altman <- function(x, y, conf_level = 0.95) {
     xlab("Average of two measures") +
     ylab("Difference between two measures")
 
-  return(p)
+  p
 }

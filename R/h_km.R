@@ -1109,12 +1109,10 @@ h_grob_coxph <- function(...,
         "Warning: Cox table will not be displayed as there is",
         "not any level to be compared in the arm variable."
       ))
-      return(
-        grid::gList(
-          grid::gTree(
-            vp = NULL,
-            children = NULL
-          )
+      grid::gList(
+        grid::gTree(
+          vp = NULL,
+          children = NULL
         )
       )
     }

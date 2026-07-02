@@ -53,21 +53,21 @@ relvar_init <- function(relvar1, relvar2) {
 rel_var <- function(df = NULL, var_name = NULL, var_values = NULL, related_var = NULL) {
   if (is.null(df)) {
     message("Missing data frame argument value.")
-    return(NA)
+    NA
   } else {
     n_relvar1 <- length(unique(df[, related_var, drop = TRUE]))
     n_relvar2 <- length(var_values)
     if (n_relvar1 != n_relvar2) {
       message(paste("Unequal vector lengths for", related_var, "and", var_name))
-      return(NA)
+      NA
     } else {
       relvar1 <- unique(df[, related_var, drop = TRUE])
       relvar2_values <- rep(NA, nrow(df))
-      for (r in seq_len(length(relvar1))) {
+      for (r in seq_along(relvar1)) {
         matched <- which(df[, related_var, drop = TRUE] == relvar1[r])
         relvar2_values[matched] <- var_values[r]
       }
-      return(relvar2_values)
+      relvar2_values
     }
   }
 }

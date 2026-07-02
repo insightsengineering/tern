@@ -215,7 +215,7 @@ format_fraction_fixed_dp <- function(x, ...) {
       " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"
     )
   }
-  return(result)
+  result
 }
 ```
 
@@ -259,7 +259,7 @@ custom_format <- function(x, ...) {
       " (", sprintf("%.3f", round(x["num"] / x["denom"] * 100, 1)), "%)" # We include 3 decimal places with %.3f
     )
   }
-  return(result)
+  result
 }
 
 basic_table() %>%

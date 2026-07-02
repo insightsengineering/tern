@@ -623,5 +623,5 @@ control_lineplot_vars <- function(x = "AVISIT",
     x = x, y = y, group_var = group_var, paramcd = paramcd,
     y_unit = y_unit, subject_var = subject_var, facet_var = facet_var
   )
-  return(variables)
+  variables
 }
