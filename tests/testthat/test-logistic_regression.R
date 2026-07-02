@@ -97,9 +97,11 @@ testthat::test_that("fit_logistic works with a single stratification variable", 
   )
   testthat::expect_s3_class(result, c("clogit", "coxph"))
 
-  expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE + strata(STRATA1)
-  result_formula <- result$formula
-  testthat::expect_equal(result_formula, expected_formula, ignore_attr = TRUE)
+  # Only the right-hand side is built by tern; the clogit-generated response term
+  # on the left-hand side has changed format across survival versions (#1484).
+  expected_rhs <- (~ ARMCD + RACE + AGE + strata(STRATA1))[[2]]
+  result_rhs <- result$formula[[3]]
+  testthat::expect_equal(result_rhs, expected_rhs, ignore_attr = TRUE)
 })
 
 testthat::test_that("fit_logistic works with two stratification variables", {
@@ -128,10 +130,11 @@ testthat::test_that("fit_logistic works with two stratification variables", {
   )
   testthat::expect_s3_class(result, c("clogit", "coxph"))
 
-  expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE +
-    strata(I(interaction(STRATA1, STRATA2)))
-  result_formula <- result$formula
-  testthat::expect_equal(result_formula, expected_formula, ignore_attr = TRUE)
+  # Only the right-hand side is built by tern; the clogit-generated response term
+  # on the left-hand side has changed format across survival versions (#1484).
+  expected_rhs <- (~ ARMCD + RACE + AGE + strata(I(interaction(STRATA1, STRATA2))))[[2]]
+  result_rhs <- result$formula[[3]]
+  testthat::expect_equal(result_rhs, expected_rhs, ignore_attr = TRUE)
 })
 
 # tidy.glm ----

@@ -55,7 +55,7 @@ $$
 The exact unconditional approach fixes the row margins $n_1$ and $n_2$ of the $2 \times 2$ table and eliminates the nuisance parameter $p_2$ by using the maximum p-value (worst-case scenario) over all possible values of $p_2$ [@SantnerSnell1980]. 
 It then computes the confidence limits by inverting two separate one-sided exact tests that are based on the unstandardized risk difference $d$. @SantnerSnell1980 refer to this method as the "Tail Method" for confidence intervals.
 
-For a given $100(1 - \alpha/2)\%$ confidence level, the confidence limits for the risk difference $d$ are computed as (note that this is not correct in the SAS documentation [here](https://documentation.sas.com/doc/en/pgmsascdc/v_074/procstat/procstat_freq_details54.htm#procstat.freq.freqrdiffcl)):
+For a given $100(1 - \alpha/2)\%$ confidence level, the confidence limits for the risk difference $d$ are computed as (note that the corresponding formula in the [SAS documentation](https://documentation.sas.com/doc/en/pgmsascdc/v_074/procstat/procstat_freq_details54.htm) is not correct):
 
 $$
 d_L = \inf \{ d_* : P_U(d_*) > \alpha/2 \},
