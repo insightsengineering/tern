@@ -1,4 +1,4 @@
-# tern 0.9.10.9014
+# tern 0.9.10.9015
 
 ### Enhancements
 * Added `alternative` argument to `s_coxph_pairwise()` to allow one-sided hypothesis testing. 
