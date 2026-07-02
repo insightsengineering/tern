@@ -20,7 +20,7 @@ A pharmacokinetic \code{data.frame} sorted by a \code{PARAM} variable.
 \examples{
 library(dplyr)
 
-adpp <- tern_ex_adpp \%>\% mutate(PKPARAM = factor(paste0(PARAM, " (", AVALU, ")")))
+adpp <- tern_ex_adpp |> mutate(PKPARAM = factor(paste0(PARAM, " (", AVALU, ")")))
 pk_ordered_data <- h_pkparam_sort(adpp)
 
 }

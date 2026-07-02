@@ -30,9 +30,9 @@ and is required in the graphic and the patient-at-risk annotation table.
 library(dplyr)
 library(survival)
 
-data <- tern_ex_adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
+data <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
+  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) |>
   h_data_plot()
 
 h_xticks(data)

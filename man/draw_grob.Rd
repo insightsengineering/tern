@@ -27,11 +27,11 @@ library(grid)
 
 \donttest{
 rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
-rect \%>\% draw_grob(vp = grid::viewport(angle = 45))
+rect |> draw_grob(vp = grid::viewport(angle = 45))
 
 num <- lapply(1:10, textGrob)
-num \%>\%
-  arrange_grobs(grobs = .) \%>\%
+num |>
+  arrange_grobs(grobs = .) |>
   draw_grob()
 showViewport()
 }

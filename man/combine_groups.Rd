@@ -28,10 +28,10 @@ groups <- combine_groups(
   ref = c("B: Placebo")
 )
 
-basic_table() \%>\%
-  split_cols_by_groups("ARM", groups) \%>\%
-  add_colcounts() \%>\%
-  analyze_vars("AGE") \%>\%
+basic_table() |>
+  split_cols_by_groups("ARM", groups) |>
+  add_colcounts() |>
+  analyze_vars("AGE") |>
   build_table(DM)
 
 }

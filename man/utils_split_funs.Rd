@@ -54,51 +54,51 @@ dat <- data.frame(
 )
 
 # With rtables layout functions
-basic_table() \%>\%
-  split_cols_by("x", ref_group = "c", split_fun = ref_group_position("last")) \%>\%
-  analyze("y") \%>\%
+basic_table() |>
+  split_cols_by("x", ref_group = "c", split_fun = ref_group_position("last")) |>
+  analyze("y") |>
   build_table(dat)
 
 # With tern layout funcitons
-adtte_f <- tern_ex_adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
+adtte_f <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
 
-basic_table() \%>\%
-  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position("first")) \%>\%
-  add_colcounts() \%>\%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position("first")) |>
+  add_colcounts() |>
   surv_time(
     vars = "AVAL",
     var_labels = "Survival Time (Months)",
     is_event = "is_event",
-  ) \%>\%
+  ) |>
   build_table(df = adtte_f)
 
-basic_table() \%>\%
-  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position(2)) \%>\%
-  add_colcounts() \%>\%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position(2)) |>
+  add_colcounts() |>
   surv_time(
     vars = "AVAL",
     var_labels = "Survival Time (Months)",
     is_event = "is_event",
-  ) \%>\%
+  ) |>
   build_table(df = adtte_f)
 
 # level_order --------
 # Even if default would bring ref_group first, the original order puts it last
-basic_table() \%>\%
-  split_cols_by("Species", split_fun = level_order(c(1, 3, 2))) \%>\%
-  analyze("Sepal.Length") \%>\%
+basic_table() |>
+  split_cols_by("Species", split_fun = level_order(c(1, 3, 2))) |>
+  analyze("Sepal.Length") |>
   build_table(iris)
 
 # character vector
 new_order <- level_order(levels(iris$Species)[c(1, 3, 2)])
-basic_table() \%>\%
-  split_cols_by("Species", ref_group = "virginica", split_fun = new_order) \%>\%
-  analyze("Sepal.Length") \%>\%
+basic_table() |>
+  split_cols_by("Species", ref_group = "virginica", split_fun = new_order) |>
+  analyze("Sepal.Length") |>
   build_table(iris)
 
 }

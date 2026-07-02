@@ -113,7 +113,7 @@ df <- data.frame(
 )
 
 # `summarize_patients_events_in_cols()`
-basic_table() \%>\%
+basic_table() |>
   summarize_patients_events_in_cols(
     filters_list = list(
       related = formatters::with_label(c(AEREL = "Y"), "Events (Related)"),
@@ -121,7 +121,7 @@ basic_table() \%>\%
       fatal_related = c(AEREL = "Y", AESDTH = "Y")
     ),
     custom_label = "\%s Total number of patients and events"
-  ) \%>\%
+  ) |>
   build_table(df)
 
 }

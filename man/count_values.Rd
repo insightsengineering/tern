@@ -142,8 +142,8 @@ otherwise they are hidden.
 }
 \examples{
 # `count_values`
-basic_table() \%>\%
-  count_values("Species", values = "setosa") \%>\%
+basic_table() |>
+  count_values("Species", values = "setosa") |>
   build_table(iris)
 
 # `s_count_values.character`

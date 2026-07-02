@@ -162,20 +162,20 @@ the label to use for this variable.
 }
 \examples{
 # Add labelled flag variables to analysis dataset.
-adae <- tern_ex_adae \%>\%
+adae <- tern_ex_adae |>
   dplyr::mutate(
-    fl1 = TRUE \%>\% with_label("Total AEs"),
-    fl2 = (TRTEMFL == "Y") \%>\%
+    fl1 = TRUE |> with_label("Total AEs"),
+    fl2 = (TRTEMFL == "Y") |>
       with_label("Total number of patients with at least one adverse event"),
-    fl3 = (TRTEMFL == "Y" & AEOUT == "FATAL") \%>\%
+    fl3 = (TRTEMFL == "Y" & AEOUT == "FATAL") |>
       with_label("Total number of patients with fatal AEs"),
-    fl4 = (TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y") \%>\%
+    fl4 = (TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y") |>
       with_label("Total number of patients with related fatal AEs")
   )
 
-lyt <- basic_table() \%>\%
-  split_cols_by("ARM") \%>\%
-  add_colcounts() \%>\%
+lyt <- basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_patients_with_flags(
     "SUBJID",
     flag_variables = c("fl1", "fl2", "fl3", "fl4"),
