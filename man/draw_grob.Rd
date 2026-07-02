@@ -31,7 +31,7 @@ rect |> draw_grob(vp = grid::viewport(angle = 45))
 
 num <- lapply(1:10, textGrob)
 num |>
-  arrange_grobs(grobs = .) |>
+  (\(x) arrange_grobs(grobs = x))() |>
   draw_grob()
 showViewport()
 }

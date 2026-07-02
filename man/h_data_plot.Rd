@@ -40,13 +40,13 @@ library(survival)
 # Test with multiple arms
 tern_ex_adtte |>
   filter(PARAMCD == "OS") |>
-  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) |>
+  (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))() |>
   h_data_plot()
 
 # Test with single arm
 tern_ex_adtte |>
   filter(PARAMCD == "OS", ARMCD == "ARM B") |>
-  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) |>
+  (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))() |>
   h_data_plot(armval = "ARM B")
 
 }

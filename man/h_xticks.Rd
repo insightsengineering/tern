@@ -32,7 +32,7 @@ library(survival)
 
 data <- tern_ex_adtte |>
   filter(PARAMCD == "OS") |>
-  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) |>
+  (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))() |>
   h_data_plot()
 
 h_xticks(data)

@@ -73,7 +73,7 @@ control_coxph_annot <- function(x = 0.29, y = 0.51, w = 0.4, h = 0.125, fill = T
 #'
 #' data <- tern_ex_adtte |>
 #'   filter(PARAMCD == "OS") |>
-#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) |>
+#'   (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))() |>
 #'   h_data_plot()
 #'
 #' h_xticks(data)
@@ -260,13 +260,13 @@ h_tbl_coxph_pairwise <- function(df,
 #' # Test with multiple arms
 #' tern_ex_adtte |>
 #'   filter(PARAMCD == "OS") |>
-#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) |>
+#'   (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))() |>
 #'   h_data_plot()
 #'
 #' # Test with single arm
 #' tern_ex_adtte |>
 #'   filter(PARAMCD == "OS", ARMCD == "ARM B") |>
-#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) |>
+#'   (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))() |>
 #'   h_data_plot(armval = "ARM B")
 #'
 #' @export
@@ -332,7 +332,7 @@ h_data_plot <- function(fit_km,
 #'
 #' fit_km <- tern_ex_adtte |>
 #'   filter(PARAMCD == "OS") |>
-#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+#'   (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))()
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
@@ -504,7 +504,7 @@ h_ggkm <- function(data,
 #'
 #' fit_km <- tern_ex_adtte |>
 #'   filter(PARAMCD == "OS") |>
-#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+#'   (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))()
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
@@ -574,7 +574,7 @@ h_decompose_gg <- function(gg) {
 #'
 #' fit_km <- tern_ex_adtte |>
 #'   filter(PARAMCD == "OS") |>
-#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+#'   (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))()
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
@@ -692,7 +692,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 #'
 #' fit_km <- tern_ex_adtte |>
 #'   filter(PARAMCD == "OS") |>
-#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+#'   (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))()
 #'
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #'
@@ -879,7 +879,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = TRUE) {
 #' grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 #' tern_ex_adtte |>
 #'   filter(PARAMCD == "OS") |>
-#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) |>
+#'   (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))() |>
 #'   h_grob_median_surv() |>
 #'   grid::grid.draw()
 #' }
@@ -967,7 +967,7 @@ h_grob_median_surv <- function(fit_km,
 #'
 #' fit_km <- tern_ex_adtte |>
 #'   filter(PARAMCD == "OS") |>
-#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+#'   (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))()
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(

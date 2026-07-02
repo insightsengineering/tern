@@ -123,7 +123,7 @@ testthat::test_that("h_data_plot respects the ordering of the arm variable facto
   data <- tern_ex_adtte |>
     filter(PARAMCD == "OS") |>
     mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) |>
-    (\(d) survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = d))()
+    (\(x) survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))()
 
   testthat::expect_silent(result <- h_data_plot(data))
   res <- levels(result$strata)
@@ -151,7 +151,7 @@ testthat::test_that("h_data_plot adds rows that have time 0 and estimate 1", {
 
 fit_km <- tern_ex_adtte |>
   filter(PARAMCD == "OS") |>
-  (\(d) survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = d))()
+  (\(x) survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))()
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
 

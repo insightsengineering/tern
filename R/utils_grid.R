@@ -253,7 +253,7 @@ arrange_grobs <- function(...,
 #'
 #' num <- lapply(1:10, textGrob)
 #' num |>
-#'   arrange_grobs(grobs = .) |>
+#'   (\(x) arrange_grobs(grobs = x))() |>
 #'   draw_grob()
 #' showViewport()
 #' }
