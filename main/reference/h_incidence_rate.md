@@ -89,6 +89,21 @@ Estimated incidence rate, `rate`, and associated confidence interval,
 ## Examples
 
 ``` r
+h_incidence_rate(200, 2)
+#> $rate
+#> [1] 1
+#> 
+#> $rate_ci
+#> [1] -0.3859038  2.3859038
+#> 
+h_incidence_rate(200, 2, control_incidence_rate(conf_type = "exact", num_pt_year = 100))
+#> $rate
+#> [1] 1
+#> 
+#> $rate_ci
+#> [1] 0.1211046 3.6123438
+#> 
+
 h_incidence_rate_normal(200, 2)
 #> $rate
 #> [1] 0.01

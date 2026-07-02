@@ -1,6 +1,6 @@
 # Changelog
 
-## tern 0.9.10.9014
+## tern 0.9.10.9015
 
 #### Enhancements
 
@@ -25,6 +25,9 @@
 - Added
   [`s_ancova()`](https://insightsengineering.github.io/tern/reference/summarize_ancova.md)
   to exported functions.
+- Exported
+  [`h_incidence_rate()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  to allow to reuse the incidence rate estimation logic.
 
 #### Bug Fixes
 

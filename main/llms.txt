@@ -526,6 +526,13 @@ These functions are useful in defining an analysis.
 - [`h_ggkm()`](https://insightsengineering.github.io/tern/reference/h_ggkm.md)
   **\[deprecated\]** : Helper function to create a KM plot
 
+- [`h_incidence_rate()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  [`h_incidence_rate_normal()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  [`h_incidence_rate_normal_log()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  [`h_incidence_rate_exact()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  [`h_incidence_rate_byar()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  **\[stable\]** : Helper functions for incidence rate
+
 - [`h_km_layout()`](https://insightsengineering.github.io/tern/reference/h_km_layout.md)
   **\[deprecated\]** : Helper function to prepare a KM layout
 
