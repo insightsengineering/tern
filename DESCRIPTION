@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.10.9013
-Date: 2026-06-16
+Version: 0.9.10.9014
+Date: 2026-07-02
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7566-2787")),
@@ -72,6 +72,8 @@ VignetteBuilder:
 RdMacros:
     lifecycle,
     Rdpack
+Remotes: 
+    therneau/survival@master
 Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     cran/car, mllg/checkmate, wilkelab/cowplot, tidyverse/dplyr,
     rvlenth/emmeans, tidyverse/forcats, insightsengineering/formatters,
@@ -82,8 +84,6 @@ Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     tidyverse/stringr, r-lib/svglite, r-lib/testthat, r-lib/withr
 Config/Needs/website: insightsengineering/nesttemplate
 Config/testthat/edition: 3
-Remotes: 
-    therneau/survival@master
 Encoding: UTF-8
 Language: en-US
 LazyData: true
