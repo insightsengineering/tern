@@ -6,7 +6,14 @@
 \alias{control_coxph_annot}
 \title{Control functions for Kaplan-Meier plot annotation tables}
 \usage{
-control_surv_med_annot(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill = TRUE)
+control_surv_med_annot(
+  x = 0.8,
+  y = 0.85,
+  w = 0.32,
+  h = 0.16,
+  fill = TRUE,
+  digits = 4
+)
 
 control_coxph_annot(
   x = 0.29,
@@ -28,6 +35,9 @@ control_coxph_annot(
 
 \item{fill}{(\code{flag} or \code{character})\cr whether the annotation table should have a background fill color.
 Can also be a color code to use as the background fill color. If \code{TRUE}, color code defaults to \code{"#00000020"}.}
+
+\item{digits}{(\code{integer(1)})\cr number of significant digits for median survival
+time and confidence interval values. Defaults to \code{4}.}
 
 \item{ref_lbls}{(\code{flag})\cr whether the reference group should be explicitly printed in labels for the
 annotation table. If \code{FALSE} (default), only comparison groups will be printed in the table labels.}
@@ -54,6 +64,7 @@ by setting it as the \code{control_annot_coxph} argument.
 }}
 \examples{
 control_surv_med_annot()
+control_surv_med_annot(digits = 2)
 
 control_coxph_annot()
 
