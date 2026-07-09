@@ -130,8 +130,8 @@ a_count_abnormal_by_worst_grade <- function(df,
   .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
-  x_stats <- x_stats[.stats] %>%
-    .unlist_keep_nulls() %>%
+  x_stats <- x_stats[.stats] |>
+    .unlist_keep_nulls() |>
     setNames(names(.formats))
 
   # Auto format handling
@@ -143,10 +143,10 @@ a_count_abnormal_by_worst_grade <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels %>% .unlist_keep_nulls(),
+    .names = .labels |> .unlist_keep_nulls(),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -174,23 +174,23 @@ a_count_abnormal_by_worst_grade <- function(df,
 #' adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 #'
 #' # Pre-processing
-#' adlb_f <- adlb %>% h_adlb_abnormal_by_worst_grade()
+#' adlb_f <- adlb |> h_adlb_abnormal_by_worst_grade()
 #'
 #' # Map excludes records without abnormal grade since they should not be displayed
 #' # in the table.
-#' map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
-#'   lapply(as.character) %>%
-#'   as.data.frame() %>%
+#' map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) |>
+#'   lapply(as.character) |>
+#'   as.data.frame() |>
 #'   arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
 #'
-#' basic_table() %>%
-#'   split_cols_by("ARMCD") %>%
-#'   split_rows_by("PARAM") %>%
-#'   split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) %>%
+#' basic_table() |>
+#'   split_cols_by("ARMCD") |>
+#'   split_rows_by("PARAM") |>
+#'   split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) |>
 #'   count_abnormal_by_worst_grade(
 #'     var = "GRADE_ANL",
 #'     variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
-#'   ) %>%
+#'   ) |>
 #'   build_table(df = adlb_f)
 #'
 #' @export
@@ -270,8 +270,8 @@ count_abnormal_by_worst_grade <- function(lyt,
 #' @seealso [abnormal_by_worst_grade]
 #'
 #' @examples
-#' h_adlb_abnormal_by_worst_grade(tern_ex_adlb) %>%
-#'   dplyr::select(ATOXGR, GRADE_DIR, GRADE_ANL) %>%
+#' h_adlb_abnormal_by_worst_grade(tern_ex_adlb) |>
+#'   dplyr::select(ATOXGR, GRADE_DIR, GRADE_ANL) |>
 #'   head(10)
 #'
 #' @export
@@ -280,11 +280,11 @@ h_adlb_abnormal_by_worst_grade <- function(adlb,
                                            avisit = "AVISIT",
                                            worst_flag_low = "WGRLOFL",
                                            worst_flag_high = "WGRHIFL") {
-  adlb %>%
+  adlb |>
     dplyr::filter(
       !.data[[avisit]] %in% c("SCREENING", "BASELINE"),
       .data[[worst_flag_low]] == "Y" | .data[[worst_flag_high]] == "Y"
-    ) %>%
+    ) |>
     dplyr::mutate(
       GRADE_DIR = factor(
         dplyr::case_when(
@@ -298,6 +298,6 @@ h_adlb_abnormal_by_worst_grade <- function(adlb,
         forcats::fct_recode(.data[[atoxgr]], `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
         c("0", "1", "2", "3", "4")
       )
-    ) %>%
+    ) |>
     droplevels()
 }

@@ -41,14 +41,14 @@ testthat::test_that("s_count_patients_and_multiple_events can have empty stats i
 
 testthat::test_that("summarize_patients_events_in_cols works well with default arguments", {
   df <- raw_data
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_patients_events_in_cols(
       filters_list = list(
         related = formatters::with_label(c(AEREL = "Y"), "Events (Related)"),
         fatal = c(AESDTH = "Y"),
         fatal_related = c(AEREL = "Y", AESDTH = "Y")
       )
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -57,7 +57,7 @@ testthat::test_that("summarize_patients_events_in_cols works well with default a
 
 testthat::test_that("summarize_patients_events_in_cols works well with custom arguments", {
   df <- raw_data
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_patients_events_in_cols(
       filters_list = list(
         related = formatters::with_label(c(AEREL = "Y"), "Events (Related)"),
@@ -68,7 +68,7 @@ testthat::test_that("summarize_patients_events_in_cols works well with custom ar
       .labels = c(related = "Related", all = "All"),
       empty_stats = "all",
       custom_label = "bla"
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)

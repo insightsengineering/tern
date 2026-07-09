@@ -62,8 +62,8 @@ Function that generates a simple line plot displaying parameter trends over time
 library(dplyr)
 
 # Select a small sample of data to plot.
-adlb <- tern_ex_adlb \%>\%
-  filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) \%>\%
+adlb <- tern_ex_adlb |>
+  filter(PARAMCD == "ALT", !(AVISIT \%in\% c("SCREENING", "BASELINE"))) |>
   slice(1:36)
 
 p <- h_g_ipp(

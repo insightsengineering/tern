@@ -2,12 +2,12 @@
 preprocess_adrs <- function(adrs) {
   # Save variable labels before data processing steps.
   adrs_labels <- formatters::var_labels(adrs)
-  adrs %>%
-    dplyr::filter(PARAMCD == "BESRSPI") %>%
+  adrs |>
+    dplyr::filter(PARAMCD == "BESRSPI") |>
     dplyr::mutate(rsp = with_label(AVALC == "CR", "Response"))
 }
 
-adrs_local <- tern_ex_adrs %>%
+adrs_local <- tern_ex_adrs |>
   preprocess_adrs()
 
 # h_rsp_to_logistic_variables ----
@@ -70,7 +70,7 @@ testthat::test_that("h_logistic_mult_cont_df returns missing values if data is e
 })
 
 testthat::test_that("h_logistic_mult_cont_df also works with response not being called rsp", {
-  adrs_f <- adrs_local %>%
+  adrs_f <- adrs_local |>
     dplyr::rename(RESP = rsp)
 
   # https://github.com/therneau/survival/issues/240

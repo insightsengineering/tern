@@ -30,11 +30,11 @@
 #'     TIME = stop,
 #'     STATUS = event,
 #'     ARM = as.factor(rx),
-#'     COVAR1 = as.factor(enum) %>% formatters::with_label("A Covariate Label"),
+#'     COVAR1 = as.factor(enum) |> formatters::with_label("A Covariate Label"),
 #'     COVAR2 = factor(
 #'       sample(as.factor(enum)),
 #'       levels = 1:4, labels = c("F", "F", "M", "M")
-#'     ) %>% formatters::with_label("Sex (F/M)")
+#'     ) |> formatters::with_label("Sex (F/M)")
 #'   )
 #' )
 #' dta_bladder$AGE <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
@@ -214,9 +214,9 @@ a_coxreg <- function(df,
 
   if (is.null(cache_env[[cov]])) {
     if (!multivar) {
-      model <- fit_coxreg_univar(variables = variables, data = df, at = at, control = control) %>% broom::tidy()
+      model <- fit_coxreg_univar(variables = variables, data = df, at = at, control = control) |> broom::tidy()
     } else {
-      model <- fit_coxreg_multivar(variables = variables, data = df, control = control) %>% broom::tidy()
+      model <- fit_coxreg_multivar(variables = variables, data = df, control = control) |> broom::tidy()
     }
     cache_env[[cov]] <- model
   } else {
@@ -290,32 +290,32 @@ a_coxreg <- function(df,
 #' @examples
 #' # summarize_coxreg
 #'
-#' result_univar <- basic_table() %>%
-#'   summarize_coxreg(variables = u1_variables) %>%
+#' result_univar <- basic_table() |>
+#'   summarize_coxreg(variables = u1_variables) |>
 #'   build_table(dta_bladder)
 #' result_univar
 #'
-#' result_univar_covs <- basic_table() %>%
+#' result_univar_covs <- basic_table() |>
 #'   summarize_coxreg(
 #'     variables = u2_variables,
-#'   ) %>%
+#'   ) |>
 #'   build_table(dta_bladder)
 #' result_univar_covs
 #'
-#' result_multivar <- basic_table() %>%
+#' result_multivar <- basic_table() |>
 #'   summarize_coxreg(
 #'     variables = m1_variables,
 #'     multivar = TRUE,
-#'   ) %>%
+#'   ) |>
 #'   build_table(dta_bladder)
 #' result_multivar
 #'
-#' result_multivar_covs <- basic_table() %>%
+#' result_multivar_covs <- basic_table() |>
 #'   summarize_coxreg(
 #'     variables = m2_variables,
 #'     multivar = TRUE,
 #'     varlabels = c("Covariate 1", "Covariate 2") # custom labels
-#'   ) %>%
+#'   ) |>
 #'   build_table(dta_bladder)
 #' result_multivar_covs
 #'
@@ -361,7 +361,7 @@ summarize_coxreg <- function(lyt,
   .formats <- .formats[names(.formats) %in% .stats]
   env <- new.env() # create caching environment
 
-  lyt <- lyt %>%
+  lyt <- lyt |>
     split_cols_by_multivar(
       vars = rep(common_var, length(.stats)),
       varlabels = stat_labels,
@@ -372,7 +372,7 @@ summarize_coxreg <- function(lyt,
     )
 
   if ("arm" %in% names(variables)) { # treatment effect
-    lyt <- lyt %>%
+    lyt <- lyt |>
       split_rows_by(
         common_var,
         split_label = "Treatment:",
@@ -381,7 +381,7 @@ summarize_coxreg <- function(lyt,
         section_div = head(.section_div, 1)
       )
     if (!multivar) {
-      lyt <- lyt %>%
+      lyt <- lyt |>
         analyze_colvars(
           afun = a_coxreg,
           na_str = na_str,
@@ -391,14 +391,14 @@ summarize_coxreg <- function(lyt,
           )
         )
     } else { # treatment level effects
-      lyt <- lyt %>%
+      lyt <- lyt |>
         summarize_row_groups(
           cfun = a_coxreg,
           na_str = na_str,
           extra_args = list(
             variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar
           )
-        ) %>%
+        ) |>
         analyze_colvars(
           afun = a_coxreg,
           na_str = na_str,
@@ -408,7 +408,7 @@ summarize_coxreg <- function(lyt,
   }
 
   if ("covariates" %in% names(variables)) { # covariate main effects
-    lyt <- lyt %>%
+    lyt <- lyt |>
       split_rows_by_multivar(
         vars = variables$covariates,
         varlabels = varlabels,
@@ -418,7 +418,7 @@ summarize_coxreg <- function(lyt,
         section_div = tail(.section_div, 1)
       )
     if (multivar || control$interaction || !"arm" %in% names(variables)) {
-      lyt <- lyt %>%
+      lyt <- lyt |>
         summarize_row_groups(
           cfun = a_coxreg,
           na_str = na_str,
@@ -429,7 +429,7 @@ summarize_coxreg <- function(lyt,
         )
     } else {
       if (!is.null(varlabels)) names(varlabels) <- variables$covariates
-      lyt <- lyt %>%
+      lyt <- lyt |>
         analyze_colvars(
           afun = a_coxreg,
           na_str = na_str,
@@ -443,7 +443,7 @@ summarize_coxreg <- function(lyt,
 
     if (!"arm" %in% names(variables)) control$interaction <- TRUE # special case: univar no arm
     if (multivar || control$interaction) { # covariate level effects
-      lyt <- lyt %>%
+      lyt <- lyt |>
         analyze_colvars(
           afun = a_coxreg,
           na_str = na_str,

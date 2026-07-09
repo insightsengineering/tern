@@ -21,12 +21,12 @@
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte)
 #'
-#' adtte_f <- adtte %>%
+#' adtte_f <- adtte |>
 #'   filter(
 #'     PARAMCD == "OS",
 #'     ARM %in% c("B: Placebo", "A: Drug X"),
 #'     SEX %in% c("M", "F")
-#'   ) %>%
+#'   ) |>
 #'   mutate(
 #'     # Reorder levels of ARM to display reference arm before treatment arm.
 #'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),

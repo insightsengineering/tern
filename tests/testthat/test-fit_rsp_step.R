@@ -1,9 +1,9 @@
 # Local data pre-processing
-adrs_local <- tern_ex_adrs %>%
+adrs_local <- tern_ex_adrs |>
   dplyr::filter(
     PARAMCD == "BESRSPI",
     ARM %in% c("B: Placebo", "A: Drug X")
-  ) %>%
+  ) |>
   dplyr::mutate(
     # Reorder levels of ARM to have Placebo as reference arm for Odds Ratio calculations.
     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),

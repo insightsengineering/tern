@@ -1,5 +1,5 @@
-adlb <- tern_ex_adlb %>%
-  filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
+adlb <- tern_ex_adlb |>
+  filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) |>
   slice(1:36)
 
 testthat::test_that("h_g_ipp works correctly", {

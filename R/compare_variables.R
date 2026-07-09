@@ -189,14 +189,14 @@ s_compare.logical <- function(x, ...) {
 #' # `compare_vars()` in `rtables` pipelines
 #'
 #' ## Default output within a `rtables` pipeline.
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARMCD", ref_group = "ARM B") %>%
+#' lyt <- basic_table() |>
+#'   split_cols_by("ARMCD", ref_group = "ARM B") |>
 #'   compare_vars(c("AGE", "SEX"))
 #' build_table(lyt, tern_ex_adsl)
 #'
 #' ## Select and format statistics output.
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARMCD", ref_group = "ARM C") %>%
+#' lyt <- basic_table() |>
+#'   split_cols_by("ARMCD", ref_group = "ARM C") |>
 #'   compare_vars(
 #'     vars = "AGE",
 #'     .stats = c("mean_sd", "pval"),

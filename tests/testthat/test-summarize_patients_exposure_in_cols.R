@@ -40,10 +40,10 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with default
   df <- anl_local
   adsl <- adsl_local
 
-  result <- basic_table() %>%
-    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
-    summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
-    analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE) %>%
+  result <- basic_table() |>
+    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) |>
+    summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) |>
+    analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE) |>
     build_table(df = df, alt_counts_df = adsl)
 
   res <- testthat::expect_silent(result)
@@ -54,19 +54,19 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with custom 
   df <- anl_local
   adsl <- adsl_local
 
-  result <- basic_table() %>%
-    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
+  result <- basic_table() |>
+    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) |>
     summarize_patients_exposure_in_cols(
       var = "AVAL",
       col_split = TRUE,
       custom_label = "xyz",
       .stats = "sum_exposure"
-    ) %>%
+    ) |>
     analyze_patients_exposure_in_cols(
       var = "SEX",
       col_split = FALSE,
       .stats = "sum_exposure"
-    ) %>%
+    ) |>
     build_table(df = df, alt_counts_df = adsl)
 
   res <- testthat::expect_silent(result)
@@ -79,13 +79,13 @@ testthat::test_that(
     df <- anl_local
     adsl <- adsl_local
 
-    table <- basic_table() %>%
+    table <- basic_table() |>
       summarize_patients_exposure_in_cols(
         var = "AVAL",
         col_split = TRUE,
         custom_label = "xyz",
         .stats = "n_patients"
-      ) %>%
+      ) |>
       build_table(df = df, alt_counts_df = adsl)
 
     invisible(capture.output({
@@ -101,9 +101,9 @@ testthat::test_that("analyze_patients_exposure_in_cols works well with default a
   df <- anl_local
   adsl <- adsl_local
 
-  result <- basic_table() %>%
-    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
-    analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE) %>%
+  result <- basic_table() |>
+    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) |>
+    analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE) |>
     build_table(df = df, alt_counts_df = adsl)
 
   res <- testthat::expect_silent(result)
@@ -114,13 +114,13 @@ testthat::test_that("analyze_patients_exposure_in_cols works well with custom ar
   df <- anl_local
   adsl <- adsl_local
 
-  result <- basic_table() %>%
-    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
+  result <- basic_table() |>
+    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) |>
     analyze_patients_exposure_in_cols(
       var = "SEX",
       col_split = TRUE,
       .stats = "sum_exposure"
-    ) %>%
+    ) |>
     build_table(df = df, alt_counts_df = adsl)
 
   res <- testthat::expect_silent(result)
@@ -133,12 +133,12 @@ testthat::test_that(
     df <- anl_local
     adsl <- adsl_local
 
-    table <- basic_table() %>%
+    table <- basic_table() |>
       analyze_patients_exposure_in_cols(
         ex_var = "AVAL",
         col_split = TRUE,
         .stats = "n_patients"
-      ) %>%
+      ) |>
       build_table(df = df, alt_counts_df = adsl)
 
     res <- testthat::expect_silent(table)
@@ -152,13 +152,13 @@ testthat::test_that("patients_exposure_in_cols works with totals after the row s
     title = "Extent of Exposure",
     main_footer = "* Patient Time is the sum of patients and times",
     show_colcounts = TRUE
-  ) %>%
+  ) |>
     analyze_patients_exposure_in_cols(
       var = "SEX",
       col_split = TRUE,
       add_total_level = TRUE,
       custom_label = "REAL TOTAL"
-    ) %>%
+    ) |>
     append_topleft(c("", "Sex"))
 
   tbl <- build_table(lyt, anl_local)

@@ -32,19 +32,19 @@ itself during the layout creation. When we have a more mature \code{rtables} imp
 this will also be improved or not necessary anymore.
 }
 \examples{
-lyt <- basic_table() \%>\%
-  split_cols_by("ARM") \%>\%
-  add_colcounts() \%>\%
-  split_rows_by("SEX") \%>\%
-  append_varlabels(DM, "SEX") \%>\%
-  analyze("AGE", afun = mean) \%>\%
+lyt <- basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
+  split_rows_by("SEX") |>
+  append_varlabels(DM, "SEX") |>
+  analyze("AGE", afun = mean) |>
   append_varlabels(DM, "AGE", indent = 1)
 build_table(lyt, DM)
 
-lyt <- basic_table() \%>\%
-  split_cols_by("ARM") \%>\%
-  split_rows_by("SEX") \%>\%
-  analyze("AGE", afun = mean) \%>\%
+lyt <- basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("SEX") |>
+  analyze("AGE", afun = mean) |>
   append_varlabels(DM, c("SEX", "AGE"))
 build_table(lyt, DM)
 

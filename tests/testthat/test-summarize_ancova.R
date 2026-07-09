@@ -3,7 +3,7 @@ testthat::test_that("h_ancova works with healthy input", {
     .var = "Sepal.Length",
     .df_row = iris,
     variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
-  ) %>%
+  ) |>
     as.data.frame()
 
   res <- testthat::expect_silent(broom::tidy(result))
@@ -29,8 +29,8 @@ testthat::test_that("h_ancova fails wrong inputs", {
 })
 
 testthat::test_that("s_ancova works with healthy input", {
-  df_col <- iris %>% dplyr::filter(Species == "versicolor")
-  df_ref <- iris %>% dplyr::filter(Species == "setosa")
+  df_col <- iris |> dplyr::filter(Species == "versicolor")
+  df_ref <- iris |> dplyr::filter(Species == "setosa")
   result <- s_ancova(
     df = df_col,
     .var = "Sepal.Length",
@@ -59,15 +59,15 @@ testthat::test_that("s_ancova fails wrong inputs", {
 })
 
 testthat::test_that("s_ancova works with interaction and .in_ref_col = TRUE", {
-  iris_new <- iris %>%
+  iris_new <- iris |>
     dplyr::mutate(p_group = dplyr::case_when(
       substr(Petal.Width, 3, 3) < 3 ~ "A",
       substr(Petal.Width, 3, 3) < 5 & substr(Petal.Width, 3, 3) > 2 ~ "B",
       TRUE ~ "C"
-    )) %>%
+    )) |>
     mutate(p_group = as.factor(p_group))
-  df_col <- iris_new %>% dplyr::filter(Species == "versicolor")
-  df_ref <- iris_new %>% dplyr::filter(Species == "setosa")
+  df_col <- iris_new |> dplyr::filter(Species == "versicolor")
+  df_ref <- iris_new |> dplyr::filter(Species == "setosa")
 
   result <- s_ancova(
     df_col,
@@ -86,22 +86,22 @@ testthat::test_that("s_ancova works with interaction and .in_ref_col = TRUE", {
 })
 
 testthat::test_that("summarize_ancova works with healthy inputs", {
-  result <- basic_table() %>%
-    split_cols_by("Species", ref_group = "setosa") %>%
-    add_colcounts() %>%
+  result <- basic_table() |>
+    split_cols_by("Species", ref_group = "setosa") |>
+    add_colcounts() |>
     summarize_ancova(
       vars = "Sepal.Length",
       variables = list(arm = "Species", covariates = NULL),
       conf_level = 0.95, var_labels = "Unadjusted comparison",
       .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means"),
       table_names = "unadjusted"
-    ) %>%
+    ) |>
     summarize_ancova(
       vars = "Sepal.Length",
       variables = list(arm = "Species", covariates = "Petal.Length"),
       conf_level = 0.95, var_labels = "Adjusted comparison (covariates Petal.Length)",
       table_names = "adjusted"
-    ) %>%
+    ) |>
     build_table(iris)
 
   res <- testthat::expect_silent(result)
@@ -109,17 +109,17 @@ testthat::test_that("summarize_ancova works with healthy inputs", {
 })
 
 testthat::test_that("summarize_ancova works with interaction", {
-  iris_new <- iris %>%
+  iris_new <- iris |>
     dplyr::mutate(p_group = dplyr::case_when(
       substr(Petal.Width, 3, 3) < 3 ~ "A",
       substr(Petal.Width, 3, 3) < 5 & substr(Petal.Width, 3, 3) > 2 ~ "B",
       TRUE ~ "C"
-    )) %>%
+    )) |>
     mutate(p_group = as.factor(p_group))
 
-  result <- basic_table() %>%
-    split_cols_by("Species", ref_group = "setosa") %>%
-    add_colcounts() %>%
+  result <- basic_table() |>
+    split_cols_by("Species", ref_group = "setosa") |>
+    add_colcounts() |>
     summarize_ancova(
       vars = "Petal.Length",
       variables = list(arm = "Species", covariates = c("Sepal.Width", "p_group", "Species*p_group")),
@@ -128,26 +128,26 @@ testthat::test_that("summarize_ancova works with interaction", {
       table_names = "Petal_B",
       interaction_y = "B",
       interaction_item = "p_group"
-    ) %>%
+    ) |>
     build_table(iris_new)
   result_matrix <- to_string_matrix(result, with_spaces = FALSE, print_txt_to_copy = FALSE)
 
   lm_fit <- stats::lm(formula = "Petal.Length ~ Sepal.Width + p_group + Species*p_group + Species", data = iris_new)
   emmeans_fit <- emmeans::emmeans(lm_fit, specs = c("Species", "p_group"), data = iris_new)
-  emmean <- emmeans_fit %>%
-    as.data.frame() %>%
-    filter(p_group == "B") %>%
-    select(emmean) %>%
-    unlist() %>%
-    round(., 2)
+  emmean <- emmeans_fit |>
+    as.data.frame() |>
+    filter(p_group == "B") |>
+    select(emmean) |>
+    unlist() |>
+    round(2)
   testthat::expect_equal(as.numeric(emmean), as.numeric(result_matrix[5, 2:4]), tolerance = 0.0000001)
 
   emmeans_contrasts <- emmeans::contrast(emmeans_fit, method = "trt.vs.ctrl", ref = 4)
-  sum_contrasts <- summary(emmeans_contrasts, infer = TRUE, adjust = "none") %>%
-    as.data.frame() %>%
-    filter(contrast %in% c("versicolor B - setosa B", "virginica B - setosa B")) %>%
-    select(estimate, lower.CL, upper.CL) %>%
-    round(., 2)
+  sum_contrasts <- summary(emmeans_contrasts, infer = TRUE, adjust = "none") |>
+    as.data.frame() |>
+    filter(contrast %in% c("versicolor B - setosa B", "virginica B - setosa B")) |>
+    select(estimate, lower.CL, upper.CL) |>
+    round(2)
   ci_a <- paste0("(", as.numeric(sum_contrasts[1, 2]), ", ", as.numeric(sum_contrasts[1, 3]), ")")
   ci_b <- paste0("(", as.numeric(sum_contrasts[2, 2]), ", ", as.numeric(sum_contrasts[2, 3]), ")")
   testthat::expect_identical(result_matrix[7, 3], ci_a)
@@ -175,57 +175,57 @@ testthat::test_that("summarize_ancova works with irregular arm levels", {
   )
 
   set.seed(1)
-  adrs_single <- adrs %>% mutate(CHG = rnorm(nrow(.)))
+  adrs_single <- adrs |> mutate(CHG = rnorm(nrow(adrs)))
 
-  result1 <- basic_table() %>%
-    split_cols_by("ARMCD2", ref_group = "ARM C") %>%
-    add_colcounts() %>%
+  result1 <- basic_table() |>
+    split_cols_by("ARMCD2", ref_group = "ARM C") |>
+    add_colcounts() |>
     summarize_ancova(
       vars = "CHG",
       variables = list(arm = "ARMCD2", covariates = NULL),
       table_names = "unadj",
       conf_level = 0.95, var_labels = "Unadjusted comparison",
       .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
-    ) %>%
+    ) |>
     build_table(adrs_single, alt_counts_df = adsl)
 
   res <- testthat::expect_silent(result1)
   testthat::expect_snapshot(res)
 
-  result2 <- basic_table() %>%
-    split_cols_by("ARMCD3", ref_group = "ARM C") %>%
-    add_colcounts() %>%
+  result2 <- basic_table() |>
+    split_cols_by("ARMCD3", ref_group = "ARM C") |>
+    add_colcounts() |>
     summarize_ancova(
       vars = "CHG",
       variables = list(arm = "ARMCD3", covariates = NULL),
       table_names = "unadj",
       conf_level = 0.95, var_labels = "Unadjusted comparison",
       .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
-    ) %>%
+    ) |>
     build_table(adrs_single, alt_counts_df = adsl)
 
   res <- testthat::expect_silent(result2)
   testthat::expect_snapshot(res)
 
-  adsl <- adsl %>%
+  adsl <- adsl |>
     mutate(
       ARMCD = dplyr::recode(
         ARMCD,
         "ARM A" = "10mg/kg",
         "ARM B" = "20mg/kg",
         "ARM C" = "30mg/kg"
-      ) %>%
+      ) |>
         factor(levels = paste0(1:3, "0mg/kg"))
     )
 
-  result3 <- basic_table() %>%
-    split_cols_by("ARMCD", ref_group = "10mg/kg") %>%
+  result3 <- basic_table() |>
+    split_cols_by("ARMCD", ref_group = "10mg/kg") |>
     summarize_ancova(
       vars = "BMRKR1",
       variables = list(arm = "ARMCD"),
       conf_level = 0.95,
       var_labels = "ARMCD"
-    ) %>%
+    ) |>
     build_table(adsl)
 
   res <- testthat::expect_silent(result3)
@@ -233,7 +233,7 @@ testthat::test_that("summarize_ancova works with irregular arm levels", {
 })
 
 testthat::test_that("s_ancova returns lsmean_se and lsmean_ci for ref column", {
-  df_ref <- iris %>% dplyr::filter(Species == "setosa")
+  df_ref <- iris |> dplyr::filter(Species == "setosa")
   result <- s_ancova(
     df = df_ref,
     .var = "Sepal.Length",

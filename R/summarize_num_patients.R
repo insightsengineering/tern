@@ -193,10 +193,10 @@ a_num_patients <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels %>% .unlist_keep_nulls(),
+    .names = .labels |> .unlist_keep_nulls(),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -210,10 +210,10 @@ a_num_patients <- function(df,
 #'
 #' @examples
 #' # summarize_num_patients
-#' tbl <- basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   split_rows_by("SEX") %>%
-#'   summarize_num_patients("USUBJID", .stats = "unique_count") %>%
+#' tbl <- basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   split_rows_by("SEX") |>
+#'   summarize_num_patients("USUBJID", .stats = "unique_count") |>
 #'   build_table(df)
 #'
 #' tbl
@@ -301,10 +301,10 @@ summarize_num_patients <- function(lyt,
 #' )
 #'
 #' # analyze_num_patients
-#' tbl <- basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   add_colcounts() %>%
-#'   analyze_num_patients("USUBJID", .stats = c("unique")) %>%
+#' tbl <- basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   add_colcounts() |>
+#'   analyze_num_patients("USUBJID", .stats = c("unique")) |>
 #'   build_table(df)
 #'
 #' tbl

@@ -282,7 +282,7 @@ get_formats_from_stats <- function(stats,
     !is.null(formats_in) && length(formats_in) == length(stats) &&
       is.null(names(formats_in)) && is.null(levels_per_stats)
   ) {
-    out <- as.list(formats_in) %>% setNames(stats)
+    out <- as.list(formats_in) |> setNames(stats)
     return(out)
   }
 
@@ -295,7 +295,7 @@ get_formats_from_stats <- function(stats,
   }
 
   # If levels_per_stats not given, assume one row per statistic
-  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
+  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) |> setNames(stats)
 
   # Apply custom formats
   out <- .fill_in_vals_by_stats(levels_per_stats, formats_in, tern_defaults)
@@ -368,12 +368,12 @@ get_labels_from_stats <- function(stats,
     !is.null(labels_in) && length(labels_in) == length(stats) &&
       is.null(names(labels_in)) && is.null(levels_per_stats)
   ) {
-    out <- as.list(labels_in) %>% setNames(stats)
+    out <- as.list(labels_in) |> setNames(stats)
     return(out)
   }
 
   # If levels_per_stats not given, assume one row per statistic
-  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
+  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) |> setNames(stats)
 
   # Apply custom labels
   out <- .fill_in_vals_by_stats(levels_per_stats, labels_in, tern_defaults)
@@ -402,7 +402,7 @@ get_labels_from_stats <- function(stats,
 get_indents_from_stats <- function(stats,
                                    indents_in = NULL,
                                    levels_per_stats = NULL,
-                                   tern_defaults = as.list(rep(0L, length(stats))) %>% setNames(stats),
+                                   tern_defaults = as.list(rep(0L, length(stats))) |> setNames(stats),
                                    row_nms = lifecycle::deprecated()) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list
@@ -415,11 +415,11 @@ get_indents_from_stats <- function(stats,
   checkmate::assert_list(levels_per_stats, null.ok = TRUE)
 
   # If levels_per_stats not given, assume one row per statistic
-  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
+  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) |> setNames(stats)
 
   # Single indentation level for all rows
   if (is.null(names(indents_in)) && length(indents_in) == 1) {
-    out <- rep(indents_in, length(levels_per_stats %>% unlist()))
+    out <- rep(indents_in, length(levels_per_stats |> unlist()))
     return(out)
   }
 
@@ -472,7 +472,7 @@ get_indents_from_stats <- function(stats,
 
 # Custom unlist function to retain NULL as "NULL" or NA
 .unlist_keep_nulls <- function(lst, null_placeholder = "NULL", recursive = FALSE) {
-  lapply(lst, function(x) if (is.null(x)) null_placeholder else x) %>%
+  lapply(lst, function(x) if (is.null(x)) null_placeholder else x) |>
     unlist(recursive = recursive)
 }
 
@@ -496,7 +496,7 @@ get_indents_from_stats <- function(stats,
 #'
 #' @examples
 #' control <- list(conf_level = 0.80, quantiles = c(0.1, 0.83), test_mean = 0.57)
-#' get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) %>%
+#' get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) |>
 #'   labels_use_control(control = control)
 #'
 #' @export

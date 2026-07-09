@@ -163,8 +163,8 @@ dta <- data.frame(
   strata = factor(sample(c("C", "D"), 100, TRUE))
 )
 
-l <- basic_table() \%>\%
-  split_cols_by(var = "grp", ref_group = "B") \%>\%
+l <- basic_table() |>
+  split_cols_by(var = "grp", ref_group = "B") |>
   estimate_odds_ratio(vars = "rsp")
 
 build_table(l, df = dta)

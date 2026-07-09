@@ -116,7 +116,7 @@ s_count_patients_and_multiple_events <- function(df,
 #' )
 #'
 #' # `summarize_patients_events_in_cols()`
-#' basic_table() %>%
+#' basic_table() |>
 #'   summarize_patients_events_in_cols(
 #'     filters_list = list(
 #'       related = formatters::with_label(c(AEREL = "Y"), "Events (Related)"),
@@ -124,7 +124,7 @@ s_count_patients_and_multiple_events <- function(df,
 #'       fatal_related = c(AEREL = "Y", AESDTH = "Y")
 #'     ),
 #'     custom_label = "%s Total number of patients and events"
-#'   ) %>%
+#'   ) |>
 #'   build_table(df)
 #'
 #' @export

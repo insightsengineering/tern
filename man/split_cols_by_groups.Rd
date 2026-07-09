@@ -33,16 +33,16 @@ groups to the table layout.
 
 # Without group combination `split_cols_by_groups` is
 # equivalent to [rtables::split_cols_by()].
-basic_table() \%>\%
-  split_cols_by_groups("ARM") \%>\%
-  add_colcounts() \%>\%
-  analyze("AGE") \%>\%
+basic_table() |>
+  split_cols_by_groups("ARM") |>
+  add_colcounts() |>
+  analyze("AGE") |>
   build_table(DM)
 
 # Add a reference column.
-basic_table() \%>\%
-  split_cols_by_groups("ARM", ref_group = "B: Placebo") \%>\%
-  add_colcounts() \%>\%
+basic_table() |>
+  split_cols_by_groups("ARM", ref_group = "B: Placebo") |>
+  add_colcounts() |>
   analyze(
     "AGE",
     afun = function(x, .ref_group, .in_ref_col) {
@@ -52,7 +52,7 @@ basic_table() \%>\%
         in_rows("Diff Mean" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
       }
     }
-  ) \%>\%
+  ) |>
   build_table(DM)
 
 # 2 - Adding group specification
@@ -64,15 +64,15 @@ groups <- list(
 )
 
 # Use of split_cols_by_groups without reference column.
-basic_table() \%>\%
-  split_cols_by_groups("ARM", groups) \%>\%
-  add_colcounts() \%>\%
-  analyze("AGE") \%>\%
+basic_table() |>
+  split_cols_by_groups("ARM", groups) |>
+  add_colcounts() |>
+  analyze("AGE") |>
   build_table(DM)
 
 # Including differentiated output in the reference column.
-basic_table() \%>\%
-  split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") \%>\%
+basic_table() |>
+  split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") |>
   analyze(
     "AGE",
     afun = function(x, .ref_group, .in_ref_col) {
@@ -82,7 +82,7 @@ basic_table() \%>\%
         in_rows("Diff. of Averages" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
       }
     }
-  ) \%>\%
+  ) |>
   build_table(DM)
 
 # 3 - Binary list dividing factor levels into reference and treatment
@@ -95,16 +95,16 @@ groups <- combine_groups(
 groups
 
 # Use group definition without reference column.
-basic_table() \%>\%
-  split_cols_by_groups("ARM", groups_list = groups) \%>\%
-  add_colcounts() \%>\%
-  analyze("AGE") \%>\%
+basic_table() |>
+  split_cols_by_groups("ARM", groups_list = groups) |>
+  add_colcounts() |>
+  analyze("AGE") |>
   build_table(DM)
 
 # Use group definition with reference column (first item of groups).
-basic_table() \%>\%
-  split_cols_by_groups("ARM", groups, ref_group = names(groups)[1]) \%>\%
-  add_colcounts() \%>\%
+basic_table() |>
+  split_cols_by_groups("ARM", groups, ref_group = names(groups)[1]) |>
+  add_colcounts() |>
   analyze(
     "AGE",
     afun = function(x, .ref_group, .in_ref_col) {
@@ -114,7 +114,7 @@ basic_table() \%>\%
         in_rows("Diff Mean" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
       }
     }
-  ) \%>\%
+  ) |>
   build_table(DM)
 
 }

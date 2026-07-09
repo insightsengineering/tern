@@ -179,8 +179,8 @@ a_incidence_rate <- function(df,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -193,8 +193,8 @@ a_incidence_rate <- function(df,
 #'   the statistics from `s_incidence_rate()` to the table layout.
 #'
 #' @examples
-#' basic_table(show_colcounts = TRUE) %>%
-#'   split_cols_by("ARM") %>%
+#' basic_table(show_colcounts = TRUE) |>
+#'   split_cols_by("ARM") |>
 #'   estimate_incidence_rate(
 #'     vars = "AVAL",
 #'     n_events = "n_events",
@@ -202,20 +202,20 @@ a_incidence_rate <- function(df,
 #'       input_time_unit = "month",
 #'       num_pt_year = 100
 #'     )
-#'   ) %>%
+#'   ) |>
 #'   build_table(df)
 #'
 #' # summarize = TRUE
-#' basic_table(show_colcounts = TRUE) %>%
-#'   split_cols_by("ARM") %>%
-#'   split_rows_by("STRATA1", child_labels = "visible") %>%
+#' basic_table(show_colcounts = TRUE) |>
+#'   split_cols_by("ARM") |>
+#'   split_rows_by("STRATA1", child_labels = "visible") |>
 #'   estimate_incidence_rate(
 #'     vars = "AVAL",
 #'     n_events = "n_events",
 #'     .stats = c("n_unique", "n_rate"),
 #'     summarize = TRUE,
 #'     label_fmt = "%.labels"
-#'   ) %>%
+#'   ) |>
 #'   build_table(df)
 #'
 #' @export

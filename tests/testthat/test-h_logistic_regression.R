@@ -1,14 +1,14 @@
 # Local data pre-processing
-adrs_local <- tern_ex_adrs %>%
-  dplyr::filter(SEX %in% c("F", "M")) %>%
+adrs_local <- tern_ex_adrs |>
+  dplyr::filter(SEX %in% c("F", "M")) |>
   reapply_varlabels(formatters::var_labels(tern_ex_adrs))
 
-adrs_example <- adrs_local %>%
+adrs_example <- adrs_local |>
   dplyr::filter(
     PARAMCD == "BESRSPI",
     RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")
-  ) %>%
-  dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
+  ) |>
+  dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) |>
   reapply_varlabels(formatters::var_labels(adrs_local))
 
 # h_get_interaction_vars ----

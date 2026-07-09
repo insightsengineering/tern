@@ -148,16 +148,16 @@ a_count_patients_with_flags <- function(df,
 
   # Fill in formatting defaults
   .stats <- get_stats("count_patients_with_flags", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
-  levels_per_stats <- rep(list(names(flag_variables)), length(.stats)) %>% stats::setNames(.stats)
+  levels_per_stats <- rep(list(names(flag_variables)), length(.stats)) |> stats::setNames(.stats)
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
   .labels <- get_labels_from_stats(
     .stats, .labels, levels_per_stats,
-    tern_defaults = flag_labels %>% stats::setNames(names(flag_variables))
+    tern_defaults = flag_labels |> stats::setNames(names(flag_variables))
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
-  x_stats <- x_stats[.stats] %>%
-    .unlist_keep_nulls() %>%
+  x_stats <- x_stats[.stats] |>
+    .unlist_keep_nulls() |>
     setNames(names(.formats))
 
   # Auto format handling
@@ -171,8 +171,8 @@ a_count_patients_with_flags <- function(df,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -186,20 +186,20 @@ a_count_patients_with_flags <- function(df,
 #'
 #' @examples
 #' # Add labelled flag variables to analysis dataset.
-#' adae <- tern_ex_adae %>%
+#' adae <- tern_ex_adae |>
 #'   dplyr::mutate(
-#'     fl1 = TRUE %>% with_label("Total AEs"),
-#'     fl2 = (TRTEMFL == "Y") %>%
+#'     fl1 = TRUE |> with_label("Total AEs"),
+#'     fl2 = (TRTEMFL == "Y") |>
 #'       with_label("Total number of patients with at least one adverse event"),
-#'     fl3 = (TRTEMFL == "Y" & AEOUT == "FATAL") %>%
+#'     fl3 = (TRTEMFL == "Y" & AEOUT == "FATAL") |>
 #'       with_label("Total number of patients with fatal AEs"),
-#'     fl4 = (TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y") %>%
+#'     fl4 = (TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y") |>
 #'       with_label("Total number of patients with related fatal AEs")
 #'   )
 #'
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   add_colcounts() %>%
+#' lyt <- basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   add_colcounts() |>
 #'   count_patients_with_flags(
 #'     "SUBJID",
 #'     flag_variables = c("fl1", "fl2", "fl3", "fl4"),

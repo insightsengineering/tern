@@ -41,7 +41,7 @@ belonging to any of the selected baskets. Remember that \code{na_str} must match
 done with \code{\link[=df_explicit_na]{df_explicit_na()}} to have the desired output.
 }
 \examples{
-adae <- tern_ex_adae[1:20, ] \%>\% df_explicit_na()
+adae <- tern_ex_adae[1:20, ] |> df_explicit_na()
 h_stack_by_baskets(df = adae)
 
 aag <- data.frame(

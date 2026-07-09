@@ -1,13 +1,13 @@
 testthat::test_that("s_surv_time works with default arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
   result <- s_surv_time(
-    adtte_f %>% dplyr::filter(ARMCD == "ARM B"),
+    adtte_f |> dplyr::filter(ARMCD == "ARM B"),
     .var = "AVAL",
     is_event = "is_event"
   )
@@ -17,15 +17,15 @@ testthat::test_that("s_surv_time works with default arguments", {
 })
 
 testthat::test_that("s_surv_time works with customized arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
   result <- s_surv_time(
-    adtte_f %>% dplyr::filter(ARMCD == "ARM B"),
+    adtte_f |> dplyr::filter(ARMCD == "ARM B"),
     .var = "AVAL",
     is_event = "is_event",
     control = control_surv_time(
@@ -38,8 +38,8 @@ testthat::test_that("s_surv_time works with customized arguments", {
 })
 
 testthat::test_that("a_surv_time works with default arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
@@ -59,12 +59,12 @@ testthat::test_that("a_surv_time works with default arguments", {
 })
 
 testthat::test_that("a_surv_time works with customized arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
-    ) %>%
+    ) |>
     dplyr::filter(ARMCD == "ARM B")
 
   result <- a_surv_time(
@@ -86,22 +86,22 @@ testthat::test_that("a_surv_time works with customized arguments", {
 })
 
 testthat::test_that("surv_time works with default arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     split_cols_by(
       var = "ARMCD"
-    ) %>%
+    ) |>
     surv_time(
       vars = "AVAL",
       var_labels = "Survival Time (Months)",
       is_event = "is_event"
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)
@@ -109,15 +109,15 @@ testthat::test_that("surv_time works with default arguments", {
 })
 
 testthat::test_that("surv_time works with customized arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "ARMCD") %>%
+  result <- basic_table() |>
+    split_cols_by(var = "ARMCD") |>
     surv_time(
       vars = "AVAL",
       var_labels = "Survival Time (Months)",
@@ -125,7 +125,7 @@ testthat::test_that("surv_time works with customized arguments", {
       .stats = get_stats("surv_time"),
       .formats = list(median_ci = "auto"),
       control = control_surv_time(conf_level = 0.9, conf_type = "log", quantiles = c(0.4, 0.6))
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)
@@ -133,8 +133,8 @@ testthat::test_that("surv_time works with customized arguments", {
 })
 
 testthat::test_that("surv_time works with referential footnotes", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
@@ -144,13 +144,13 @@ testthat::test_that("surv_time works with referential footnotes", {
   adtte_f$is_event[adtte_f$AVAL == max(adtte_f[adtte_f$ARMCD == "ARM B", ]$AVAL) & adtte_f$ARMCD == "ARM B"] <- FALSE
   adtte_f$is_event[adtte_f$AVAL == max(adtte_f[adtte_f$ARMCD == "ARM C", ]$AVAL) & adtte_f$ARMCD == "ARM C"] <- FALSE
 
-  result <- basic_table() %>%
-    split_cols_by(var = "ARMCD") %>%
-    add_overall_col(label = "All") %>%
+  result <- basic_table() |>
+    split_cols_by(var = "ARMCD") |>
+    add_overall_col(label = "All") |>
     surv_time(
       vars = "AVAL",
       is_event = "is_event"
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)

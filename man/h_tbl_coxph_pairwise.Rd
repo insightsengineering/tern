@@ -51,8 +51,8 @@ Create a \code{data.frame} of pairwise stratified or unstratified Cox-PH analysi
 \examples{
 library(dplyr)
 
-adtte <- tern_ex_adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
+adtte <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(is_event = CNSR == 0)
 
 h_tbl_coxph_pairwise(

@@ -104,8 +104,8 @@ a_change_from_baseline <- function(df,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -129,19 +129,19 @@ a_change_from_baseline <- function(df,
 #'   AVISIT = rep(paste0("V", 1:3), 6),
 #'   ARM = rep(LETTERS[1:3], rep(6, 3)),
 #'   AVAL = c(9:1, rep(NA, 9))
-#' ) %>%
-#'   mutate(ABLFLL = AVISIT == "V1") %>%
-#'   group_by(USUBJID) %>%
+#' ) |>
+#'   mutate(ABLFLL = AVISIT == "V1") |>
+#'   group_by(USUBJID) |>
 #'   mutate(
 #'     BLVAL = AVAL[ABLFLL],
 #'     CHG = AVAL - BLVAL
-#'   ) %>%
+#'   ) |>
 #'   ungroup()
 #'
-#' results <- basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   split_rows_by("AVISIT") %>%
-#'   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) %>%
+#' results <- basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   split_rows_by("AVISIT") |>
+#'   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) |>
 #'   build_table(dta_test)
 #'
 #' results

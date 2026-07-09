@@ -53,8 +53,8 @@ replaced by their absolute values.
 }
 }
 \examples{
-h_adlb_abnormal_by_worst_grade(tern_ex_adlb) \%>\%
-  dplyr::select(ATOXGR, GRADE_DIR, GRADE_ANL) \%>\%
+h_adlb_abnormal_by_worst_grade(tern_ex_adlb) |>
+  dplyr::select(ATOXGR, GRADE_DIR, GRADE_ANL) |>
   head(10)
 
 }

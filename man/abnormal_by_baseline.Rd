@@ -160,8 +160,8 @@ df <- data.frame(
 df <- df_explicit_na(df)
 
 # Layout creating function.
-basic_table() \%>\%
-  count_abnormal_by_baseline(var = "ANRIND", abnormal = c(High = "HIGH")) \%>\%
+basic_table() |>
+  count_abnormal_by_baseline(var = "ANRIND", abnormal = c(High = "HIGH")) |>
   build_table(df)
 
 # Passing of statistics function and formatting arguments.
@@ -171,14 +171,14 @@ df2 <- data.frame(
   BLRANGE = factor(c("LOW", "HIGH", "HIGH", "NORMAL"))
 )
 
-basic_table() \%>\%
+basic_table() |>
   count_abnormal_by_baseline(
     var = "RANGE",
     abnormal = c(Low = "LOW"),
     variables = list(id = "ID", baseline = "BLRANGE"),
     .formats = c(fraction = "xx / xx"),
     .indent_mods = c(fraction = 2L)
-  ) \%>\%
+  ) |>
   build_table(df2)
 
 }

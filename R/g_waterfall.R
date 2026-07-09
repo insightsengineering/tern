@@ -26,11 +26,11 @@
 #'   col_var = letters[1:3]
 #' )
 #'
-#' adsl_f <- tern_ex_adsl %>%
+#' adsl_f <- tern_ex_adsl |>
 #'   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 #'
-#' adrs_f <- tern_ex_adrs %>%
-#'   filter(PARAMCD == "OVRINV") %>%
+#' adrs_f <- tern_ex_adrs |>
+#'   filter(PARAMCD == "OVRINV") |>
 #'   mutate(pchg = rnorm(n(), 10, 50))
 #'
 #' adrs_f <- head(adrs_f, 30)

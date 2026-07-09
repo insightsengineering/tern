@@ -84,7 +84,7 @@
 #' @examples
 #'
 #' adsl <- tern_ex_adsl
-#' adlb <- tern_ex_adlb %>% dplyr::filter(ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
+#' adlb <- tern_ex_adlb |> dplyr::filter(ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
 #' adlb$AVISIT <- droplevels(adlb$AVISIT)
 #' adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 #'
@@ -204,13 +204,13 @@ g_lineplot <- function(df,
 
   if (!is.null(table)) {
     table_format <- get_formats_from_stats(table, formats_in = table_format)
-    table_labels <- get_labels_from_stats(table, labels_in = table_labels) %>% .unlist_keep_nulls()
+    table_labels <- get_labels_from_stats(table, labels_in = table_labels) |> .unlist_keep_nulls()
   }
 
   extra_args <- list(...)
   if ("control" %in% names(extra_args)) {
     if (!is.null(table) && all(table_labels == .unlist_keep_nulls(get_labels_from_stats(table)))) {
-      table_labels <- table_labels %>% labels_use_control(extra_args[["control"]])
+      table_labels <- table_labels |> labels_use_control(extra_args[["control"]])
     }
   }
 
@@ -276,11 +276,11 @@ g_lineplot <- function(df,
     df_grp <- tidyr::expand(df, NULL, .data[[x]])
   }
 
-  df_grp <- df_grp %>%
-    dplyr::full_join(y = df[, c(facet_var, group_var, x, y)], by = c(facet_var, group_var, x), multiple = "all") %>%
+  df_grp <- df_grp |>
+    dplyr::full_join(y = df[, c(facet_var, group_var, x, y)], by = c(facet_var, group_var, x), multiple = "all") |>
     dplyr::group_by_at(c(facet_var, group_var, x))
 
-  df_stats <- df_grp %>%
+  df_stats <- df_grp |>
     dplyr::summarise(
       data.frame(t(do.call(c, unname(sfun(.data[[y]])[c(mid, interval)])))),
       .groups = "drop"
@@ -457,7 +457,7 @@ g_lineplot <- function(df,
   # ---- Optionally, add table to the bottom of the plot. ----
   ############################################################# |
   if (!is.null(table)) {
-    df_stats_table <- df_grp %>%
+    df_stats_table <- df_grp |>
       dplyr::summarise(
         h_format_row(
           x = sfun(.data[[y]], ...)[table],
@@ -469,7 +469,7 @@ g_lineplot <- function(df,
 
     stats_lev <- rev(setdiff(colnames(df_stats_table), c(group_var, x)))
 
-    df_stats_table <- df_stats_table %>%
+    df_stats_table <- df_stats_table |>
       tidyr::pivot_longer(
         cols = -dplyr::all_of(c(group_var, x)),
         names_to = "stat",
@@ -623,5 +623,5 @@ control_lineplot_vars <- function(x = "AVISIT",
     x = x, y = y, group_var = group_var, paramcd = paramcd,
     y_unit = y_unit, subject_var = subject_var, facet_var = facet_var
   )
-  return(variables)
+  variables
 }
