@@ -38,13 +38,13 @@ preserved as-is (original behavior).}
 converting character or logical variables (or existing factors when
 \code{factor_as_factor = TRUE}). One of:
 \describe{
-  \item{\code{"sort_auto"}}{\code{sort(unique(x))} — default R sort, locale-aware (default).
-    Preserves the original behavior of this function.}
-  \item{\code{"sort_radix"}}{\code{sort(unique(x), method = "radix")} — byte-order (ASCII) sort.
-    Unlike \code{"sort_auto"}, this is not locale-sensitive: uppercase letters always sort
-    before lowercase. On data where all values share the same case (e.g. all-caps
-    ADaM variables) the two methods produce identical results.}
-  \item{\code{"data"}}{\code{unique(x)} — levels in order of first appearance in the data.}
+\item{\code{"sort_auto"}}{\code{sort(unique(x))} — default R sort, locale-aware (default).
+Preserves the original behavior of this function.}
+\item{\code{"sort_radix"}}{\code{sort(unique(x), method = "radix")} — byte-order (ASCII) sort.
+Unlike \code{"sort_auto"}, this is not locale-sensitive: uppercase letters always sort
+before lowercase. On data where all values share the same case (e.g. all-caps
+ADaM variables) the two methods produce identical results.}
+\item{\code{"data"}}{\code{unique(x)} — levels in order of first appearance in the data.}
 }}
 
 \item{factor_level_last_pattern}{(\code{string} or \code{NULL})\cr regular expression. Any
