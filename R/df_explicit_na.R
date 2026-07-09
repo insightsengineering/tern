@@ -19,11 +19,11 @@
 #'   in `data` to factors.
 #' @param logical_as_factor (`flag`)\cr whether to convert logical variables
 #'   in `data` to factors.
+#' @param na_level (`string`)\cr string used to replace all `NA` or empty
+#'   values inside non-`omit_columns` columns.
 #' @param factor_as_factor (`flag`)\cr whether to re-encode existing factor variables
 #'   using `factor_level_method`. When `FALSE` (default), existing factor levels are
 #'   preserved as-is (original behavior).
-#' @param na_level (`string`)\cr string used to replace all `NA` or empty
-#'   values inside non-`omit_columns` columns.
 #' @param factor_level_method (`string`)\cr method used to order factor levels when
 #'   converting character or logical variables (or existing factors when
 #'   `factor_as_factor = TRUE`). One of:
@@ -103,8 +103,8 @@ df_explicit_na <- function(data,
                            omit_columns = NULL,
                            char_as_factor = TRUE,
                            logical_as_factor = FALSE,
-                           factor_as_factor = FALSE,
                            na_level = "<Missing>",
+                           factor_as_factor = FALSE,
                            factor_level_method = c("sort_auto", "sort_radix", "data"),
                            factor_level_last_pattern = NULL) {
   checkmate::assert_character(omit_columns, null.ok = TRUE, min.len = 1, any.missing = FALSE)
@@ -114,7 +114,8 @@ df_explicit_na <- function(data,
   checkmate::assert_flag(factor_as_factor)
   checkmate::assert_string(na_level)
   checkmate::assert_string(factor_level_last_pattern, null.ok = TRUE)
-  factor_level_method <- match.arg(factor_level_method)
+  factor_level_method <- factor_level_method[[1]]
+  checkmate::assert_choice(factor_level_method, c("sort_auto", "sort_radix", "data"))
 
   target_vars <- if (is.null(omit_columns)) {
     names(data)

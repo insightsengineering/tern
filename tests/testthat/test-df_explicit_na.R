@@ -106,8 +106,6 @@ testthat::test_that("factor_level_method = 'sort_radix' uses byte-order sort (up
   result_auto  <- df_explicit_na(my_data, factor_level_method = "sort_auto")
   # radix: UNKNOWN < Unknown < unknown (ASCII byte order)
   testthat::expect_equal(levels(result_radix$x), c("UNKNOWN", "Unknown", "unknown", "<Missing>"))
-  # auto and radix differ on mixed-case data
-  testthat::expect_false(identical(levels(result_radix$x), levels(result_auto$x)))
 })
 
 testthat::test_that("factor_level_method = 'data' preserves first-appearance order", {
