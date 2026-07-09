@@ -3,12 +3,12 @@ preprocess_adtte <- function(adtte) {
   # Save variable labels before data processing steps.
   adtte_labels <- formatters::var_labels(adtte)
 
-  adtte_mod <- adtte %>%
+  adtte_mod <- adtte |>
     dplyr::filter(
       PARAMCD == "OS",
       ARM %in% c("B: Placebo", "A: Drug X"),
       SEX %in% c("M", "F")
-    ) %>%
+    ) |>
     dplyr::mutate(
       # Reorder levels of ARM to display reference arm before treatment arm.
       ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
@@ -19,7 +19,7 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
-adtte_local <- tern_ex_adtte %>%
+adtte_local <- tern_ex_adtte |>
   preprocess_adtte()
 
 testthat::test_that("h_survtime_df functions as expected with valid input and default arguments", {
@@ -213,7 +213,7 @@ testthat::test_that("h_coxph_df functions as expected with multiple stratificati
 })
 
 testthat::test_that("h_coxph_df functions as expected when 0 records in one group", {
-  adtte <- adtte_local %>%
+  adtte <- adtte_local |>
     dplyr::filter(ARM == "A: Drug X")
 
   result <- h_coxph_df(
@@ -238,8 +238,8 @@ testthat::test_that("h_coxph_subgroups_df functions as expected with valid input
   testthat::expect_snapshot(res)
 
   # Test edge case where HR is (0, Inf)
-  adtte <- adtte %>%
-    dplyr::filter(COUNTRY %in% c("CAN", "GBR")) %>%
+  adtte <- adtte |>
+    dplyr::filter(COUNTRY %in% c("CAN", "GBR")) |>
     reapply_varlabels(formatters::var_labels(adtte))
 
   testthat::expect_warning(result <- h_coxph_subgroups_df(

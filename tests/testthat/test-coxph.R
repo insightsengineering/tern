@@ -18,8 +18,8 @@ testthat::test_that("rht works correctly", {
 })
 
 testthat::test_that("estimate_coef works correctly", {
-  adtte <- tern_ex_adtte %>%
-    filter(PARAMCD == "PFS") %>%
+  adtte <- tern_ex_adtte |>
+    filter(PARAMCD == "PFS") |>
     mutate(
       ARMCD = droplevels(ARMCD),
       SEX = droplevels(SEX)
@@ -87,13 +87,13 @@ testthat::test_that("check_increments gives correct warning", {
 })
 
 testthat::test_that("s_cox_multivariate works correctly with character input", {
-  adtte_f <- tern_ex_adtte %>%
-    subset(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    subset(PARAMCD == "OS") |>
     filter(
       PARAMCD == "OS" &
         SEX %in% c("F", "M") &
         RACE %in% c("ASIAN", "BLACK OR AFRICAN AMERICAN", "WHITE")
-    ) %>%
+    ) |>
     mutate(
       SEX = droplevels(SEX),
       RACE = droplevels(RACE),

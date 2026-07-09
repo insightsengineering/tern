@@ -1,10 +1,10 @@
 testthat::test_that("to_string_matrix works correctly", {
-  tbl <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("RACE") %>%
-    split_rows_by("STRATA1") %>%
-    analyze("AGE", mean, format = "xx.xx") %>%
-    build_table(DM) %>%
+  tbl <- basic_table() |>
+    split_cols_by("ARM") |>
+    split_rows_by("RACE") |>
+    split_rows_by("STRATA1") |>
+    analyze("AGE", mean, format = "xx.xx") |>
+    build_table(DM) |>
     prune_table()
 
   # Initial intended use (wrapper of matrix_form(x)$strings)
@@ -95,9 +95,9 @@ testthat::test_that("c_label_n_alt works as expected", {
 })
 
 testthat::test_that("add_rowcounts works with one row split", {
-  result <- basic_table() %>%
-    split_rows_by("SEX", split_fun = drop_split_levels) %>%
-    add_rowcounts() %>%
+  result <- basic_table() |>
+    split_rows_by("SEX", split_fun = drop_split_levels) |>
+    add_rowcounts() |>
     build_table(DM)
 
   res <- testthat::expect_silent(result)
@@ -105,14 +105,14 @@ testthat::test_that("add_rowcounts works with one row split", {
 })
 
 testthat::test_that("add_rowcounts works with multiple column and row splits", {
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_cols_by("STRATA1") %>%
-    split_rows_by("COUNTRY", split_fun = drop_split_levels) %>%
-    add_rowcounts() %>%
-    split_rows_by("SEX", split_fun = drop_split_levels) %>%
-    add_rowcounts() %>%
-    analyze("AGE", afun = mean, format = "xx.xx") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    split_cols_by("STRATA1") |>
+    split_rows_by("COUNTRY", split_fun = drop_split_levels) |>
+    add_rowcounts() |>
+    split_rows_by("SEX", split_fun = drop_split_levels) |>
+    add_rowcounts() |>
+    analyze("AGE", afun = mean, format = "xx.xx") |>
     build_table(DM)
 
   res <- testthat::expect_silent(result)
@@ -120,24 +120,24 @@ testthat::test_that("add_rowcounts works with multiple column and row splits", {
 })
 
 testthat::test_that("add_rowcounts works with pruning", {
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("SEX", split_fun = drop_split_levels) %>%
-    add_rowcounts() %>%
-    analyze("RACE") %>%
-    build_table(DM) %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    split_rows_by("SEX", split_fun = drop_split_levels) |>
+    add_rowcounts() |>
+    analyze("RACE") |>
+    build_table(DM) |>
     prune_table()
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-  dm_f <- DM %>% dplyr::filter(SEX == "F")
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("SEX", split_fun = drop_split_levels) %>%
-    add_rowcounts() %>%
-    analyze("RACE") %>%
-    build_table(dm_f) %>%
+  dm_f <- DM |> dplyr::filter(SEX == "F")
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    split_rows_by("SEX", split_fun = drop_split_levels) |>
+    add_rowcounts() |>
+    analyze("RACE") |>
+    build_table(dm_f) |>
     prune_table()
 
   res <- testthat::expect_silent(result)
@@ -147,12 +147,12 @@ testthat::test_that("add_rowcounts works with pruning", {
 testthat::test_that("add_rowcounts works with alt_counts = TRUE", {
   DM_alt <- DM[1:100, ] # nolint
 
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("SEX", split_fun = drop_split_levels) %>%
-    add_rowcounts(alt_counts = TRUE) %>%
-    analyze("RACE") %>%
-    build_table(DM, alt_counts_df = DM_alt) %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    split_rows_by("SEX", split_fun = drop_split_levels) |>
+    add_rowcounts(alt_counts = TRUE) |>
+    analyze("RACE") |>
+    build_table(DM, alt_counts_df = DM_alt) |>
     prune_table()
 
   res <- testthat::expect_silent(result)
@@ -160,8 +160,8 @@ testthat::test_that("add_rowcounts works with alt_counts = TRUE", {
 })
 
 testthat::test_that("h_col_indices works as expected", {
-  tab <- basic_table() %>%
-    split_cols_by("ARM") %>%
+  tab <- basic_table() |>
+    split_cols_by("ARM") |>
     build_table(DM)
   result <- h_col_indices(tab, c("B: Placebo", "C: Combination"))
 
@@ -236,12 +236,12 @@ testthat::test_that("afun_selected_stats works for character input", {
 })
 
 testthat::test_that("append_varlabels works as expected", {
-  lyt <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    split_rows_by("SEX") %>%
-    append_varlabels(DM, "SEX") %>%
-    analyze("AGE", afun = mean) %>%
+  lyt <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    split_rows_by("SEX") |>
+    append_varlabels(DM, "SEX") |>
+    analyze("AGE", afun = mean) |>
     append_varlabels(DM, "AGE", indent = 1L)
   result <- build_table(lyt, DM)
 
@@ -250,10 +250,10 @@ testthat::test_that("append_varlabels works as expected", {
 })
 
 testthat::test_that("append_varlabels correctly concatenates multiple variable labels", {
-  lyt <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("SEX") %>%
-    analyze("AGE", afun = mean) %>%
+  lyt <- basic_table() |>
+    split_cols_by("ARM") |>
+    split_rows_by("SEX") |>
+    analyze("AGE", afun = mean) |>
     append_varlabels(DM, c("SEX", "AGE"))
   result <- build_table(lyt, DM)
 
@@ -266,13 +266,13 @@ testthat::test_that("default na_str works properly", {
   tmp$AGE[1] <- NA
   df_to_tt(tmp)
   set_default_na_str("N/A")
-  tbl <- basic_table() %>%
-    split_rows_by("SEX") %>%
-    split_cols_by("ARM") %>%
+  tbl <- basic_table() |>
+    split_rows_by("SEX") |>
+    split_cols_by("ARM") |>
     analyze("AGE",
       afun = function(x) mean(x, na.rm = FALSE), inclNAs = TRUE,
       format = "xx.", na_str = default_na_str()
-    ) %>%
+    ) |>
     build_table(tmp)
   testthat::expect_identical(matrix_form(tbl)$strings[5, 2], "N/A")
 
@@ -280,15 +280,15 @@ testthat::test_that("default na_str works properly", {
   # lets try with some default function
   set_default_na_str(NULL)
   dt <- data.frame("VAR" = c(NA, NA_real_))
-  tbl <- basic_table() %>%
-    analyze_vars(vars = "VAR", .stats = c("n", "mean")) %>%
+  tbl <- basic_table() |>
+    analyze_vars(vars = "VAR", .stats = c("n", "mean")) |>
     build_table(dt)
   testthat::expect_identical(matrix_form(tbl)$strings[-1, 2], c("0", "NA"))
 
   set_default_na_str("<no-value>")
   dt <- data.frame("VAR" = c(NA, NA_real_))
-  tbl <- basic_table() %>%
-    analyze_vars(vars = "VAR", .stats = c("n", "mean")) %>%
+  tbl <- basic_table() |>
+    analyze_vars(vars = "VAR", .stats = c("n", "mean")) |>
     build_table(dt)
   testthat::expect_identical(matrix_form(tbl)$strings[-1, 2], c("0", "<no-value>"))
   set_default_na_str(NULL)

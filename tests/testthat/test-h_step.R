@@ -11,8 +11,8 @@ raw_data <- data.frame(
   rsp = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)
 )
 
-adrs_local <- tern_ex_adrs %>%
-  dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+adrs_local <- tern_ex_adrs |>
+  dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) |>
   dplyr::mutate(
     RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
     ARMBIN = droplevels(ARMCD)

@@ -47,10 +47,10 @@ to test not only for content but also indentation and table structure.
 formatted text that needs only to be copied and pasted in the expected output.
 }
 \examples{
-tbl <- basic_table() \%>\%
-  split_rows_by("SEX") \%>\%
-  split_cols_by("ARM") \%>\%
-  analyze("AGE") \%>\%
+tbl <- basic_table() |>
+  split_rows_by("SEX") |>
+  split_cols_by("ARM") |>
+  analyze("AGE") |>
   build_table(tern_ex_adsl)
 
 to_string_matrix(tbl, widths = ceiling(propose_column_widths(tbl) / 2))

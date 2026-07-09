@@ -1,4 +1,4 @@
-# tern 0.9.10.9013
+# tern 0.9.10.9016
 
 ### Enhancements
 * Added `factor_level_method` argument to `df_explicit_na()` to control factor level ordering
@@ -16,12 +16,14 @@
 * Added `range_with_cens_info` statistic to `s_surv_time()`.
 * Added `lsmean_se`, `lsmean_ci`, and `lsmean_diffci` statistics to `s_ancova()`.
 * Added `s_ancova()` to exported functions.
+* Exported `h_incidence_rate()` to allow to reuse the incidence rate estimation logic.
 
 ### Bug Fixes
 * Fixed bug in `prop_diff_cmh()` which previously failed when strata combinations had 0 observations.
 * Fixed one-sided p-values in `prop_cmh()` with Wilson-Hilferty transformation — the sign of the effect was lost, producing incorrect p-values for `alternative = "less"` and `alternative = "greater"`.
 
 ### Miscellaneous
+* Relaxed `fit_logistic()` tests to compare only the formula right-hand side, so they no longer break when `survival::clogit()` changes the internally generated response term. (#1484)
 * Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3 methods in `decorate_grob.R` and `utils_grid.R`.
 * Converted `s_surv_time()` to exported functions.
 

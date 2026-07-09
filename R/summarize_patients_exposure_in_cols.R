@@ -168,8 +168,8 @@ a_count_patients_sum_exposure <- function(df,
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
-  x_stats <- x_stats[.stats] %>%
-    .unlist_keep_nulls() %>%
+  x_stats <- x_stats[.stats] |>
+    .unlist_keep_nulls() |>
     setNames(names(.formats))
 
   # Auto format handling
@@ -181,10 +181,10 @@ a_count_patients_sum_exposure <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels %>% .unlist_keep_nulls(),
+    .names = .labels |> .unlist_keep_nulls(),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -199,13 +199,13 @@ a_count_patients_sum_exposure <- function(df,
 #'   columns, to the table layout.
 #'
 #' @examples
-#' lyt5 <- basic_table() %>%
+#' lyt5 <- basic_table() |>
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
 #'
 #' result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
 #' result5
 #'
-#' lyt6 <- basic_table() %>%
+#' lyt6 <- basic_table() |>
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
 #'
 #' result6 <- build_table(lyt6, df = df, alt_counts_df = adsl)
@@ -299,24 +299,24 @@ summarize_patients_exposure_in_cols <- function(lyt,
 #'   stringsAsFactors = TRUE
 #' )
 #'
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
-#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
+#' lyt <- basic_table() |>
+#'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) |>
+#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) |>
 #'   analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE)
 #' result <- build_table(lyt, df = df, alt_counts_df = adsl)
 #' result
 #'
-#' lyt2 <- basic_table() %>%
-#'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
+#' lyt2 <- basic_table() |>
+#'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) |>
 #'   summarize_patients_exposure_in_cols(
 #'     var = "AVAL", col_split = TRUE,
 #'     .stats = "n_patients", custom_label = "some custom label"
-#'   ) %>%
+#'   ) |>
 #'   analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE, ex_var = "AVAL")
 #' result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
 #' result2
 #'
-#' lyt3 <- basic_table() %>%
+#' lyt3 <- basic_table() |>
 #'   analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE, ex_var = "AVAL")
 #' result3 <- build_table(lyt3, df = df, alt_counts_df = adsl)
 #' result3
@@ -324,13 +324,13 @@ summarize_patients_exposure_in_cols <- function(lyt,
 #' # Adding total levels and custom label
 #' lyt4 <- basic_table(
 #'   show_colcounts = TRUE
-#' ) %>%
+#' ) |>
 #'   analyze_patients_exposure_in_cols(
 #'     var = "ARMCD",
 #'     col_split = TRUE,
 #'     add_total_level = TRUE,
 #'     custom_label = "TOTAL"
-#'   ) %>%
+#'   ) |>
 #'   append_topleft(c("", "Sex"))
 #'
 #' result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)

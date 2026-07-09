@@ -2,12 +2,12 @@ preprocess_adtte <- function(adtte) {
   # Save variable labels before data processing steps.
   adtte_labels <- formatters::var_labels(adtte)
 
-  adtte_mod <- adtte %>%
+  adtte_mod <- adtte |>
     dplyr::filter(
       PARAMCD == "OS",
       ARM %in% c("B: Placebo", "A: Drug X"),
       SEX %in% c("M", "F")
-    ) %>%
+    ) |>
     dplyr::mutate(
       # Reorder levels of ARM to display reference arm before treatment arm.
       ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
@@ -18,7 +18,7 @@ preprocess_adtte <- function(adtte) {
   reapply_varlabels(adtte_mod, adtte_labels, is_event = "Event Flag")
 }
 
-adtte_local <- tern_ex_adtte %>%
+adtte_local <- tern_ex_adtte |>
   preprocess_adtte()
 
 testthat::test_that("extract_survival_subgroups functions as expected with valid input and default arguments", {
@@ -96,7 +96,7 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with vali
     data = adtte
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_survival_subgroups(df, time_unit = adtte$AVALU[1])
 
   res <- testthat::expect_silent(result)
@@ -111,7 +111,7 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with NULL
     data = adtte
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_survival_subgroups(df, time_unit = adtte$AVALU[1])
 
   res <- testthat::expect_silent(result)
@@ -119,8 +119,8 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with NULL
 })
 
 testthat::test_that("tabulate_survival_subgroups functions as expected with extreme values in subgroups", {
-  adtte <- adtte_local %>%
-    dplyr::slice(1:30) %>%
+  adtte <- adtte_local |>
+    dplyr::slice(1:30) |>
     reapply_varlabels(formatters::var_labels(adtte_local))
 
   df <- extract_survival_subgroups(
@@ -128,7 +128,7 @@ testthat::test_that("tabulate_survival_subgroups functions as expected with extr
     data = adtte
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_survival_subgroups(df, time_unit = adtte$AVALU[1])
 
   res <- testthat::expect_silent(result)
@@ -143,7 +143,7 @@ testthat::test_that("tabulate_survival_subgroups functions as expected when one 
     data = adtte
   )))
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_survival_subgroups(
       df = df,
       vars = c("n_tot_events", "n", "n_events", "median", "hr", "ci", "pval"),
@@ -163,7 +163,7 @@ testthat::test_that("tabulate_survival_subgroups works correctly with both `n_to
   )))
 
   # Both n_tot variables, but no surv time vars.
-  result_both <- basic_table() %>%
+  result_both <- basic_table() |>
     tabulate_survival_subgroups(
       df = df,
       vars = c("hr", "ci", "n_tot", "pval", "n_tot_events"),
@@ -176,7 +176,7 @@ testthat::test_that("tabulate_survival_subgroups works correctly with both `n_to
   testthat::expect_snapshot(res)
 
   # Both n_tot variables and also surv time vars, so we have a reordering of the vars in the table.
-  result_both_survtime <- basic_table() %>%
+  result_both_survtime <- basic_table() |>
     tabulate_survival_subgroups(
       df = df,
       vars = c("hr", "median", "n_events", "ci", "pval", "n_tot_events", "n", "n_tot"),
@@ -219,7 +219,7 @@ testthat::test_that("tabulate_survival_subgroups .formats argument works as expe
     data = adtte
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_survival_subgroups(
       df,
       time_unit = adtte$AVALU[1],
@@ -239,7 +239,7 @@ testthat::test_that("tabulate_survival_subgroups na_str argument works as expect
   )
   df$hr$hr[2:5] <- NA
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_survival_subgroups(
       df,
       time_unit = adtte$AVALU[1],
@@ -260,7 +260,7 @@ testthat::test_that("label_all argument to extract_survival_subgroups works as e
   )
 
   lifecycle::expect_deprecated(
-    result <- basic_table() %>%
+    result <- basic_table() |>
       tabulate_survival_subgroups(df, time_unit = adtte$AVALU[1], label_all = "Full Analysis Set")
   )
 
@@ -276,7 +276,7 @@ testthat::test_that("tabulate_survival_subgroups riskdiff argument works as expe
     data = adtte
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_survival_subgroups(
       df,
       time_unit = adtte$AVALU[1],
@@ -290,7 +290,7 @@ testthat::test_that("tabulate_survival_subgroups riskdiff argument works as expe
   testthat::expect_snapshot(res)
 
   # pct works
-  result2 <- basic_table() %>%
+  result2 <- basic_table() |>
     tabulate_survival_subgroups(
       df,
       time_unit = adtte$AVALU[1],

@@ -52,9 +52,9 @@ library(dplyr)
 library(survival)
 library(grid)
 
-fit_km <- tern_ex_adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+fit_km <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
+  (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))()
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
 gg <- h_ggkm(

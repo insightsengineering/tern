@@ -19,10 +19,10 @@
 #'   table will be printed to console, ready to be copied as a expected value.
 #'
 #' @examples
-#' tbl <- basic_table() %>%
-#'   split_rows_by("SEX") %>%
-#'   split_cols_by("ARM") %>%
-#'   analyze("AGE") %>%
+#' tbl <- basic_table() |>
+#'   split_rows_by("SEX") |>
+#'   split_cols_by("ARM") |>
+#'   analyze("AGE") |>
 #'   build_table(tern_ex_adsl)
 #'
 #' to_string_matrix(tbl, widths = ceiling(propose_column_widths(tbl) / 2))
@@ -184,12 +184,12 @@ c_label_n_alt <- function(df,
 #'   so that they are not considered zero rows by default when pruning.
 #'
 #' @examples
-#' basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   add_colcounts() %>%
-#'   split_rows_by("RACE", split_fun = drop_split_levels) %>%
-#'   add_rowcounts() %>%
-#'   analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") %>%
+#' basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   add_colcounts() |>
+#'   split_rows_by("RACE", split_fun = drop_split_levels) |>
+#'   add_rowcounts() |>
+#'   analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") |>
 #'   build_table(DM)
 #'
 #' @export
@@ -392,19 +392,19 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'   this will also be improved or not necessary anymore.
 #'
 #' @examples
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   add_colcounts() %>%
-#'   split_rows_by("SEX") %>%
-#'   append_varlabels(DM, "SEX") %>%
-#'   analyze("AGE", afun = mean) %>%
+#' lyt <- basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   add_colcounts() |>
+#'   split_rows_by("SEX") |>
+#'   append_varlabels(DM, "SEX") |>
+#'   analyze("AGE", afun = mean) |>
 #'   append_varlabels(DM, "AGE", indent = 1)
 #' build_table(lyt, DM)
 #'
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   split_rows_by("SEX") %>%
-#'   analyze("AGE", afun = mean) %>%
+#' lyt <- basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   split_rows_by("SEX") |>
+#'   analyze("AGE", afun = mean) |>
 #'   append_varlabels(DM, c("SEX", "AGE"))
 #' build_table(lyt, DM)
 #'

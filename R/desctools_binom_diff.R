@@ -22,7 +22,7 @@ h_recycle <- function(...) {
   maxdim <- max(lengths(lst))
   res <- lapply(lst, rep, length.out = maxdim)
   attr(res, "maxdim") <- maxdim
-  return(res)
+  res
 }
 
 #' @describeIn desctools_binom Several confidence intervals for the difference between proportions.
@@ -143,7 +143,7 @@ desctools_binom <- function(x1,
             n <- n1 + n2
             res <- (p1d * (1 - p1d) / n1 + p2d * (1 - p2d) / n2)
           }
-          return(sqrt(res))
+          sqrt(res)
         }
         pval <- function(delta) {
           z <- (est - delta) / .score(p1_hat, n1, p2_hat, n2, delta)
@@ -191,7 +191,7 @@ desctools_binom <- function(x1,
               i <- i + 1
             }
           }
-          return(y)
+          y
         }
         .score <- function(p1, n1, p2, n2, dif) {
           diff <- p1 - p2 - dif
@@ -213,7 +213,7 @@ desctools_binom <- function(x1,
             var <- (p1d * (1 - p1d) / n1 + p2d * (1 - p2d) / n2) * n / (n - 1)
             res <- diff^2 / var
           }
-          return(res)
+          res
         }
         z <- stats::qchisq(conf.level, 1)
         ci_lwr <- max(-1, .conf(x1, n1, x2, n2, z, TRUE))
@@ -265,7 +265,7 @@ desctools_binom <- function(x1,
     } else if (sides == "right") {
       ci[2] <- -1
     }
-    return(ci)
+    ci
   }
   method <- match.arg(arg = method, several.ok = TRUE)
   sides <- match.arg(arg = sides, several.ok = TRUE)
@@ -302,7 +302,7 @@ desctools_binom <- function(x1,
       1
   })]), 1, paste, collapse = ":")
   rownames(res) <- xn
-  return(res)
+  res
 }
 
 #' @describeIn desctools_binom Compute confidence intervals for binomial proportions.
@@ -497,7 +497,7 @@ desctools_binomci <- function(x,
         v <- trunc(q)
         term1 <- stats::pbinom(v - 1, size = size, prob = prob)
         term2 <- (q - v) * stats::dbinom(v, size = size, prob = prob)
-        return(term1 + term2)
+        term1 + term2
       }
       qbinom_abscont <- function(p, size, x) {
         fun <- function(prob, size, x, p) {
@@ -581,7 +581,7 @@ desctools_binomci <- function(x,
           log = TRUE
         ))
         res <- ifelse(abs(y - mu) < tol, 0, sign(y - mu) * sqrt(-2 * (ll_y - ll_mu)))
-        return(res - bound)
+        res - bound
       }
       if (x != 0 && tol < p_hat) {
         ci_lwr <- if (BinDev(
@@ -635,7 +635,7 @@ desctools_binomci <- function(x,
           stats::qbinom(1 - p2, n, p), n,
           p
         )
-        return(min(a1, a2))
+        min(a1, a2)
       }
       ci_lwr <- 0
       ci_upr <- 1
@@ -662,7 +662,7 @@ desctools_binomci <- function(x,
     } else if (sides == "right") {
       ci[2] <- 0
     }
-    return(ci)
+    ci
   }
   lst <- list(
     x = x, n = n, conf.level = conf.level, sides = sides,
@@ -692,5 +692,5 @@ desctools_binomci <- function(x,
   }))
   colnames(res)[1] <- c("est")
   rownames(res) <- xn
-  return(res)
+  res
 }

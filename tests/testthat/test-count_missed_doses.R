@@ -24,13 +24,13 @@ testthat::test_that("count_missed_doses works as expected", {
     grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
   )
 
-  result <- basic_table() %>%
-    split_cols_by("grp") %>%
+  result <- basic_table() |>
+    split_cols_by("grp") |>
     count_missed_doses(
       "a",
       thresholds = c(3, 7),
       var_labels = "Missed Doses"
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -45,15 +45,15 @@ testthat::test_that("count_missed_doses works with denom argument specified", {
     grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
   )
 
-  result <- basic_table() %>%
-    split_cols_by("grp") %>%
-    split_rows_by("type") %>%
+  result <- basic_table() |>
+    split_cols_by("grp") |>
+    split_rows_by("type") |>
     count_missed_doses(
       "a",
       thresholds = c(3, 7),
       var_labels = "Missed Doses",
       denom = "n"
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)

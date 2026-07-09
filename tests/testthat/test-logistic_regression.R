@@ -1,14 +1,14 @@
 # Local data pre-processing
-adrs_local <- tern_ex_adrs %>%
-  dplyr::filter(SEX %in% c("F", "M")) %>%
+adrs_local <- tern_ex_adrs |>
+  dplyr::filter(SEX %in% c("F", "M")) |>
   reapply_varlabels(formatters::var_labels(tern_ex_adrs))
 
-adrs_example <- adrs_local %>%
+adrs_example <- adrs_local |>
   dplyr::filter(
     PARAMCD == "BESRSPI",
     RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")
-  ) %>%
-  dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) %>%
+  ) |>
+  dplyr::mutate(Response = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0)) |>
   reapply_varlabels(formatters::var_labels(adrs_local))
 
 # fit_logistic ----
@@ -97,9 +97,11 @@ testthat::test_that("fit_logistic works with a single stratification variable", 
   )
   testthat::expect_s3_class(result, c("clogit", "coxph"))
 
-  expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE + strata(STRATA1)
-  result_formula <- result$formula
-  testthat::expect_equal(result_formula, expected_formula, ignore_attr = TRUE)
+  # Only the right-hand side is built by tern; the clogit-generated response term
+  # on the left-hand side has changed format across survival versions (#1484).
+  expected_rhs <- (~ ARMCD + RACE + AGE + strata(STRATA1))[[2]]
+  result_rhs <- result$formula[[3]]
+  testthat::expect_equal(result_rhs, expected_rhs, ignore_attr = TRUE)
 })
 
 testthat::test_that("fit_logistic works with two stratification variables", {
@@ -128,10 +130,11 @@ testthat::test_that("fit_logistic works with two stratification variables", {
   )
   testthat::expect_s3_class(result, c("clogit", "coxph"))
 
-  expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE +
-    strata(I(interaction(STRATA1, STRATA2)))
-  result_formula <- result$formula
-  testthat::expect_equal(result_formula, expected_formula, ignore_attr = TRUE)
+  # Only the right-hand side is built by tern; the clogit-generated response term
+  # on the left-hand side has changed format across survival versions (#1484).
+  expected_rhs <- (~ ARMCD + RACE + AGE + strata(I(interaction(STRATA1, STRATA2))))[[2]]
+  result_rhs <- result$formula[[3]]
+  testthat::expect_equal(result_rhs, expected_rhs, ignore_attr = TRUE)
 })
 
 # tidy.glm ----
@@ -175,8 +178,8 @@ testthat::test_that("tidy.glm works as expected for interaction case", {
 # logistic_regression_cols ----
 
 testthat::test_that("logistic_regression_cols works as expected", {
-  result <- basic_table() %>%
-    logistic_regression_cols(conf_level = 0.75) %>%
+  result <- basic_table() |>
+    logistic_regression_cols(conf_level = 0.75) |>
     analyze_colvars(afun = list(
       function(df) "df",
       function(df) "estimate",
@@ -184,7 +187,7 @@ testthat::test_that("logistic_regression_cols works as expected", {
       function(df) "or",
       function(df) "ci",
       function(df) "p"
-    )) %>%
+    )) |>
     build_table(data.frame(
       df = NA,
       estimate = NA,
@@ -218,14 +221,14 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
       interaction = "AGE"
     )
   )
-  df <- broom::tidy(mod1, conf_level = 0.99) %>%
+  df <- broom::tidy(mod1, conf_level = 0.99) |>
     df_explicit_na(na_level = "_")
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_logistic(
       conf_level = 0.99,
       drop_and_remove_str = "_"
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -242,14 +245,14 @@ testthat::test_that("summarize_logistic works as expected for interaction model 
       interaction = "SEX"
     )
   )
-  df <- broom::tidy(model, conf_level = 0.99) %>%
+  df <- broom::tidy(model, conf_level = 0.99) |>
     df_explicit_na(na_level = "_")
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_logistic(
       conf_level = 0.99,
       drop_and_remove_str = "_"
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -262,14 +265,14 @@ testthat::test_that("summarize_logistic works as expected for simple model witho
     adrs,
     variables = list(response = "Response", arm = "ARMCD", covariates = "AGE")
   )
-  df <- broom::tidy(mod1, conf_level = 0.99) %>%
+  df <- broom::tidy(mod1, conf_level = 0.99) |>
     df_explicit_na(na_level = "_")
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_logistic(
       conf_level = 0.99,
       drop_and_remove_str = "_"
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)

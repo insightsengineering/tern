@@ -70,7 +70,7 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
       ))
     }
   }
-  return(TRUE)
+  TRUE
 }
 #' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
 #'   Please notice how this produces an error when not all variables are present in the
@@ -113,7 +113,7 @@ check_valid_factor <- function(x,
     res <- checkmate::check_character(levels(x), min.chars = 1)
   }
 
-  return(res)
+  res
 }
 #' @describeIn assertions Check whether `x` is a valid factor (i.e. has levels and no empty
 #'   string levels). Note that `NULL` and `NA` elements are allowed.
@@ -151,7 +151,7 @@ check_df_with_factors <- function(df,
       res <- TRUE
     }
   }
-  return(res)
+  res
 }
 
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`

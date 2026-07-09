@@ -115,9 +115,9 @@ testthat::test_that("estimate_odds_ratio estimates right OR and CI (unstratified
     grp = letters[c(1, 1, 1, 2, 2, 2, 3, 3, 3, 3)]
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "a") %>%
-    estimate_odds_ratio(vars = "rsp") %>%
+  result <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "a") |>
+    estimate_odds_ratio(vars = "rsp") |>
     build_table(df = data)
 
   res <- testthat::expect_silent(result)
@@ -135,9 +135,9 @@ testthat::test_that("estimate_odds_ratio estimates right OR and CI (stratified a
   # https://github.com/therneau/survival/issues/240
   withr::with_options(
     opts_partial_match_old,
-    result <- basic_table() %>%
-      split_cols_by(var = "grp", ref_group = "A", split_fun = ref_group_position("first")) %>%
-      estimate_odds_ratio(vars = "rsp", variables = list(arm = "grp", strata = "strata")) %>%
+    result <- basic_table() |>
+      split_cols_by(var = "grp", ref_group = "A", split_fun = ref_group_position("first")) |>
+      estimate_odds_ratio(vars = "rsp", variables = list(arm = "grp", strata = "strata")) |>
       build_table(df = data)
   )
 
@@ -156,12 +156,12 @@ testthat::test_that("estimate_odds_ratio works with strata and combined groups",
     SEX = factor(sample(x = c("D", "E"), size = 100, replace = TRUE))
   )
   groups <- combine_groups(fct = anl[["ARM"]])
-  lyt <- basic_table() %>%
+  lyt <- basic_table() |>
     split_cols_by_groups(
       var = "ARM",
       groups_list = groups,
       ref_group = names(groups)[1]
-    ) %>%
+    ) |>
     estimate_odds_ratio(
       vars = "rsp",
       variables = list(arm = "ARM", strata = "SEX"),
@@ -233,8 +233,8 @@ testthat::test_that("estimate_odds_ratio method argument works", {
     stringsAsFactors = TRUE
   )
 
-  lyt <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B") %>%
+  lyt <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B") |>
     estimate_odds_ratio(vars = "rsp", variables = list(arm = "grp", strata = "strata"), method = "approximate")
 
   # https://github.com/therneau/survival/issues/240

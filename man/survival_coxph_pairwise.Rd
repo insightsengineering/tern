@@ -155,33 +155,33 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 \examples{
 library(dplyr)
 
-adtte_f <- tern_ex_adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
+adtte_f <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(is_event = CNSR == 0)
 
-df <- adtte_f \%>\% filter(ARMCD == "ARM A")
-df_ref_group <- adtte_f \%>\% filter(ARMCD == "ARM B")
+df <- adtte_f |> filter(ARMCD == "ARM A")
+df_ref_group <- adtte_f |> filter(ARMCD == "ARM B")
 
-basic_table() \%>\%
-  split_cols_by(var = "ARMCD", ref_group = "ARM A") \%>\%
-  add_colcounts() \%>\%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM A") |>
+  add_colcounts() |>
   coxph_pairwise(
     vars = "AVAL",
     is_event = "is_event",
     var_labels = "Unstratified Analysis"
-  ) \%>\%
+  ) |>
   build_table(df = adtte_f)
 
-basic_table() \%>\%
-  split_cols_by(var = "ARMCD", ref_group = "ARM A") \%>\%
-  add_colcounts() \%>\%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM A") |>
+  add_colcounts() |>
   coxph_pairwise(
     vars = "AVAL",
     is_event = "is_event",
     var_labels = "Stratified Analysis",
     strata = "SEX",
     control = control_coxph(pval_method = "wald")
-  ) \%>\%
+  ) |>
   build_table(df = adtte_f)
 
 }

@@ -169,22 +169,22 @@ of the investigated linear model.
 
 }}
 \examples{
-basic_table() \%>\%
-  split_cols_by("Species", ref_group = "setosa") \%>\%
-  add_colcounts() \%>\%
+basic_table() |>
+  split_cols_by("Species", ref_group = "setosa") |>
+  add_colcounts() |>
   summarize_ancova(
     vars = "Petal.Length",
     variables = list(arm = "Species", covariates = NULL),
     table_names = "unadj",
     conf_level = 0.95, var_labels = "Unadjusted comparison",
     .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
-  ) \%>\%
+  ) |>
   summarize_ancova(
     vars = "Petal.Length",
     variables = list(arm = "Species", covariates = c("Sepal.Length", "Sepal.Width")),
     table_names = "adj",
     conf_level = 0.95, var_labels = "Adjusted comparison (covariates: Sepal.Length and Sepal.Width)"
-  ) \%>\%
+  ) |>
   build_table(iris)
 
 }

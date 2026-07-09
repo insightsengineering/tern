@@ -154,8 +154,8 @@ a_count_values <- function(x,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -169,8 +169,8 @@ a_count_values <- function(x,
 #'
 #' @examples
 #' # `count_values`
-#' basic_table() %>%
-#'   count_values("Species", values = "setosa") %>%
+#' basic_table() |>
+#'   count_values("Species", values = "setosa") |>
 #'   build_table(iris)
 #'
 #' @export

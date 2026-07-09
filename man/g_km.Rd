@@ -196,8 +196,8 @@ per group.
 \examples{
 library(dplyr)
 
-df <- tern_ex_adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
+df <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(is_event = CNSR == 0)
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 

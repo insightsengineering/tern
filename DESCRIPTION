@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.10.9013
-Date: 2026-06-16
+Version: 0.9.10.9016
+Date: 2026-07-07
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7566-2787")),
@@ -19,6 +19,7 @@ Authors@R: c(
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
     person("Chendi", "Liao", role = "aut"),
     person("Jennifer", "Li", role = "aut"),
+    person("David", "Munoz Tord", , "david.munoztord@mailbox.org", role = "ctb"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs
@@ -45,7 +46,6 @@ Imports:
     gtable (>= 0.3.0),
     labeling,
     lifecycle (>= 0.2.0),
-    magrittr (>= 1.5),
     MASS (>= 7.3-60),
     methods,
     nestcolor (>= 0.1.1),
@@ -53,7 +53,7 @@ Imports:
     rlang (>= 1.1.0),
     scales (>= 1.2.0),
     stats,
-    survival (>= 3.8-3),
+    survival (>= 3.8-8),
     tibble (>= 3.2.1),
     tidyr (>= 0.8.3),
     utils
@@ -72,10 +72,12 @@ VignetteBuilder:
 RdMacros:
     lifecycle,
     Rdpack
+Remotes: 
+    therneau/survival@master
 Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     cran/car, mllg/checkmate, wilkelab/cowplot, tidyverse/dplyr,
     rvlenth/emmeans, tidyverse/forcats, insightsengineering/formatters,
-    tidyverse/ggplot2, r-lib/gtable, r-lib/lifecycle, tidyverse/magrittr,
+    tidyverse/ggplot2, r-lib/gtable, r-lib/lifecycle,
     GeoBosh/Rdpack, r-lib/rlang, r-lib/scales, therneau/survival,
     tidyverse/tibble, tidyverse/tidyr, yihui/knitr, deepayan/lattice,
     tidyverse/lubridate, insightsengineering/nestcolor, rstudio/rmarkdown,

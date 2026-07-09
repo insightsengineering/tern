@@ -18,8 +18,8 @@
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte, fill = FALSE)
 #'
-#' adtte_f <- adtte %>%
-#'   filter(PARAMCD == "OS") %>%
+#' adtte_f <- adtte |>
+#'   filter(PARAMCD == "OS") |>
 #'   mutate(
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0

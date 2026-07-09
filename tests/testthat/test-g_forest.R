@@ -1,11 +1,11 @@
 adrs <- tern_ex_adrs
 n_records <- 20
 adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
-adrs <- adrs %>%
-  dplyr::filter(PARAMCD == "BESRSPI") %>%
-  dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-  dplyr::slice(seq_len(n_records)) %>%
-  droplevels() %>%
+adrs <- adrs |>
+  dplyr::filter(PARAMCD == "BESRSPI") |>
+  dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) |>
+  dplyr::slice(seq_len(n_records)) |>
+  droplevels() |>
   dplyr::mutate(rsp = AVALC == "CR")
 
 formatters::var_labels(adrs) <- c(adrs_labels, "Response")
@@ -15,7 +15,7 @@ df <- extract_rsp_subgroups(
 )
 
 testthat::test_that("g_forest default plot works", {
-  tbl <- basic_table() %>%
+  tbl <- basic_table() |>
     tabulate_rsp_subgroups(df)
 
   testthat::expect_silent(g_forest <- g_forest(tbl))
@@ -23,7 +23,7 @@ testthat::test_that("g_forest default plot works", {
   expect_snapshot_ggplot("g_forest", g_forest, width = 15, height = 3)
 
   # Odds ratio only
-  tbl_or <- basic_table() %>%
+  tbl_or <- basic_table() |>
     tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
 
   testthat::expect_silent(g_forest_or <- g_forest(
@@ -88,7 +88,7 @@ testthat::test_that("g_forest works with custom arguments", {
 })
 
 testthat::test_that("g_forest as_list argument works", {
-  tbl <- basic_table() %>%
+  tbl <- basic_table() |>
     tabulate_rsp_subgroups(df)
 
   testthat::expect_silent(f <- g_forest(tbl, as_list = TRUE))
@@ -100,7 +100,7 @@ testthat::test_that("g_forest as_list argument works", {
 })
 
 testthat::test_that("g_forest argument deprecation warnings work", {
-  tbl <- basic_table() %>%
+  tbl <- basic_table() |>
     tabulate_rsp_subgroups(df)
 
   lifecycle::expect_deprecated(

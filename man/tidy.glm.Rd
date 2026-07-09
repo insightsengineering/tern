@@ -28,9 +28,9 @@ with \code{binomial} family.
 library(dplyr)
 library(broom)
 
-adrs_f <- tern_ex_adrs \%>\%
-  filter(PARAMCD == "BESRSPI") \%>\%
-  filter(RACE \%in\% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) \%>\%
+adrs_f <- tern_ex_adrs |>
+  filter(PARAMCD == "BESRSPI") |>
+  filter(RACE \%in\% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) |>
   mutate(
     Response = case_when(AVALC \%in\% c("PR", "CR") ~ 1, TRUE ~ 0),
     RACE = factor(RACE),

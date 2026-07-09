@@ -146,10 +146,10 @@ s_summary <- function(x, ...) {
 #' )
 #'
 #' ## The summary obtained in with `rtables`:
-#' basic_table() %>%
-#'   split_cols_by(var = "Group") %>%
-#'   split_rows_by(var = "sub_group") %>%
-#'   analyze(vars = "x", afun = s_summary) %>%
+#' basic_table() |>
+#'   split_cols_by(var = "Group") |>
+#'   split_rows_by(var = "sub_group") |>
+#'   analyze(vars = "x", afun = s_summary) |>
 #'   build_table(df = dta_test)
 #'
 #' ## By comparison with `lapply`:
@@ -338,7 +338,7 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
       x <- fct_discard(x, na_str_drop)
     }
   } else {
-    x <- x %>% explicit_na(label = na_str)
+    x <- x |> explicit_na(label = na_str)
   }
 
   y <- list()
@@ -347,7 +347,7 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 
   y$count <- lapply(as.list(table(x, useNA = "ifany")), setNames, nm = "count")
 
-  denom <- match.arg(denom) %>%
+  denom <- match.arg(denom) |>
     switch(
       n = length(x),
       N_row = .N_row,
@@ -378,11 +378,11 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
     assert_valid_factor(.ref_group)
 
     if (na_rm) {
-      x <- x[!is.na(x)] %>% fct_discard("<Missing>")
-      .ref_group <- .ref_group[!is.na(.ref_group)] %>% fct_discard("<Missing>")
+      x <- x[!is.na(x)] |> fct_discard("<Missing>")
+      .ref_group <- .ref_group[!is.na(.ref_group)] |> fct_discard("<Missing>")
     } else {
-      x <- x %>% explicit_na(label = na_str)
-      .ref_group <- .ref_group %>% explicit_na(label = na_str)
+      x <- x |> explicit_na(label = na_str)
+      .ref_group <- .ref_group |> explicit_na(label = na_str)
     }
 
     if ("NA" %in% levels(x)) levels(.ref_group) <- c(levels(.ref_group), "NA")
@@ -478,7 +478,7 @@ s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 
   y <- list()
   y$n <- c("n" = length(x))
-  denom <- match.arg(denom) %>%
+  denom <- match.arg(denom) |>
     switch(
       n = length(x),
       N_row = .N_row,
@@ -623,8 +623,8 @@ a_summary <- function(x,
     x_stats <- x_stats[sapply(x_stats, \(x) length(x) > 0 || is.numeric(x))] # only return non-empty stats
     levels_per_stats <- lapply(x_stats, names)
   } else {
-    levels_per_stats <- names(x_stats) %>%
-      as.list() %>%
+    levels_per_stats <- names(x_stats) |>
+      as.list() |>
       setNames(names(x_stats))
   }
 
@@ -636,12 +636,12 @@ a_summary <- function(x,
   if (is_char) {
     # Keep pval_counts stat if present from comparisons and empty
     if ("pval_counts" %in% names(x_stats) && length(x_stats[["pval_counts"]]) == 0) {
-      x_stats[["pval_counts"]] <- list(NULL) %>% setNames("pval_counts")
+      x_stats[["pval_counts"]] <- list(NULL) |> setNames("pval_counts")
     }
 
     # Unlist stats
-    x_stats <- x_stats %>%
-      .unlist_keep_nulls() %>%
+    x_stats <- x_stats |>
+      .unlist_keep_nulls() |>
       setNames(names(.formats))
   }
 
@@ -668,8 +668,8 @@ a_summary <- function(x,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -713,17 +713,17 @@ a_summary <- function(x,
 #'
 #' # `analyze_vars()` in `rtables` pipelines
 #' ## Default output within a `rtables` pipeline.
-#' l <- basic_table() %>%
-#'   split_cols_by(var = "ARM") %>%
-#'   split_rows_by(var = "AVISIT") %>%
+#' l <- basic_table() |>
+#'   split_cols_by(var = "ARM") |>
+#'   split_rows_by(var = "AVISIT") |>
 #'   analyze_vars(vars = "AVAL")
 #'
 #' build_table(l, df = dta_test)
 #'
 #' ## Select and format statistics output.
-#' l <- basic_table() %>%
-#'   split_cols_by(var = "ARM") %>%
-#'   split_rows_by(var = "AVISIT") %>%
+#' l <- basic_table() |>
+#'   split_cols_by(var = "ARM") |>
+#'   split_rows_by(var = "AVISIT") |>
 #'   analyze_vars(
 #'     vars = "AVAL",
 #'     .stats = c("n", "mean_sd", "quantiles"),
@@ -734,9 +734,9 @@ a_summary <- function(x,
 #' build_table(l, df = dta_test)
 #'
 #' ## Use arguments interpreted by `s_summary`.
-#' l <- basic_table() %>%
-#'   split_cols_by(var = "ARM") %>%
-#'   split_rows_by(var = "AVISIT") %>%
+#' l <- basic_table() |>
+#'   split_cols_by(var = "ARM") |>
+#'   split_rows_by(var = "AVISIT") |>
 #'   analyze_vars(vars = "AVAL", na_rm = FALSE)
 #'
 #' build_table(l, df = dta_test)
@@ -744,20 +744,20 @@ a_summary <- function(x,
 #' ## Handle `NA` levels first when summarizing factors.
 #' dta_test$AVISIT <- NA_character_
 #' dta_test <- df_explicit_na(dta_test)
-#' l <- basic_table() %>%
-#'   split_cols_by(var = "ARM") %>%
+#' l <- basic_table() |>
+#'   split_cols_by(var = "ARM") |>
 #'   analyze_vars(vars = "AVISIT", na_rm = FALSE)
 #'
 #' build_table(l, df = dta_test)
 #'
 #' # auto format
 #' dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
-#' basic_table() %>%
+#' basic_table() |>
 #'   analyze_vars(
 #'     vars = "VAR",
 #'     .stats = c("n", "mean", "mean_sd", "range"),
 #'     .formats = c("mean_sd" = "auto", "range" = "auto")
-#'   ) %>%
+#'   ) |>
 #'   build_table(dt)
 #'
 #' @export

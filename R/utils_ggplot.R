@@ -23,9 +23,9 @@
 #'   AVAL    = c(9:1, rep(NA, 9))
 #' )
 #'
-#' lyt <- basic_table() %>%
-#'   split_cols_by(var = "ARM") %>%
-#'   split_rows_by(var = "AVISIT") %>%
+#' lyt <- basic_table() |>
+#'   split_cols_by(var = "ARM") |>
+#'   split_rows_by(var = "AVISIT") |>
 #'   analyze_vars(vars = "AVAL")
 #'
 #' tbl <- build_table(lyt, df = dta)

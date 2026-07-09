@@ -114,7 +114,7 @@ s_proportion <- function(df,
     )
   }
 
-  denom <- match.arg(denom) %>%
+  denom <- match.arg(denom) |>
     switch(
       n = length(rsp),
       N_row = .N_row,
@@ -198,10 +198,10 @@ a_proportion <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels %>% .unlist_keep_nulls(),
+    .names = .labels |> .unlist_keep_nulls(),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -218,12 +218,12 @@ a_proportion <- function(df,
 #'   USUBJID = paste0("S", 1:12),
 #'   ARM = rep(LETTERS[1:3], each = 4),
 #'   AVAL = rep(LETTERS[1:3], each = 4)
-#' ) %>%
+#' ) |>
 #'   dplyr::mutate(is_rsp = AVAL == "A")
 #'
-#' basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   estimate_proportion(vars = "is_rsp") %>%
+#' basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   estimate_proportion(vars = "is_rsp") |>
 #'   build_table(df = dta_test)
 #'
 #' @export

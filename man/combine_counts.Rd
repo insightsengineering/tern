@@ -27,10 +27,10 @@ col_counts <- combine_counts(
   groups_list = groups
 )
 
-basic_table() \%>\%
-  split_cols_by_groups("ARM", groups) \%>\%
-  add_colcounts() \%>\%
-  analyze_vars("AGE") \%>\%
+basic_table() |>
+  split_cols_by_groups("ARM", groups) |>
+  add_colcounts() |>
+  analyze_vars("AGE") |>
   build_table(DM, col_counts = col_counts)
 
 ref <- "A: Drug X"
@@ -40,10 +40,10 @@ col_counts <- combine_counts(
   groups_list = groups
 )
 
-basic_table() \%>\%
-  split_cols_by_groups("ARM", groups) \%>\%
-  add_colcounts() \%>\%
-  analyze_vars("AGE") \%>\%
+basic_table() |>
+  split_cols_by_groups("ARM", groups) |>
+  add_colcounts() |>
+  analyze_vars("AGE") |>
   build_table(DM, col_counts = col_counts)
 
 }

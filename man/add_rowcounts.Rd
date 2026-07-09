@@ -27,12 +27,12 @@ Row count values are contained in these row count rows but are not displayed
 so that they are not considered zero rows by default when pruning.
 }
 \examples{
-basic_table() \%>\%
-  split_cols_by("ARM") \%>\%
-  add_colcounts() \%>\%
-  split_rows_by("RACE", split_fun = drop_split_levels) \%>\%
-  add_rowcounts() \%>\%
-  analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") \%>\%
+basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
+  split_rows_by("RACE", split_fun = drop_split_levels) |>
+  add_rowcounts() |>
+  analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") |>
   build_table(DM)
 
 }

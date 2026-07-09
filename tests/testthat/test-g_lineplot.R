@@ -1,5 +1,5 @@
 adsl <- tern_ex_adsl
-adlb <- tern_ex_adlb %>% dplyr::filter(ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
+adlb <- tern_ex_adlb |> dplyr::filter(ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
 adlb$AVISIT <- droplevels(adlb$AVISIT)
 adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 
@@ -143,10 +143,10 @@ testthat::test_that("control_lineplot_vars works", {
 })
 
 testthat::test_that("g_lineplot works with no strata (group_var) and allows points when only one strata is provided", {
-  adlb2 <- adlb %>%
+  adlb2 <- adlb |>
     dplyr::filter(USUBJID == "AB12345-BRA-1-id-105")
 
-  adsl2 <- adsl %>%
+  adsl2 <- adsl |>
     dplyr::filter(USUBJID == "AB12345-BRA-1-id-105")
 
   g_lineplot_no_strata <- withr::with_options(

@@ -1,9 +1,9 @@
 # Local data pre-processing
-adtte_local <- tern_ex_adtte %>%
+adtte_local <- tern_ex_adtte |>
   dplyr::filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X")
-  ) %>%
+  ) |>
   dplyr::mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),

@@ -136,8 +136,8 @@ in \code{count_missed_doses()}.
 \examples{
 library(dplyr)
 
-anl <- tern_ex_adsl \%>\%
-  distinct(STUDYID, USUBJID, ARM) \%>\%
+anl <- tern_ex_adsl |>
+  distinct(STUDYID, USUBJID, ARM) |>
   mutate(
     PARAMCD = "TNDOSMIS",
     PARAM = "Total number of missed doses during study",
@@ -145,10 +145,10 @@ anl <- tern_ex_adsl \%>\%
     AVALC = ""
   )
 
-basic_table() \%>\%
-  split_cols_by("ARM") \%>\%
-  add_colcounts() \%>\%
-  count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") \%>\%
+basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
+  count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") |>
   build_table(anl, alt_counts_df = tern_ex_adsl)
 
 }
