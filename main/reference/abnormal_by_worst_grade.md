@@ -208,23 +208,23 @@ adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
 adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 
 # Pre-processing
-adlb_f <- adlb %>% h_adlb_abnormal_by_worst_grade()
+adlb_f <- adlb |> h_adlb_abnormal_by_worst_grade()
 
 # Map excludes records without abnormal grade since they should not be displayed
 # in the table.
-map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
-  lapply(as.character) %>%
-  as.data.frame() %>%
+map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) |>
+  lapply(as.character) |>
+  as.data.frame() |>
   arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
 
-basic_table() %>%
-  split_cols_by("ARMCD") %>%
-  split_rows_by("PARAM") %>%
-  split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) %>%
+basic_table() |>
+  split_cols_by("ARMCD") |>
+  split_rows_by("PARAM") |>
+  split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) |>
   count_abnormal_by_worst_grade(
     var = "GRADE_ANL",
     variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
-  ) %>%
+  ) |>
   build_table(df = adlb_f)
 #>                                          ARM A        ARM B        ARM C   
 #> ———————————————————————————————————————————————————————————————————————————

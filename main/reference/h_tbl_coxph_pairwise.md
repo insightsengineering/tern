@@ -85,8 +85,8 @@ A `data.frame` containing statistics `HR`, `XX% CI` (`XX` taken from
 ``` r
 library(dplyr)
 
-adtte <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
+adtte <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(is_event = CNSR == 0)
 
 h_tbl_coxph_pairwise(

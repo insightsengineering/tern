@@ -230,27 +230,27 @@ a_count_patients_with_event(
 ## Examples
 
 ``` r
-lyt <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
+lyt <- basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_values(
     "STUDYID",
     values = "AB12345",
     .stats = "count",
     .labels = c(count = "Total AEs")
-  ) %>%
+  ) |>
   count_patients_with_event(
     "SUBJID",
     filters = c("TRTEMFL" = "Y"),
     .labels = c(count_fraction = "Total number of patients with at least one adverse event"),
     table_names = "tbl_all"
-  ) %>%
+  ) |>
   count_patients_with_event(
     "SUBJID",
     filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
     .labels = c(count_fraction = "Total number of patients with fatal AEs"),
     table_names = "tbl_fatal"
-  ) %>%
+  ) |>
   count_patients_with_event(
     "SUBJID",
     filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL", "AEREL" = "Y"),

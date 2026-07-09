@@ -80,8 +80,8 @@ library(forcats)
 adrs <- tern_ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
-adrs_f <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
+adrs_f <- adrs |>
+  filter(PARAMCD == "BESRSPI") |>
   mutate(rsp = AVALC == "CR")
 
 # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,

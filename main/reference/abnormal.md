@@ -223,12 +223,12 @@ df <- data.frame(
 )
 
 # Select only post-baseline records.
-df <- df %>%
+df <- df |>
   filter(ONTRTFL == "Y")
 
 # Layout creating function.
-basic_table() %>%
-  count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) %>%
+basic_table() |>
+  count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) |>
   build_table(df)
 #>         all obs 
 #> ————————————————
@@ -245,15 +245,15 @@ df2 <- data.frame(
 )
 
 # Select only post-baseline records.
-df2 <- df2 %>%
+df2 <- df2 |>
   filter(ONTRTFL == "Y")
 
-basic_table() %>%
+basic_table() |>
   count_abnormal(
     var = "RANGE",
     abnormal = list(low = "LOW", high = "HIGH"),
     variables = list(id = "ID", baseline = "BL_RANGE")
-  ) %>%
+  ) |>
   build_table(df2)
 #>         all obs 
 #> ————————————————

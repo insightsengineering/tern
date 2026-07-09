@@ -184,10 +184,10 @@ library(forcats)
 adrs <- tern_ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
-adrs_f <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
-  filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-  droplevels() %>%
+adrs_f <- adrs |>
+  filter(PARAMCD == "BESRSPI") |>
+  filter(ARM %in% c("A: Drug X", "B: Placebo")) |>
+  droplevels() |>
   mutate(
     # Reorder levels of factor to make the placebo group the reference arm.
     ARM = fct_relevel(ARM, "B: Placebo"),
@@ -356,7 +356,7 @@ df_grouped
 #> 
 
 # Table with default columns
-basic_table() %>%
+basic_table() |>
   tabulate_rsp_subgroups(df)
 #>                                             B: Placebo           A: Drug X                                 
 #> Baseline Risk Factors          Total n   n    Response (%)   n    Response (%)   Odds Ratio      95% CI    
@@ -371,7 +371,7 @@ basic_table() %>%
 #>   HIGH                           43      26      76.9%       17      88.2%          2.25      (0.40, 12.75)
 
 # Table with selected columns
-basic_table() %>%
+basic_table() |>
   tabulate_rsp_subgroups(
     df = df,
     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
@@ -389,7 +389,7 @@ basic_table() %>%
 #>   HIGH                           43      26       20          76.9%       17       15          88.2%          2.25      (0.40, 12.75)
 
 # Table with risk difference column added
-basic_table() %>%
+basic_table() |>
   tabulate_rsp_subgroups(
     df,
     riskdiff = control_riskdiff(

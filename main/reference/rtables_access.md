@@ -111,17 +111,17 @@ for usage of these functions.
 ## Examples
 
 ``` r
-tbl <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("RACE") %>%
+tbl <- basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("RACE") |>
   analyze("AGE", function(x) {
     list(
       "mean (sd)" = rcell(c(mean(x), sd(x)), format = "xx.x (xx.x)"),
       "n" = length(x),
       "frac" = rcell(c(0.1, 0.1), format = "xx (xx)")
     )
-  }) %>%
-  build_table(tern_ex_adsl) %>%
+  }) |>
+  build_table(tern_ex_adsl) |>
   prune_table()
 tree_row_elem <- collect_leaves(tbl[2, ])[[1]]
 result <- max(h_row_first_values(tree_row_elem))

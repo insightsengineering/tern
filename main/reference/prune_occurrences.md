@@ -147,12 +147,12 @@ interface.
 
 ``` r
 # \donttest{
-tab <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("RACE") %>%
-  split_rows_by("STRATA1") %>%
-  summarize_row_groups() %>%
-  analyze_vars("COUNTRY", .stats = "count_fraction") %>%
+tab <- basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("RACE") |>
+  split_rows_by("STRATA1") |>
+  summarize_row_groups() |>
+  analyze_vars("COUNTRY", .stats = "count_fraction") |>
   build_table(DM)
 # }
 

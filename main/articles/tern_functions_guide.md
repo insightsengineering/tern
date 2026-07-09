@@ -77,13 +77,13 @@ dta_test <- data.frame(
   AVISIT = rep(paste0("V", 1:3), 6),
   ARM = rep(LETTERS[1:3], rep(6, 3)),
   AVAL = c(9:1, rep(NA, 9))
-) %>%
-  mutate(ABLFLL = AVISIT == "V1") %>%
-  group_by(USUBJID) %>%
+) |>
+  mutate(ABLFLL = AVISIT == "V1") |>
+  group_by(USUBJID) |>
   mutate(
     BLVAL = AVAL[ABLFLL],
     CHG = AVAL - BLVAL
-  ) %>%
+  ) |>
   ungroup()
 ```
 
@@ -92,14 +92,14 @@ Classic use of
 
 ``` r
 
-fix_layout <- basic_table() %>%
-  split_cols_by("ARM") %>%
+fix_layout <- basic_table() |>
+  split_cols_by("ARM") |>
   split_rows_by("AVISIT")
 
 # Dealing with NAs: na_rm = TRUE
-fix_layout %>%
-  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) %>%
-  build_table(dta_test) %>%
+fix_layout |>
+  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) |>
+  build_table(dta_test) |>
   print()
 #>                     A               B         C 
 #> ————————————————————————————————————————————————
@@ -120,9 +120,9 @@ fix_layout %>%
 #>   Min - Max   -2.00 - -2.00   -2.00 - -2.00   NA
 
 # Dealing with NAs: na_rm = FALSE
-fix_layout %>%
-  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), na_rm = FALSE) %>%
-  build_table(dta_test) %>%
+fix_layout |>
+  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), na_rm = FALSE) |>
+  build_table(dta_test) |>
   print()
 #>                     A         B    C 
 #> —————————————————————————————————————
@@ -143,9 +143,9 @@ fix_layout %>%
 #>   Min - Max   -2.00 - -2.00   NA   NA
 
 # changing the NA string (it is done on all levels)
-fix_layout %>%
-  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), na_str = "my_na") %>%
-  build_table(dta_test) %>%
+fix_layout |>
+  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), na_str = "my_na") |>
+  build_table(dta_test) |>
   print()
 #>                     A               B           C  
 #> ———————————————————————————————————————————————————
@@ -172,15 +172,15 @@ fix_layout %>%
 ``` r
 
 # changing n count format and label and indentation
-fix_layout %>%
+fix_layout |>
   summarize_change("CHG",
     variables = list(value = "AVAL", baseline_flag = "ABLFLL"),
     .stats = c("n", "mean"), # reducing the number of stats for visual appreciation
     .formats = c(n = "xx.xx"),
     .labels = c(n = "NnNn"),
     .indent_mods = c(n = 5), na_str = "nA"
-  ) %>%
-  build_table(dta_test) %>%
+  ) |>
+  build_table(dta_test) |>
   print()
 #>                     A      B      C  
 #> —————————————————————————————————————
@@ -200,13 +200,13 @@ What if I want something special for the format?
 ``` r
 
 # changing n count format and label and indentation
-fix_layout %>%
+fix_layout |>
   summarize_change("CHG",
     variables = list(value = "AVAL", baseline_flag = "ABLFLL"),
     .stats = c("n", "mean"), # reducing the number of stats for visual appreciation
     .formats = c(n = function(x, ...) as.character(x * 100))
-  ) %>% # Note you need ...!!!
-  build_table(dta_test) %>%
+  ) |> # Note you need ...!!!
+  build_table(dta_test) |>
   print()
 #>           A      B     C 
 #> —————————————————————————
@@ -226,7 +226,7 @@ Adding a custom statistic (and custom format):
 ``` r
 
 # changing n count format and label and indentation
-fix_layout %>%
+fix_layout |>
   summarize_change(
     "CHG",
     variables = list(value = "AVAL", baseline_flag = "ABLFLL"),
@@ -236,7 +236,7 @@ fix_layout %>%
       a / b
     }),
     .formats = c("my_stat" = function(x, ...) sprintf("%.2f", x))
-  ) %>%
+  ) |>
   build_table(dta_test)
 #>              A      B     C 
 #> ————————————————————————————

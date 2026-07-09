@@ -265,8 +265,8 @@ df <- data.frame(
 )
 df$n_events <- 1 - df$CNSR
 
-basic_table(show_colcounts = TRUE) %>%
-  split_cols_by("ARM") %>%
+basic_table(show_colcounts = TRUE) |>
+  split_cols_by("ARM") |>
   estimate_incidence_rate(
     vars = "AVAL",
     n_events = "n_events",
@@ -274,7 +274,7 @@ basic_table(show_colcounts = TRUE) %>%
       input_time_unit = "month",
       num_pt_year = 100
     )
-  ) %>%
+  ) |>
   build_table(df)
 #>                                            A                 B       
 #>                                          (N=3)             (N=3)     
@@ -285,16 +285,16 @@ basic_table(show_colcounts = TRUE) %>%
 #> 95% CI                              (-25.15, 77.55)   (-7.53, 122.00)
 
 # summarize = TRUE
-basic_table(show_colcounts = TRUE) %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("STRATA1", child_labels = "visible") %>%
+basic_table(show_colcounts = TRUE) |>
+  split_cols_by("ARM") |>
+  split_rows_by("STRATA1", child_labels = "visible") |>
   estimate_incidence_rate(
     vars = "AVAL",
     n_events = "n_events",
     .stats = c("n_unique", "n_rate"),
     summarize = TRUE,
     label_fmt = "%.labels"
-  ) %>%
+  ) |>
   build_table(df)
 #>                                                                          A         B   
 #>                                                                        (N=3)     (N=3) 

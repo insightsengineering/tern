@@ -247,8 +247,8 @@ which is used (with `compare = TRUE`) as the analysis function for
 # `compare_vars()` in `rtables` pipelines
 
 ## Default output within a `rtables` pipeline.
-lyt <- basic_table() %>%
-  split_cols_by("ARMCD", ref_group = "ARM B") %>%
+lyt <- basic_table() |>
+  split_cols_by("ARMCD", ref_group = "ARM B") |>
   compare_vars(c("AGE", "SEX"))
 build_table(lyt, tern_ex_adsl)
 #>                                  ARM A        ARM B        ARM C   
@@ -264,8 +264,8 @@ build_table(lyt, tern_ex_adsl)
 #>   p-value (chi-squared test)     1.0000                    1.0000  
 
 ## Select and format statistics output.
-lyt <- basic_table() %>%
-  split_cols_by("ARMCD", ref_group = "ARM C") %>%
+lyt <- basic_table() |>
+  split_cols_by("ARMCD", ref_group = "ARM C") |>
   compare_vars(
     vars = "AGE",
     .stats = c("mean_sd", "pval"),

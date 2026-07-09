@@ -67,8 +67,8 @@ for details on risk difference calculation.
 adae <- tern_ex_adae
 adae$AESEV <- factor(adae$AESEV)
 
-lyt <- basic_table() %>%
-  split_cols_by("ARMCD", split_fun = add_riskdiff(arm_x = "ARM A", arm_y = c("ARM B", "ARM C"))) %>%
+lyt <- basic_table() |>
+  split_cols_by("ARMCD", split_fun = add_riskdiff(arm_x = "ARM A", arm_y = c("ARM B", "ARM C"))) |>
   count_occurrences_by_grade(
     var = "AESEV",
     riskdiff = TRUE

@@ -83,15 +83,15 @@ score_occurrences_cont_cols(...)
 ## Examples
 
 ``` r
-lyt <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
+lyt <- basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   analyze_num_patients(
     vars = "USUBJID",
     .stats = c("unique"),
     .labels = c("Total number of patients with at least one event")
-  ) %>%
-  split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE) %>%
+  ) |>
+  split_rows_by("AEBODSYS", child_labels = "visible", nested = FALSE) |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = c("unique", "nonunique"),
@@ -99,13 +99,13 @@ lyt <- basic_table() %>%
       "Total number of patients with at least one event",
       "Total number of events"
     )
-  ) %>%
+  ) |>
   count_occurrences(vars = "AEDECOD")
 
-tbl <- build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl) %>%
+tbl <- build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl) |>
   prune_table()
 
-tbl_sorted <- tbl %>%
+tbl_sorted <- tbl |>
   sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_occurrences)
 
 tbl_sorted
@@ -149,7 +149,7 @@ score_cols_a_and_b <- score_occurrences_cols(col_names = c("A: Drug X", "B: Plac
 
 # Note that this here just sorts the AEDECOD inside the AEBODSYS. The AEBODSYS are not sorted.
 # That would require a second pass of `sort_at_path`.
-tbl_sorted <- tbl %>%
+tbl_sorted <- tbl |>
   sort_at_path(path = c("AEBODSYS", "*", "AEDECOD"), scorefun = score_cols_a_and_b)
 
 tbl_sorted
@@ -193,7 +193,7 @@ score_subtable_all <- score_occurrences_subtable(col_names = names(tbl))
 
 # Note that this code just sorts the AEBODSYS, not the AEDECOD within AEBODSYS. That
 # would require a second pass of `sort_at_path`.
-tbl_sorted <- tbl %>%
+tbl_sorted <- tbl |>
   sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
 
 tbl_sorted

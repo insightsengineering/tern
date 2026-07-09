@@ -70,11 +70,11 @@ for the available customization options.
 # Testing dataset with just two treatment arms.
 library(dplyr)
 
-adtte_f <- tern_ex_adtte %>%
+adtte_f <- tern_ex_adtte |>
   filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X")
-  ) %>%
+  ) |>
   mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),

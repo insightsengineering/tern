@@ -302,10 +302,10 @@ df <- data.frame(
 )
 
 # analyze_num_patients
-tbl <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
-  analyze_num_patients("USUBJID", .stats = c("unique")) %>%
+tbl <- basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
+  analyze_num_patients("USUBJID", .stats = c("unique")) |>
   build_table(df)
 
 tbl
@@ -315,10 +315,10 @@ tbl
 #> Number of patients with at least one event   3 (60.0%)   3 (75.0%)
 
 # summarize_num_patients
-tbl <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("SEX") %>%
-  summarize_num_patients("USUBJID", .stats = "unique_count") %>%
+tbl <- basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("SEX") |>
+  summarize_num_patients("USUBJID", .stats = "unique_count") |>
   build_table(df)
 
 tbl

@@ -70,30 +70,30 @@ dat <- data.frame(
 )
 
 # With rtables layout functions
-basic_table() %>%
-  split_cols_by("x", ref_group = "c", split_fun = ref_group_position("last")) %>%
-  analyze("y") %>%
+basic_table() |>
+  split_cols_by("x", ref_group = "c", split_fun = ref_group_position("last")) |>
+  analyze("y") |>
   build_table(dat)
 #>         e      d      b      a      c  
 #> ———————————————————————————————————————
 #> Mean   5.00   4.00   2.00   1.00   3.00
 
 # With tern layout funcitons
-adtte_f <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
+adtte_f <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
 
-basic_table() %>%
-  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position("first")) %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position("first")) |>
+  add_colcounts() |>
   surv_time(
     vars = "AVAL",
     var_labels = "Survival Time (Months)",
     is_event = "is_event",
-  ) %>%
+  ) |>
   build_table(df = adtte_f)
 #>                             ARM B          ARM A          ARM C    
 #>                             (N=73)         (N=69)         (N=58)   
@@ -104,14 +104,14 @@ basic_table() %>%
 #>   25% and 75%-ile         9.8, 42.0      17.4, 65.3     7.3, 37.1  
 #>   Range                  0.1 to 154.1   0.3 to 155.5   0.6 to 80.7 
 
-basic_table() %>%
-  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position(2)) %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position(2)) |>
+  add_colcounts() |>
   surv_time(
     vars = "AVAL",
     var_labels = "Survival Time (Months)",
     is_event = "is_event",
-  ) %>%
+  ) |>
   build_table(df = adtte_f)
 #>                             ARM A          ARM B          ARM C    
 #>                             (N=69)         (N=73)         (N=58)   
@@ -124,9 +124,9 @@ basic_table() %>%
 
 # level_order --------
 # Even if default would bring ref_group first, the original order puts it last
-basic_table() %>%
-  split_cols_by("Species", split_fun = level_order(c(1, 3, 2))) %>%
-  analyze("Sepal.Length") %>%
+basic_table() |>
+  split_cols_by("Species", split_fun = level_order(c(1, 3, 2))) |>
+  analyze("Sepal.Length") |>
   build_table(iris)
 #>        setosa   virginica   versicolor
 #> ——————————————————————————————————————
@@ -134,9 +134,9 @@ basic_table() %>%
 
 # character vector
 new_order <- level_order(levels(iris$Species)[c(1, 3, 2)])
-basic_table() %>%
-  split_cols_by("Species", ref_group = "virginica", split_fun = new_order) %>%
-  analyze("Sepal.Length") %>%
+basic_table() |>
+  split_cols_by("Species", ref_group = "virginica", split_fun = new_order) |>
+  analyze("Sepal.Length") |>
   build_table(iris)
 #>        setosa   virginica   versicolor
 #> ——————————————————————————————————————

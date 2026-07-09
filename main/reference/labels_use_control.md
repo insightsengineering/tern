@@ -44,7 +44,7 @@ to relevant labels.
 
 ``` r
 control <- list(conf_level = 0.80, quantiles = c(0.1, 0.83), test_mean = 0.57)
-get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) %>%
+get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) |>
   labels_use_control(control = control)
 #>                          mean_ci                        quantiles 
 #>                    "Mean 80% CI"                "10% and 83%-ile" 

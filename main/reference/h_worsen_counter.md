@@ -65,14 +65,14 @@ are worse than their baseline grades, for post-baseline worst grades
 library(dplyr)
 
 # The direction variable, GRADDR, is based on metadata
-adlb <- tern_ex_adlb %>%
+adlb <- tern_ex_adlb |>
   mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "B",
       PARAMCD == "CRP" ~ "L",
       PARAMCD == "IGA" ~ "H"
     )
-  ) %>%
+  ) |>
   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 df <- h_adlb_worsen(
@@ -84,7 +84,7 @@ df <- h_adlb_worsen(
 
 # `h_worsen_counter`
 h_worsen_counter(
-  df %>% filter(PARAMCD == "CRP" & GRADDR == "Low"),
+  df |> filter(PARAMCD == "CRP" & GRADDR == "Low"),
   id = "USUBJID",
   .var = "ATOXGR",
   baseline_var = "BTOXGR",

@@ -229,13 +229,13 @@ and descriptive function
 ## Examples
 
 ``` r
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_cumulative(
     vars = "AGE",
     thresholds = c(40, 60)
-  ) %>%
+  ) |>
   build_table(tern_ex_adsl)
 #>           A: Drug X    B: Placebo   C: Combination
 #>             (N=69)       (N=73)         (N=58)    

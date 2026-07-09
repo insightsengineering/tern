@@ -1,6 +1,6 @@
 # Changelog
 
-## tern 0.9.10.9016
+## tern 0.9.10.9017
 
 #### Enhancements
 

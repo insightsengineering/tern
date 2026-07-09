@@ -197,12 +197,12 @@ adtte <- tern_ex_adtte
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte)
 
-adtte_f <- adtte %>%
+adtte_f <- adtte |>
   filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X"),
     SEX %in% c("M", "F")
-  ) %>%
+  ) |>
   mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
@@ -349,7 +349,7 @@ df_grouped
 #> 
 
 ## Table with default columns.
-basic_table() %>%
+basic_table() |>
   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
 #>                                                     B: Placebo               A: Drug X                                     
 #> Baseline Risk Factors          Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
@@ -364,7 +364,7 @@ basic_table() %>%
 #>   HIGH                              34          22         654.8         12        1016.3           0.67       (0.33, 1.36)
 
 ## Table with a manually chosen set of columns: adding "pval".
-basic_table() %>%
+basic_table() |>
   tabulate_survival_subgroups(
     df = df,
     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),

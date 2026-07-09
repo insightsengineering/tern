@@ -68,7 +68,7 @@ SMQ containing records belonging to the baskets selected via the
 ## Examples
 
 ``` r
-adae <- tern_ex_adae[1:20, ] %>% df_explicit_na()
+adae <- tern_ex_adae[1:20, ] |> df_explicit_na()
 h_stack_by_baskets(df = adae)
 #> # A tibble: 8 × 6
 #>   STUDYID USUBJID               ASTDTM              AEDECOD       AESEQ SMQ     

@@ -48,17 +48,17 @@ df2 <- data.frame(
   stringsAsFactors = FALSE
 )
 
-df2 <- df2 %>%
+df2 <- df2 |>
   filter(ONTRTFL == "Y")
 
-basic_table() %>%
+basic_table() |>
   count_abnormal(
     var = "RANGE",
     abnormal = list(low = "LOW", high = "HIGH"),
     variables = list(id = "ID", baseline = "BL_RANGE"),
     exclude_base_abn = FALSE,
     .formats = list(fraction = format_fraction)
-  ) %>%
+  ) |>
   build_table(df2)
 #>         all obs  
 #> —————————————————
@@ -81,17 +81,17 @@ df2 <- data.frame(
   stringsAsFactors = FALSE
 )
 
-df2 <- df2 %>%
+df2 <- df2 |>
   filter(ONTRTFL == "Y")
 
-basic_table() %>%
+basic_table() |>
   count_abnormal(
     var = "RANGE",
     abnormal = list(low = "LOW", high = "HIGH"),
     variables = list(id = "ID", baseline = "BL_RANGE"),
     exclude_base_abn = FALSE,
     .formats = list(fraction = format_fraction)
-  ) %>%
+  ) |>
   build_table(df2)
 #>         all obs 
 #> ————————————————
@@ -114,17 +114,17 @@ df2 <- data.frame(
   ONTRTFL = c("", "Y", "", "Y"),
   stringsAsFactors = FALSE
 )
-df2 <- df2 %>%
+df2 <- df2 |>
   filter(ONTRTFL == "Y")
 
-basic_table() %>%
+basic_table() |>
   count_abnormal(
     var = "RANGE",
     abnormal = list(low = "LOW", high = "HIGH"),
     variables = list(id = "ID", baseline = "BL_RANGE"),
     exclude_base_abn = FALSE,
     .formats = list(fraction = "xx / xx")
-  ) %>%
+  ) |>
   build_table(df2)
 #>        all obs
 #> ——————————————
@@ -147,17 +147,17 @@ df2 <- data.frame(
   ONTRTFL = c("", "Y", "", "Y"),
   stringsAsFactors = FALSE
 )
-df2 <- df2 %>%
+df2 <- df2 |>
   filter(ONTRTFL == "Y")
 
-basic_table() %>%
+basic_table() |>
   count_abnormal(
     var = "RANGE",
     abnormal = list(low = "LOW", high = "HIGH"),
     variables = list(id = "ID", baseline = "BL_RANGE"),
     exclude_base_abn = FALSE,
     .formats = list(fraction = "xx.x / xx.x")
-  ) %>%
+  ) |>
   build_table(df2)
 #>         all obs 
 #> ————————————————
@@ -274,7 +274,7 @@ format_fraction_fixed_dp <- function(x, ...) {
       " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"
     )
   }
-  return(result)
+  result
 }
 ```
 
@@ -292,17 +292,17 @@ df2 <- data.frame(
   BL_RANGE = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH")),
   ONTRTFL = c("", "Y", "", "Y"),
   stringsAsFactors = FALSE
-) %>%
+) |>
   filter(ONTRTFL == "Y")
 
-basic_table() %>%
+basic_table() |>
   count_abnormal(
     var = "RANGE",
     abnormal = list(low = "LOW", high = "HIGH"),
     variables = list(id = "ID", baseline = "BL_RANGE"),
     exclude_base_abn = FALSE,
     .formats = list(fraction = format_fraction_fixed_dp)
-  ) %>%
+  ) |>
   build_table(df2)
 #>          all obs   
 #> ———————————————————
@@ -331,17 +331,17 @@ custom_format <- function(x, ...) {
       " (", sprintf("%.3f", round(x["num"] / x["denom"] * 100, 1)), "%)" # We include 3 decimal places with %.3f
     )
   }
-  return(result)
+  result
 }
 
-basic_table() %>%
+basic_table() |>
   count_abnormal(
     var = "RANGE",
     abnormal = list(low = "LOW", high = "HIGH"),
     variables = list(id = "ID", baseline = "BL_RANGE"),
     exclude_base_abn = FALSE,
     .formats = list(fraction = custom_format) # Here we implement our new custom_format function
-  ) %>%
+  ) |>
   build_table(df2)
 #>           all obs    
 #> —————————————————————

@@ -69,14 +69,14 @@ direction.
 library(dplyr)
 
 # The direction variable, GRADDR, is based on metadata
-adlb <- tern_ex_adlb %>%
+adlb <- tern_ex_adlb |>
   mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "B",
       PARAMCD == "CRP" ~ "L",
       PARAMCD == "IGA" ~ "H"
     )
-  ) %>%
+  ) |>
   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 df <- h_adlb_worsen(

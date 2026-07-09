@@ -272,11 +272,11 @@ dta_bladder <- with(
     TIME = stop,
     STATUS = event,
     ARM = as.factor(rx),
-    COVAR1 = as.factor(enum) %>% formatters::with_label("A Covariate Label"),
+    COVAR1 = as.factor(enum) |> formatters::with_label("A Covariate Label"),
     COVAR2 = factor(
       sample(as.factor(enum)),
       levels = 1:4, labels = c("F", "F", "M", "M")
-    ) %>% formatters::with_label("Sex (F/M)")
+    ) |> formatters::with_label("Sex (F/M)")
   )
 )
 dta_bladder$AGE <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
@@ -296,8 +296,8 @@ m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "
 
 # summarize_coxreg
 
-result_univar <- basic_table() %>%
-  summarize_coxreg(variables = u1_variables) %>%
+result_univar <- basic_table() |>
+  summarize_coxreg(variables = u1_variables) |>
   build_table(dta_bladder)
 result_univar
 #>                        n    Hazard Ratio      95% CI      p-value
@@ -308,10 +308,10 @@ result_univar
 #>   A Covariate Label   340       0.61       (0.41, 0.90)   0.0126 
 #>   Sex (F/M)           340       0.62       (0.42, 0.92)   0.0182 
 
-result_univar_covs <- basic_table() %>%
+result_univar_covs <- basic_table() |>
   summarize_coxreg(
     variables = u2_variables,
-  ) %>%
+  ) |>
   build_table(dta_bladder)
 result_univar_covs
 #>                                       Hazard Ratio      95% CI      p-value
@@ -324,11 +324,11 @@ result_univar_covs
 #>   Sex (F/M) (reference = F)                                                
 #>     M                                     1.33       (0.91, 1.94)   0.1414 
 
-result_multivar <- basic_table() %>%
+result_multivar <- basic_table() |>
   summarize_coxreg(
     variables = m1_variables,
     multivar = TRUE,
-  ) %>%
+  ) |>
   build_table(dta_bladder)
 result_multivar
 #>                                       Hazard Ratio      95% CI      p-value
@@ -344,12 +344,12 @@ result_multivar
 #>   Sex (F/M) (reference = F)                                                
 #>     M                                     1.29       (0.88, 1.89)   0.1911 
 
-result_multivar_covs <- basic_table() %>%
+result_multivar_covs <- basic_table() |>
   summarize_coxreg(
     variables = m2_variables,
     multivar = TRUE,
     varlabels = c("Covariate 1", "Covariate 2") # custom labels
-  ) %>%
+  ) |>
   build_table(dta_bladder)
 result_multivar_covs
 #>                                 Hazard Ratio      95% CI      p-value

@@ -68,11 +68,11 @@ for the available customization options.
 library(survival)
 library(dplyr)
 
-adrs_f <- tern_ex_adrs %>%
+adrs_f <- tern_ex_adrs |>
   filter(
     PARAMCD == "BESRSPI",
     ARM %in% c("B: Placebo", "A: Drug X")
-  ) %>%
+  ) |>
   mutate(
     # Reorder levels of ARM to have Placebo as reference arm for Odds Ratio calculations.
     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),

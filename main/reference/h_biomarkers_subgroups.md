@@ -132,8 +132,8 @@ library(forcats)
 adrs <- tern_ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
-adrs_f <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
+adrs_f <- adrs |>
+  filter(PARAMCD == "BESRSPI") |>
   mutate(rsp = AVALC == "CR")
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 
@@ -174,8 +174,8 @@ adtte <- tern_ex_adtte
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte, fill = FALSE)
 
-adtte_f <- adtte %>%
-  filter(PARAMCD == "OS") %>%
+adtte_f <- adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(
     AVALU = as.character(AVALU),
     is_event = CNSR == 0

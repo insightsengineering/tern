@@ -237,12 +237,12 @@ dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),
   ARM = rep(LETTERS[1:3], each = 4),
   AVAL = rep(LETTERS[1:3], each = 4)
-) %>%
+) |>
   dplyr::mutate(is_rsp = AVAL == "A")
 
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  estimate_proportion(vars = "is_rsp") %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  estimate_proportion(vars = "is_rsp") |>
   build_table(df = dta_test)
 #>                                        A              B             C     
 #> ——————————————————————————————————————————————————————————————————————————

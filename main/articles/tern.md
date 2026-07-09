@@ -95,9 +95,9 @@ Defining the table layout with a pure `rtables` code:
 ``` r
 
 # Create table layout pure rtables
-lyt <- rtables::basic_table() %>%
-  rtables::split_cols_by(var = "ARM") %>%
-  rtables::split_rows_by(var = "AVISIT") %>%
+lyt <- rtables::basic_table() |>
+  rtables::split_cols_by(var = "ARM") |>
+  rtables::split_rows_by(var = "AVISIT") |>
   rtables::analyze(vars = "AVAL", mean, format = "xx.x")
 ```
 
@@ -109,9 +109,9 @@ function used above.
 ``` r
 
 # Create table layout with tern analyze_vars analyze function
-lyt2 <- rtables::basic_table() %>%
-  rtables::split_cols_by(var = "ARM") %>%
-  rtables::split_rows_by(var = "AVISIT") %>%
+lyt2 <- rtables::basic_table() |>
+  rtables::split_cols_by(var = "ARM") |>
+  rtables::split_rows_by(var = "AVISIT") |>
   analyze_vars(vars = "AVAL", .formats = c("mean_sd" = "(xx.xx, xx.xx)"))
 ```
 

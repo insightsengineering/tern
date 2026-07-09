@@ -306,18 +306,18 @@ df <- data.frame(
   stringsAsFactors = FALSE
 )
 
-df_adsl <- df %>%
-  select(USUBJID, ARM) %>%
+df_adsl <- df |>
+  select(USUBJID, ARM) |>
   unique()
 
 # Layout creating function with custom format.
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_occurrences_by_grade(
     var = "AESEV",
     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
-  ) %>%
+  ) |>
   build_table(df, alt_counts_df = df_adsl)
 #>                  A               B      
 #>                (N=3)           (N=3)    
@@ -333,14 +333,14 @@ grade_groups <- list(
   "Grade 3-5" = c("3", "4", "5")
 )
 
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_occurrences_by_grade(
     var = "AETOXGR",
     grade_groups = grade_groups,
     only_grade_groups = TRUE
-  ) %>%
+  ) |>
   build_table(df, alt_counts_df = df_adsl)
 #>                 A           B    
 #>               (N=3)       (N=3)  
@@ -350,13 +350,13 @@ basic_table() %>%
 #> Grade 3-5   2 (66.7%)   1 (33.3%)
 
 # Layout creating function with custom format.
-basic_table() %>%
-  add_colcounts() %>%
-  split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
+basic_table() |>
+  add_colcounts() |>
+  split_rows_by("ARM", child_labels = "visible", nested = TRUE) |>
   summarize_occurrences_by_grade(
     var = "AESEV",
     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
-  ) %>%
+  ) |>
   build_table(df, alt_counts_df = df_adsl)
 #>                 all obs   
 #>                  (N=6)    
@@ -370,13 +370,13 @@ basic_table() %>%
 #>   MODERATE   1.00 (16.67%)
 #>   SEVERE     0.00 (0.00%) 
 
-basic_table() %>%
-  add_colcounts() %>%
-  split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
+basic_table() |>
+  add_colcounts() |>
+  split_rows_by("ARM", child_labels = "visible", nested = TRUE) |>
   summarize_occurrences_by_grade(
     var = "AETOXGR",
     grade_groups = grade_groups
-  ) %>%
+  ) |>
   build_table(df, alt_counts_df = df_adsl)
 #>                all obs 
 #>                 (N=6)  

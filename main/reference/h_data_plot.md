@@ -58,9 +58,9 @@ library(dplyr)
 library(survival)
 
 # Test with multiple arms
-tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
-  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
+  (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))() |>
   h_data_plot()
 #> # A tibble: 203 × 10
 #>     time n.risk n.event n.censor estimate std.error conf.high conf.low strata
@@ -79,9 +79,9 @@ tern_ex_adtte %>%
 #> # ℹ 1 more variable: censor <dbl>
 
 # Test with single arm
-tern_ex_adtte %>%
-  filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
-  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+tern_ex_adtte |>
+  filter(PARAMCD == "OS", ARMCD == "ARM B") |>
+  (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))() |>
   h_data_plot(armval = "ARM B")
 #> # A tibble: 74 × 10
 #>      time n.risk n.event n.censor estimate std.error conf.high conf.low strata

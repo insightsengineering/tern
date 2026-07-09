@@ -182,15 +182,15 @@ layout.
 library(dplyr)
 
 # Data preparation
-adpp <- tern_ex_adpp %>% h_pkparam_sort()
+adpp <- tern_ex_adpp |> h_pkparam_sort()
 
-lyt <- basic_table() %>%
-  split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+lyt <- basic_table() |>
+  split_rows_by(var = "STRATA1", label_pos = "topleft") |>
   split_rows_by(
     var = "SEX",
     label_pos = "topleft",
     child_labels = "hidden"
-  ) %>% # Removes duplicated labels
+  ) |> # Removes duplicated labels
   analyze_vars_in_cols(vars = "AGE")
 result <- build_table(lyt = lyt, df = adpp)
 result
@@ -208,14 +208,14 @@ result
 #>   M       72    33.2   11.5   1.4    34.6           31.6        
 
 # By selecting just some statistics and ad-hoc labels
-lyt <- basic_table() %>%
-  split_rows_by(var = "ARM", label_pos = "topleft") %>%
+lyt <- basic_table() |>
+  split_rows_by(var = "ARM", label_pos = "topleft") |>
   split_rows_by(
     var = "SEX",
     label_pos = "topleft",
     child_labels = "hidden",
     split_fun = drop_split_levels
-  ) %>%
+  ) |>
   analyze_vars_in_cols(
     vars = "AGE",
     .stats = c("n", "cv", "geom_mean"),
@@ -237,7 +237,7 @@ result
 #>   M              234   23.4     35.3   
 
 # Changing row labels
-lyt <- basic_table() %>%
+lyt <- basic_table() |>
   analyze_vars_in_cols(
     vars = "AGE",
     row_labels = "some custom label"
@@ -249,13 +249,13 @@ result
 #> some custom label   522   36.1   7.4   0.3    20.4           20.6        
 
 # Pharmacokinetic parameters
-lyt <- basic_table() %>%
+lyt <- basic_table() |>
   split_rows_by(
     var = "TLG_DISPLAY",
     split_label = "PK Parameter",
     label_pos = "topleft",
     child_labels = "hidden"
-  ) %>%
+  ) |>
   analyze_vars_in_cols(
     vars = "AVAL"
   )
@@ -274,20 +274,20 @@ result
 #> RENALCLD       58    0.0    0.0    0.0    19.0           19.4        
 
 # Multiple calls (summarize label and analyze underneath)
-lyt <- basic_table() %>%
+lyt <- basic_table() |>
   split_rows_by(
     var = "TLG_DISPLAY",
     split_label = "PK Parameter",
     label_pos = "topleft"
-  ) %>%
+  ) |>
   analyze_vars_in_cols(
     vars = "AVAL",
     do_summarize_row_groups = TRUE # does a summarize level
-  ) %>%
+  ) |>
   split_rows_by("SEX",
     child_labels = "hidden",
     label_pos = "topleft"
-  ) %>%
+  ) |>
   analyze_vars_in_cols(
     vars = "AVAL",
     split_col_vars = FALSE # avoids re-splitting the columns

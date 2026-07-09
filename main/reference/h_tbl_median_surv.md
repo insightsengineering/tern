@@ -36,7 +36,7 @@ from `fit_km`).
 library(dplyr)
 library(survival)
 
-adtte <- tern_ex_adtte %>% filter(PARAMCD == "OS")
+adtte <- tern_ex_adtte |> filter(PARAMCD == "OS")
 fit <- survfit(
   formula = Surv(AVAL, 1 - CNSR) ~ ARMCD,
   data = adtte

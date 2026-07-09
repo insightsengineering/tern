@@ -186,11 +186,11 @@ library(forcats)
 adrs <- tern_ex_adrs
 n_records <- 20
 adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
-adrs <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
-  filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-  slice(seq_len(n_records)) %>%
-  droplevels() %>%
+adrs <- adrs |>
+  filter(PARAMCD == "BESRSPI") |>
+  filter(ARM %in% c("A: Drug X", "B: Placebo")) |>
+  slice(seq_len(n_records)) |>
+  droplevels() |>
   mutate(
     # Reorder levels of factor to make the placebo group the reference arm.
     ARM = fct_relevel(ARM, "B: Placebo"),
@@ -203,14 +203,14 @@ df <- extract_rsp_subgroups(
 )
 # Full commonly used response table.
 
-tbl <- basic_table() %>%
+tbl <- basic_table() |>
   tabulate_rsp_subgroups(df)
 g_forest(tbl)
 
 
 # Odds ratio only table.
 
-tbl_or <- basic_table() %>%
+tbl_or <- basic_table() |>
   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
 g_forest(
   tbl_or,
@@ -222,12 +222,12 @@ g_forest(
 adtte <- tern_ex_adtte
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte, fill = TRUE)
-adtte_f <- adtte %>%
+adtte_f <- adtte |>
   filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X"),
     SEX %in% c("M", "F")
-  ) %>%
+  ) |>
   mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
@@ -250,7 +250,7 @@ df <- extract_survival_subgroups(
   ),
   data = adtte_f
 )
-table_hr <- basic_table() %>%
+table_hr <- basic_table() |>
   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
 g_forest(table_hr)
 

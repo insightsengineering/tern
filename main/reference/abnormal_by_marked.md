@@ -215,7 +215,7 @@ df <- data.frame(
   stringsAsFactors = FALSE
 )
 
-df <- df %>%
+df <- df |>
   mutate(abn_dir = factor(
     case_when(
       ANRIND == "LOW LOW" ~ "Low",
@@ -226,9 +226,9 @@ df <- df %>%
   ))
 
 # Select only post-baseline records.
-df <- df %>% filter(ONTRTFL == "Y")
-df_crp <- df %>%
-  filter(PARAMCD == "CRP") %>%
+df <- df |> filter(ONTRTFL == "Y")
+df_crp <- df |>
+  filter(PARAMCD == "CRP") |>
   droplevels()
 full_parent_df <- list(df_crp, "not_needed")
 cur_col_subset <- list(rep(TRUE, nrow(df_crp)), "not_needed")
@@ -240,22 +240,22 @@ spl_context <- data.frame(
 
 map <- unique(
   df[df$abn_dir %in% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
-) %>%
-  lapply(as.character) %>%
-  as.data.frame() %>%
+) |>
+  lapply(as.character) |>
+  as.data.frame() |>
   arrange(PARAMCD, abn_dir)
 
-basic_table() %>%
-  split_cols_by("ARMCD") %>%
-  split_rows_by("PARAMCD") %>%
+basic_table() |>
+  split_cols_by("ARMCD") |>
+  split_rows_by("PARAMCD") |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = "unique_count"
-  ) %>%
+  ) |>
   split_rows_by(
     "abn_dir",
     split_fun = trim_levels_to_map(map)
-  ) %>%
+  ) |>
   count_abnormal_by_marked(
     var = "AVALCAT1",
     variables = list(
@@ -263,7 +263,7 @@ basic_table() %>%
       param = "PARAMCD",
       direction = "abn_dir"
     )
-  ) %>%
+  ) |>
   build_table(df = df)
 #>                           ARM A      ARM B  
 #> ————————————————————————————————————————————
@@ -278,17 +278,17 @@ basic_table() %>%
 #>     Last or replicated      0       1 (100%)
 #>     Any Abnormality      1 (100%)   1 (100%)
 
-basic_table() %>%
-  split_cols_by("ARMCD") %>%
-  split_rows_by("PARAMCD") %>%
+basic_table() |>
+  split_cols_by("ARMCD") |>
+  split_rows_by("PARAMCD") |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = "unique_count"
-  ) %>%
+  ) |>
   split_rows_by(
     "abn_dir",
     split_fun = trim_levels_in_group("abn_dir")
-  ) %>%
+  ) |>
   count_abnormal_by_marked(
     var = "AVALCAT1",
     variables = list(
@@ -296,7 +296,7 @@ basic_table() %>%
       param = "PARAMCD",
       direction = "abn_dir"
     )
-  ) %>%
+  ) |>
   build_table(df = df)
 #>                           ARM A      ARM B  
 #> ————————————————————————————————————————————

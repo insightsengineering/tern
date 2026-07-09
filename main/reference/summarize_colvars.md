@@ -110,11 +110,11 @@ dta_test <- data.frame(
 )
 
 ## Default output within a `rtables` pipeline.
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("AVISIT") %>%
-  split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
-  summarize_colvars() %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("AVISIT") |>
+  split_cols_by_multivar(vars = c("AVAL", "CHG")) |>
+  summarize_colvars() |>
   build_table(dta_test)
 #>                         A                             B                             C          
 #>                 AVAL         CHG           AVAL               CHG           AVAL         CHG   
@@ -136,15 +136,15 @@ basic_table() %>%
 #>   Min - Max   4.0 - 7.0   3.0 - 6.0      1.0 - 1.0         9.0 - 9.0      <Missing>   <Missing>
 
 ## Selection of statistics, formats and labels also work.
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("AVISIT") %>%
-  split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("AVISIT") |>
+  split_cols_by_multivar(vars = c("AVAL", "CHG")) |>
   summarize_colvars(
     .stats = c("n", "mean_sd"),
     .formats = c("mean_sd" = "xx.x, xx.x"),
     .labels = c(n = "n", mean_sd = "Mean, SD")
-  ) %>%
+  ) |>
   build_table(dta_test)
 #>                       A                           B                            C          
 #>                AVAL       CHG           AVAL             CHG           AVAL         CHG   
@@ -160,11 +160,11 @@ basic_table() %>%
 #>   Mean, SD   5.5, 2.1   4.5, 2.1   1.0, <Missing>   9.0, <Missing>   <Missing>   <Missing>
 
 ## Use arguments interpreted by `s_summary`.
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("AVISIT") %>%
-  split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
-  summarize_colvars(na.rm = FALSE) %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("AVISIT") |>
+  split_cols_by_multivar(vars = c("AVAL", "CHG")) |>
+  summarize_colvars(na.rm = FALSE) |>
   build_table(dta_test)
 #>                         A                             B                             C          
 #>                 AVAL         CHG           AVAL               CHG           AVAL         CHG   

@@ -201,8 +201,8 @@ a_count_values(
 
 ``` r
 # `count_values`
-basic_table() %>%
-  count_values("Species", values = "setosa") %>%
+basic_table() |>
+  count_values("Species", values = "setosa") |>
   build_table(iris)
 #>            all obs  
 #> ————————————————————

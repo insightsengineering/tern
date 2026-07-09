@@ -80,8 +80,8 @@ two new variables: `GRADE_DIR` and `GRADE_ANL`.
 ## Examples
 
 ``` r
-h_adlb_abnormal_by_worst_grade(tern_ex_adlb) %>%
-  dplyr::select(ATOXGR, GRADE_DIR, GRADE_ANL) %>%
+h_adlb_abnormal_by_worst_grade(tern_ex_adlb) |>
+  dplyr::select(ATOXGR, GRADE_DIR, GRADE_ANL) |>
   head(10)
 #> # A tibble: 10 × 3
 #>    ATOXGR GRADE_DIR GRADE_ANL

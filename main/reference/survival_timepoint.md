@@ -267,23 +267,23 @@ a_surv_timepoint(
 ``` r
 library(dplyr)
 
-adtte_f <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
+adtte_f <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
 
 # Survival at given time points.
-basic_table() %>%
-  split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM A") |>
+  add_colcounts() |>
   surv_timepoint(
     vars = "AVAL",
     var_labels = "Months",
     is_event = "is_event",
     time_point = 7
-  ) %>%
+  ) |>
   build_table(df = adtte_f)
 #>                                    ARM A            ARM B            ARM C     
 #>                                    (N=69)           (N=73)           (N=58)    
@@ -294,9 +294,9 @@ basic_table() %>%
 #>   95% CI                       (76.24, 93.53)   (70.15, 88.71)   (64.33, 86.67)
 
 # Difference in survival at given time points.
-basic_table() %>%
-  split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM A") |>
+  add_colcounts() |>
   surv_timepoint(
     vars = "AVAL",
     var_labels = "Months",
@@ -304,7 +304,7 @@ basic_table() %>%
     time_point = 9,
     method = "surv_diff",
     .indent_mods = c("rate_diff" = 0L, "rate_diff_ci" = 2L, "ztest_pval" = 2L)
-  ) %>%
+  ) |>
   build_table(df = adtte_f)
 #>                                   ARM A        ARM B            ARM C     
 #>                                   (N=69)       (N=73)           (N=58)    
@@ -315,16 +315,16 @@ basic_table() %>%
 #>       p-value (Z-test)                         0.1511           0.0794    
 
 # Survival and difference in survival at given time points.
-basic_table() %>%
-  split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM A") |>
+  add_colcounts() |>
   surv_timepoint(
     vars = "AVAL",
     var_labels = "Months",
     is_event = "is_event",
     time_point = 9,
     method = "both"
-  ) %>%
+  ) |>
   build_table(df = adtte_f)
 #>                                       ARM A            ARM B            ARM C     
 #>                                       (N=69)           (N=73)           (N=58)    
@@ -339,8 +339,8 @@ basic_table() %>%
 
 library(dplyr)
 
-adtte_f <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
+adtte_f <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
