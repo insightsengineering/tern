@@ -26,7 +26,7 @@ Transform a survival fit to a table with groups in rows characterized by N, medi
 library(dplyr)
 library(survival)
 
-adtte <- tern_ex_adtte \%>\% filter(PARAMCD == "OS")
+adtte <- tern_ex_adtte |> filter(PARAMCD == "OS")
 fit <- survfit(
   formula = Surv(AVAL, 1 - CNSR) ~ ARMCD,
   data = adtte

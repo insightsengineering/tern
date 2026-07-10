@@ -124,12 +124,12 @@ testthat::test_that("count_occurrences functions as expected with valid input an
     ARM = rep(c("A", "B"), c(5, 4))
   )
 
-  lyt <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
+  lyt <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
     count_occurrences(vars = "MHDECOD")
 
-  result <- lyt %>%
+  result <- lyt |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -148,14 +148,14 @@ testthat::test_that("count_occurrences functions as expected with label row spec
     USUBJID = 1:9
   )
 
-  lyt <- basic_table() %>%
+  lyt <- basic_table() |>
     count_occurrences(
       vars = "MHDECOD",
       var_labels = "MH Term",
       show_labels = "visible"
     )
 
-  result <- lyt %>%
+  result <- lyt |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -164,39 +164,39 @@ testthat::test_that("count_occurrences functions as expected with label row spec
 
 testthat::test_that("count_occurrences works as expected with risk difference column", {
   # One statistic
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
     count_occurrences(
       vars = "AEDECOD",
       riskdiff = TRUE
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Multiple statistics, different id var
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
     count_occurrences(
       vars = "AEDECOD",
       riskdiff = TRUE,
       .stats = c("count", "count_fraction_fixed_dp", "fraction"),
       id = "SITEID"
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Nested column splits
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("SEX") %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("SEX") |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
     count_occurrences(
       vars = "AEDECOD",
       riskdiff = TRUE
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
@@ -218,13 +218,13 @@ testthat::test_that("summarize_occurrences functions as expected with valid inpu
     ARM = rep(c("A", "B"), c(5, 4))
   )
 
-  lyt <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("SEX", child_labels = "visible") %>%
-    add_colcounts() %>%
+  lyt <- basic_table() |>
+    split_cols_by("ARM") |>
+    split_rows_by("SEX", child_labels = "visible") |>
+    add_colcounts() |>
     summarize_occurrences(var = "MHDECOD")
 
-  result <- lyt %>%
+  result <- lyt |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -233,55 +233,55 @@ testthat::test_that("summarize_occurrences functions as expected with valid inpu
 
 testthat::test_that("summarize_occurrences works as expected with risk difference column", {
   # One statistic
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
-    split_rows_by("SEX", child_labels = "visible") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
+    split_rows_by("SEX", child_labels = "visible") |>
     summarize_occurrences(
       var = "BMRKR2",
       riskdiff = TRUE
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Multiple statistics, different id var
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
-    split_rows_by("SEX", child_labels = "visible") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
+    split_rows_by("SEX", child_labels = "visible") |>
     summarize_occurrences(
       var = "BMRKR2",
       riskdiff = TRUE,
       .stats = c("count", "count_fraction_fixed_dp", "fraction"),
       id = "SITEID"
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Nested column splits
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("STRATA1") %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
-    split_rows_by("SEX", child_labels = "visible") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("STRATA1") |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
+    split_rows_by("SEX", child_labels = "visible") |>
     summarize_occurrences(
       var = "BMRKR2",
       riskdiff = TRUE
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Multiple comparison groups
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", c("B: Placebo", "C: Combination"))) %>%
-    split_rows_by("SEX", child_labels = "visible") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", c("B: Placebo", "C: Combination"))) |>
+    split_rows_by("SEX", child_labels = "visible") |>
     summarize_occurrences(
       var = "BMRKR2",
       riskdiff = TRUE
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)

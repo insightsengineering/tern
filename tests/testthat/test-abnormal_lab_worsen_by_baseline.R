@@ -1,12 +1,12 @@
 # Data pre-processing
-adlb_local <- tern_ex_adlb %>%
+adlb_local <- tern_ex_adlb |>
   dplyr::mutate(
     GRADDR = dplyr::case_when(
       PARAMCD == "ALT" ~ "B",
       PARAMCD == "CRP" ~ "L",
       PARAMCD == "IGA" ~ "H"
     )
-  ) %>%
+  ) |>
   dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
@@ -17,8 +17,8 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
     VALUES = stats::runif(150, 0, 200)
   )
 
-  input_data <- input_data %>%
-    dplyr::group_by(USUBJID, PARAMCD) %>%
+  input_data <- input_data |>
+    dplyr::group_by(USUBJID, PARAMCD) |>
     dplyr::mutate(
       MIN = min(VALUES),
       MAX = max(VALUES),
@@ -32,7 +32,7 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
       )
     )
 
-  input_data <- input_data %>%
+  input_data <- input_data |>
     dplyr::mutate(
       GRADDR = dplyr::case_when(
         PARAMCD == "ABC" ~ "L",
@@ -48,12 +48,12 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
     direction_var = "GRADDR"
   )
 
-  result <- result[order(result$VALUES), ] %>% data.frame()
+  result <- result[order(result$VALUES), ] |> data.frame()
 
-  p1 <- input_data %>% dplyr::filter(WGRLOFL == "Y" & GRADDR == "L")
-  p2 <- input_data %>% dplyr::filter(WGRHIFL == "Y" & GRADDR == "H")
-  p3 <- input_data %>% dplyr::filter(WGRLOFL == "Y" & GRADDR == "B")
-  p4 <- input_data %>% dplyr::filter(WGRHIFL == "Y" & GRADDR == "B")
+  p1 <- input_data |> dplyr::filter(WGRLOFL == "Y" & GRADDR == "L")
+  p2 <- input_data |> dplyr::filter(WGRHIFL == "Y" & GRADDR == "H")
+  p3 <- input_data |> dplyr::filter(WGRLOFL == "Y" & GRADDR == "B")
+  p4 <- input_data |> dplyr::filter(WGRHIFL == "Y" & GRADDR == "B")
 
   p1$GRADDR <- "Low"
   p2$GRADDR <- "High"
@@ -65,7 +65,7 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
 })
 
 testthat::test_that("h_adlb_worsen stacks data correctly", {
-  adlb_f <- adlb_local %>% dplyr::filter(USUBJID %in% c("AB12345-CHN-1-id-53", "AB12345-CHN-3-id-128"))
+  adlb_f <- adlb_local |> dplyr::filter(USUBJID %in% c("AB12345-CHN-1-id-53", "AB12345-CHN-3-id-128"))
 
   result <- h_adlb_worsen(
     adlb_f,
@@ -74,8 +74,8 @@ testthat::test_that("h_adlb_worsen stacks data correctly", {
     direction_var = "GRADDR"
   )
 
-  result <- result %>%
-    dplyr::select(USUBJID, ARMCD, AVISIT, PARAMCD, ATOXGR, BTOXGR, WGRLOFL, WGRHIFL, GRADDR) %>%
+  result <- result |>
+    dplyr::select(USUBJID, ARMCD, AVISIT, PARAMCD, ATOXGR, BTOXGR, WGRLOFL, WGRHIFL, GRADDR) |>
     data.frame()
 
   res <- testthat::expect_silent(result)
@@ -192,11 +192,11 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
     direction_var = "GRADDR"
   )
 
-  result <- basic_table() %>%
-    split_cols_by("ARMCD") %>%
-    add_colcounts() %>%
-    split_rows_by("PARAMCD") %>%
-    split_rows_by("GRADDR") %>%
+  result <- basic_table() |>
+    split_cols_by("ARMCD") |>
+    add_colcounts() |>
+    split_rows_by("PARAMCD") |>
+    split_rows_by("GRADDR") |>
     count_abnormal_lab_worsen_by_baseline(
       var = "ATOXGR",
       variables = list(
@@ -204,7 +204,7 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
         baseline_var = "BTOXGR",
         direction_var = "GRADDR"
       )
-    ) %>%
+    ) |>
     build_table(df = df, alt_counts_df = tern_ex_adsl)
 
   res <- testthat::expect_silent(result)
@@ -212,14 +212,14 @@ testthat::test_that("count_abnormal_lab_worsen_by_baseline", {
 })
 
 testthat::test_that("h_adlb_worsen all high", {
-  adlb_local <- tern_ex_adlb %>%
+  adlb_local <- tern_ex_adlb |>
     dplyr::mutate(
       GRADDR = dplyr::case_when(
         PARAMCD == "ALT" ~ "H",
         PARAMCD == "CRP" ~ "H",
         PARAMCD == "IGA" ~ "H"
       )
-    ) %>%
+    ) |>
     dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(
@@ -233,14 +233,14 @@ testthat::test_that("h_adlb_worsen all high", {
 })
 
 testthat::test_that("h_adlb_worsen all low", {
-  adlb_local <- tern_ex_adlb %>%
+  adlb_local <- tern_ex_adlb |>
     dplyr::mutate(
       GRADDR = dplyr::case_when(
         PARAMCD == "ALT" ~ "L",
         PARAMCD == "CRP" ~ "L",
         PARAMCD == "IGA" ~ "L"
       )
-    ) %>%
+    ) |>
     dplyr::filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
   result <- h_adlb_worsen(

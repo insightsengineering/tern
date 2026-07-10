@@ -1,9 +1,9 @@
 testthat::test_that("s_coxph_pairwise works with default arguments and no stratification factors", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
-  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
-  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+  df <- adtte_f |> dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f |> dplyr::filter(ARMCD == "ARM B")
 
   result <- testthat::expect_silent(s_coxph_pairwise(
     df = df,
@@ -18,11 +18,11 @@ testthat::test_that("s_coxph_pairwise works with default arguments and no strati
 })
 
 testthat::test_that("s_coxph_pairwise works with customized arguments and no stratification factors", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
-  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
-  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+  df <- adtte_f |> dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f |> dplyr::filter(ARMCD == "ARM B")
 
   result <- testthat::expect_silent(s_coxph_pairwise(
     df = df,
@@ -37,11 +37,11 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and no str
 })
 
 testthat::test_that("s_coxph_pairwise works with one-sided p-value for Wald test", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
-  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
-  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+  df <- adtte_f |> dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f |> dplyr::filter(ARMCD == "ARM B")
 
   result <- testthat::expect_silent(s_coxph_pairwise(
     df = df,
@@ -56,11 +56,11 @@ testthat::test_that("s_coxph_pairwise works with one-sided p-value for Wald test
 })
 
 testthat::test_that("s_coxph_pairwise works with default arguments and stratification factors", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
-  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
-  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+  df <- adtte_f |> dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f |> dplyr::filter(ARMCD == "ARM B")
 
   result <- testthat::expect_silent(s_coxph_pairwise(
     df = df,
@@ -75,11 +75,11 @@ testthat::test_that("s_coxph_pairwise works with default arguments and stratific
 })
 
 testthat::test_that("s_coxph_pairwise works with customized arguments and stratification factors", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
-  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
-  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+  df <- adtte_f |> dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f |> dplyr::filter(ARMCD == "ARM B")
 
   result <- testthat::expect_silent(s_coxph_pairwise(
     df = df,
@@ -95,11 +95,11 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and strati
 })
 
 testthat::test_that("s_coxph_pairwise works with stratification factors for Log-Rank test", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
-  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
-  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+  df <- adtte_f |> dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f |> dplyr::filter(ARMCD == "ARM B")
 
   # default control uses pval_method = "log-rank"
   result <- testthat::expect_silent(s_coxph_pairwise(
@@ -124,29 +124,29 @@ testthat::test_that("s_coxph_pairwise works with stratification factors for Log-
   )
   original_survdiff <- survival::survdiff(
     survival::Surv(AVAL, is_event) ~ ARMCD + strata(SEX, RACE),
-    data = adtte_f %>%
-      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+    data = adtte_f |>
+      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) |>
       droplevels()
   )
   testthat::expect_equal(log_rank_pvalue, original_survdiff$pvalue)
 })
 
 testthat::test_that("coxph_pairwise works with default arguments and no stratification factors", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-    ) %>%
+    ) |>
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
       strata = NULL
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)
@@ -154,22 +154,22 @@ testthat::test_that("coxph_pairwise works with default arguments and no stratifi
 })
 
 testthat::test_that("coxph_pairwise works with customized arguments and no stratification factors", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-    ) %>%
+    ) |>
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
       control = control_coxph(pval_method = "likelihood", conf_level = 0.99),
       strata = NULL
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)
@@ -177,21 +177,21 @@ testthat::test_that("coxph_pairwise works with customized arguments and no strat
 })
 
 testthat::test_that("coxph_pairwise works with default arguments and stratification factors", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-    ) %>%
+    ) |>
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Stratified Analysis"),
       strata = "SEX"
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)
@@ -199,15 +199,15 @@ testthat::test_that("coxph_pairwise works with default arguments and stratificat
 })
 
 testthat::test_that("coxph_pairwise works with customized arguments and stratification factors", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-    ) %>%
+    ) |>
     coxph_pairwise(
       vars = "AVAL",
       is_event = "is_event",
@@ -216,7 +216,7 @@ testthat::test_that("coxph_pairwise works with customized arguments and stratifi
       strata = c("SEX", "RACE"),
       .stats = c("hr", "hr_ci", "pvalue"),
       .formats = c(hr = "xx.xxx", hr_ci = "(xx.xxx, xx.xxx)")
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)
@@ -224,13 +224,13 @@ testthat::test_that("coxph_pairwise works with customized arguments and stratifi
 })
 
 testthat::test_that("s_coxph_pairwise gets p-value (log-rank) calculated by survival::survdiff()", {
-  x1 <- runif(1, 200, 400) %>% floor()
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  x1 <- runif(1, 200, 400) |> floor()
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = CNSR == 0)
   adtte_f <- adtte_f[1:x1, ]
-  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
-  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+  df <- adtte_f |> dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f |> dplyr::filter(ARMCD == "ARM B")
 
   result <- s_coxph_pairwise(
     df = df,
@@ -262,23 +262,23 @@ testthat::test_that("s_coxph_pairwise gets p-value (log-rank) calculated by surv
 })
 
 testthat::test_that("coxph_pairwise works with NA values", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(is_event = FALSE)
 
   testthat::expect_warning(testthat::expect_warning(
-    result <- basic_table() %>%
+    result <- basic_table() |>
       split_cols_by(
         var = "ARMCD",
         ref_group = "ARM A"
-      ) %>%
+      ) |>
       coxph_pairwise(
         vars = "AVAL",
         is_event = "is_event",
         var_labels = c("Unstratified Analysis"),
         strata = NULL,
         na_str = "empty"
-      ) %>%
+      ) |>
       build_table(df = adtte_f)
   ))
 

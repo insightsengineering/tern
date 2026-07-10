@@ -48,7 +48,7 @@ testthat::test_that("s_count_occurrences_by_grade works with valid input and def
   testthat::expect_snapshot(res)
 
   # Test with empty input.
-  df_empty <- raw_data %>%
+  df_empty <- raw_data |>
     dplyr::filter(ARM == "D")
 
   result <- s_count_occurrences_by_grade(df = df_empty, .var = "AETOXGR", .N_col = 10)
@@ -84,7 +84,7 @@ testthat::test_that("s_count_occurrences_by_grade works with valid input for gra
   testthat::expect_snapshot(res)
 
   # Test with empyt input.
-  df_empty <- raw_data %>%
+  df_empty <- raw_data |>
     dplyr::filter(ARM == "D")
 
   result <- s_count_occurrences_by_grade(
@@ -167,20 +167,20 @@ testthat::test_that("count_occurrences_by_grade works with default arguments for
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    count_occurrences_by_grade(var = "AESEV") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    count_occurrences_by_grade(var = "AESEV") |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Test with empty column.
-  result <- basic_table() %>%
-    split_cols_by("ARM_EMPTY") %>%
-    add_colcounts() %>%
-    count_occurrences_by_grade(var = "AESEV") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM_EMPTY") |>
+    add_colcounts() |>
+    count_occurrences_by_grade(var = "AESEV") |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -191,11 +191,11 @@ testthat::test_that("count_occurrences_by_grade label works when more than one v
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    count_occurrences_by_grade(var = "AESEV") %>%
-    count_occurrences_by_grade(var = "AETOXGR", var_labels = "Toxicity Grade") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    count_occurrences_by_grade(var = "AESEV") |>
+    count_occurrences_by_grade(var = "AETOXGR", var_labels = "Toxicity Grade") |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -214,29 +214,29 @@ testthat::test_that("count_occurrences_by_grade works with custom arguments for 
     "Grade 3-5" = c("3", "4", "5")
   )
 
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
     count_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = grade_groups,
       .formats = "xx.xx (xx.xx%)"
-    ) %>%
+    ) |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # keep only grade groups
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
     count_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = grade_groups,
       only_grade_groups = TRUE,
       .formats = "xx.xx (xx.xx%)"
-    ) %>%
+    ) |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -250,13 +250,13 @@ testthat::test_that("summarize_occurrences_by_grade works with default arguments
     ARM = rep(c("A", "B"), c(4, 5))
   )
 
-  result <- basic_table() %>%
-    add_colcounts() %>%
-    split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
+  result <- basic_table() |>
+    add_colcounts() |>
+    split_rows_by("ARM", child_labels = "visible", nested = TRUE) |>
     summarize_occurrences_by_grade(
       var = "AESEV",
       .formats = c("count_fraction" = "xx.xx (xx.xx%)")
-    ) %>%
+    ) |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -269,14 +269,14 @@ testthat::test_that("summarize_occurrences_by_grade works with default arguments
     ARM_EMPTY = rep(c("A", "B"), each = 10)
   )
 
-  result <- basic_table() %>%
-    split_cols_by("ARM_EMPTY") %>%
-    add_colcounts() %>%
-    split_rows_by("BMRKR", child_labels = "visible", nested = TRUE) %>%
+  result <- basic_table() |>
+    split_cols_by("ARM_EMPTY") |>
+    add_colcounts() |>
+    split_rows_by("BMRKR", child_labels = "visible", nested = TRUE) |>
     summarize_occurrences_by_grade(
       var = "AESEV",
       .formats = c("count_fraction" = "xx.xx (xx.xx%)")
-    ) %>%
+    ) |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -297,13 +297,13 @@ testthat::test_that("summarize_occurrences_by_grade works with custom arguments 
     "Grade 3-5" = c("3", "4", "5")
   )
 
-  result <- basic_table() %>%
-    add_colcounts() %>%
-    split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
+  result <- basic_table() |>
+    add_colcounts() |>
+    split_rows_by("ARM", child_labels = "visible", nested = TRUE) |>
     summarize_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = grade_groups
-    ) %>%
+    ) |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -317,8 +317,8 @@ testthat::test_that("count_occurrences_by_grade works with trim_levels_in_group 
     SOC = as.factor(rep("SOC1", 30)),
     AETOXGR = factor(c(rep(1, 10), rep(2, 20)), levels = c(1:5))
   )
-  df_adsl <- df %>%
-    dplyr::select(USUBJID, ARM) %>%
+  df_adsl <- df |>
+    dplyr::select(USUBJID, ARM) |>
     unique()
 
   # Define additional grade groupings
@@ -328,14 +328,14 @@ testthat::test_that("count_occurrences_by_grade works with trim_levels_in_group 
     "Grade 3-4" = c("3", "4")
   )
 
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    split_rows_by("SOC", split_fun = trim_levels_in_group("AETOXGR")) %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    split_rows_by("SOC", split_fun = trim_levels_in_group("AETOXGR")) |>
     count_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = grade_groups
-    ) %>%
+    ) |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -365,32 +365,32 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
     }
   }
 
-  result <- basic_table() %>%
-    add_colcounts() %>%
+  result <- basic_table() |>
+    add_colcounts() |>
     count_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = grade_groups
-    ) %>%
+    ) |>
     split_rows_by("ARM",
       child_labels = "visible",
       nested = TRUE,
       indent_mod = 1L
-    ) %>%
+    ) |>
     count_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = grade_groups
-    ) %>%
-    build_table(df, alt_counts_df = df_adsl) %>%
+    ) |>
+    build_table(df, alt_counts_df = df_adsl) |>
     sort_at_path(
       path = c("AETOXGR"),
       scorefun = score_occurrences,
       decreasing = TRUE
-    ) %>%
+    ) |>
     sort_at_path(
       path = c("ARM", "*", "AETOXGR"),
       scorefun = score_occurrences,
       decreasing = TRUE
-    ) %>%
+    ) |>
     sort_at_path(
       path = c("ARM"),
       scorefun = score_occurrences_from_path(c("AETOXGR", "-Any-")),
@@ -413,12 +413,12 @@ testthat::test_that("count_occurrences_by_grade works as expected with risk diff
   tern_ex_adae$AESEV <- factor(tern_ex_adae$AESEV)
 
   # Default parameters
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
     count_occurrences_by_grade(
       var = "AESEV",
       riskdiff = TRUE
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
@@ -427,8 +427,8 @@ testthat::test_that("count_occurrences_by_grade works as expected with risk diff
   # Grade groups, custom id var
   grade_groups <- list("-Any-" = levels(tern_ex_adae$AESEV))
 
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
     count_occurrences_by_grade(
       var = "AESEV",
       riskdiff = TRUE,
@@ -436,7 +436,7 @@ testthat::test_that("count_occurrences_by_grade works as expected with risk diff
       .indent_mods = 1L,
       grade_groups = grade_groups,
       id = "SITEID"
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
@@ -447,11 +447,11 @@ testthat::test_that("count_occurrences_by_grade works with denom argument specif
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
 
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("BMRKR") %>%
-    summarize_occurrences_by_grade(var = "BMRKR", denom = "n") %>%
-    count_occurrences_by_grade(var = "AESEV", denom = "n") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    split_rows_by("BMRKR") |>
+    summarize_occurrences_by_grade(var = "BMRKR", denom = "n") |>
+    count_occurrences_by_grade(var = "AESEV", denom = "n") |>
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result[-c(2, 6)])
@@ -462,13 +462,13 @@ testthat::test_that("summarize_occurrences works as expected with risk differenc
   tern_ex_adae$AESEV <- factor(tern_ex_adae$AESEV)
 
   # Default parameters
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
-    split_rows_by("SEX", child_labels = "visible") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
+    split_rows_by("SEX", child_labels = "visible") |>
     summarize_occurrences_by_grade(
       var = "AESEV",
       riskdiff = TRUE
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
@@ -477,15 +477,15 @@ testthat::test_that("summarize_occurrences works as expected with risk differenc
   # Grade groups, custom id var
   grade_groups <- list("-Any-" = levels(tern_ex_adae$AESEV))
 
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
-    split_rows_by("SEX", child_labels = "visible") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
+    split_rows_by("SEX", child_labels = "visible") |>
     summarize_occurrences_by_grade(
       var = "AESEV",
       riskdiff = TRUE,
       grade_groups = grade_groups,
       id = "SITEID"
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)

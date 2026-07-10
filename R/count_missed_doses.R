@@ -126,8 +126,8 @@ a_count_missed_doses <- function(x,
   )
 
   # Unlist stats
-  x_stats <- x_stats %>%
-    .unlist_keep_nulls() %>%
+  x_stats <- x_stats |>
+    .unlist_keep_nulls() |>
     setNames(names(.formats))
 
   # Auto format handling
@@ -146,8 +146,8 @@ a_count_missed_doses <- function(x,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -162,8 +162,8 @@ a_count_missed_doses <- function(x,
 #' @examples
 #' library(dplyr)
 #'
-#' anl <- tern_ex_adsl %>%
-#'   distinct(STUDYID, USUBJID, ARM) %>%
+#' anl <- tern_ex_adsl |>
+#'   distinct(STUDYID, USUBJID, ARM) |>
 #'   mutate(
 #'     PARAMCD = "TNDOSMIS",
 #'     PARAM = "Total number of missed doses during study",
@@ -171,10 +171,10 @@ a_count_missed_doses <- function(x,
 #'     AVALC = ""
 #'   )
 #'
-#' basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   add_colcounts() %>%
-#'   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") %>%
+#' basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   add_colcounts() |>
+#'   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") |>
 #'   build_table(anl, alt_counts_df = tern_ex_adsl)
 #'
 #' @export

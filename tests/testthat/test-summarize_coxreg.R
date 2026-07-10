@@ -29,7 +29,7 @@ testthat::test_that("s_coxreg converts tabulated results in a list", {
   univar_model <- fit_coxreg_univar(
     variables = variables,
     data = dta_bladder
-  ) %>% broom::tidy()
+  ) |> broom::tidy()
   result <- s_coxreg(model_df = univar_model, .stats = "hr")
 
   res <- testthat::expect_silent(result)
@@ -41,7 +41,7 @@ testthat::test_that("s_coxreg works with which_vars and var_nms arguments", {
     variables = variables,
     control = control_coxreg(interaction = TRUE),
     data = dta_bladder
-  ) %>% broom::tidy()
+  ) |> broom::tidy()
   result <- s_coxreg(model_df = univar_model, .stats = "hr", .which_vars = "inter", .var_nms = "COVAR2")
 
   res <- testthat::expect_silent(result)
@@ -53,7 +53,7 @@ testthat::test_that("s_coxreg works with character covariates in the univariate 
     variables = variables,
     data = dta_bladder,
     control = control_coxreg(interaction = TRUE)
-  ) %>% broom::tidy()
+  ) |> broom::tidy()
   result <- s_coxreg(model_df = univar_model, .stats = "hr")
 
   res <- testthat::expect_silent(result)
@@ -79,11 +79,11 @@ testthat::test_that("a_coxreg works as expected", {
 # summarize_coxreg ----
 
 testthat::test_that("summarize_coxreg adds the univariate Cox regression layer to rtables", {
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       control = control_coxreg(ties = "breslow", conf_level = 0.90)
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -93,11 +93,11 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
   testthat::expect_true(validate_table_struct(result))
 
   # custom covariate labels
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       varlabels = c("First Covariate", "Second Covariate")
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -105,11 +105,11 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
 
   # no labels
   formatters::var_labels(dta_bladder) <- rep(NA_character_, ncol(dta_bladder))
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       control = control_coxreg(ties = "breslow", conf_level = 0.90)
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -120,11 +120,11 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
 })
 
 testthat::test_that("summarize_coxreg .section_div argument works", {
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       .section_div = c("_", " *")
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -134,11 +134,11 @@ testthat::test_that("summarize_coxreg .section_div argument works", {
 testthat::test_that("summarize_coxreg works with interactions in univariate case", {
   variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("AGE", "COVAR1", "COVAR2"))
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       control = control_coxreg(interaction = TRUE)
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -148,12 +148,12 @@ testthat::test_that("summarize_coxreg works with interactions in univariate case
 testthat::test_that("summarize_coxreg 'at' argument works in univariate case", {
   variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("AGE", "COVAR2"))
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       control = control_coxreg(interaction = TRUE),
       at = list(AGE = c(15, 30, 60))
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -161,12 +161,12 @@ testthat::test_that("summarize_coxreg 'at' argument works in univariate case", {
 })
 
 testthat::test_that("summarize_coxreg `na_str` argument works", {
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       control = control_coxreg(interaction = TRUE),
       na_str = "---"
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -174,11 +174,11 @@ testthat::test_that("summarize_coxreg `na_str` argument works", {
 })
 
 testthat::test_that("summarize_coxreg works without treatment arm in univariate case", {
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables_no_arm,
       control = control_coxreg(conf_level = 0.90)
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -188,11 +188,11 @@ testthat::test_that("summarize_coxreg works without treatment arm in univariate 
 testthat::test_that("summarize_coxreg works with numeric covariate without treatment arm in univariate case", {
   variables_no_arm <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "AGE"))
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables_no_arm,
       control = control_coxreg(conf_level = 0.90)
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -204,11 +204,11 @@ testthat::test_that("summarize_coxreg works with character covariate in univaria
   variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = "COVAR2")
   dta_bladder$COVAR2 <- as.character(dta_bladder$COVAR2)
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       control = control_coxreg(interaction = TRUE)
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -217,11 +217,11 @@ testthat::test_that("summarize_coxreg works with character covariate in univaria
   # one factor covariate, one character covariate
   variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       control = control_coxreg(interaction = TRUE)
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -232,11 +232,11 @@ testthat::test_that("summarize_coxreg works with character covariate in univaria
 testthat::test_that("summarize_coxreg adds the multivariate Cox regression layer to rtables", {
   variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("AGE", "COVAR1", "COVAR2"))
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       multivar = TRUE
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -246,12 +246,12 @@ testthat::test_that("summarize_coxreg adds the multivariate Cox regression layer
   testthat::expect_true(validate_table_struct(result))
 
   # custom covariate labels
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       multivar = TRUE,
       varlabels = c("Age Covariate", "First Covariate", "Second Covariate")
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -259,11 +259,11 @@ testthat::test_that("summarize_coxreg adds the multivariate Cox regression layer
 
   # no labels
   formatters::var_labels(dta_bladder) <- rep(NA_character_, ncol(dta_bladder))
-  result <- basic_table() %>%
+  result <- basic_table() |>
     summarize_coxreg(
       variables = variables,
       multivar = TRUE
-    ) %>%
+    ) |>
     build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
@@ -272,22 +272,22 @@ testthat::test_that("summarize_coxreg adds the multivariate Cox regression layer
 
 testthat::test_that("warning/error messages work", {
   testthat::expect_warning(
-    result <- basic_table() %>%
+    result <- basic_table() |>
       summarize_coxreg(
         variables = variables,
         control = control_coxreg(interaction = TRUE),
         multivar = TRUE
-      ) %>%
+      ) |>
       build_table(df = dta_bladder),
     "Interactions are not available"
   )
 
   testthat::expect_error(
-    result <- basic_table() %>%
+    result <- basic_table() |>
       summarize_coxreg(
         variables = variables_no_arm,
         control = control_coxreg(interaction = TRUE)
-      ) %>%
+      ) |>
       build_table(df = dta_bladder),
     "To include interactions"
   )

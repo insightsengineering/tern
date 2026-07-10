@@ -70,12 +70,12 @@ testthat::test_that("count_cumulative works with default arguments", {
     grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
   )
 
-  result <- basic_table() %>%
-    split_cols_by("grp") %>%
+  result <- basic_table() |>
+    split_cols_by("grp") |>
     count_cumulative(
       vars = "a",
       thresholds = c(3, 7)
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -89,15 +89,15 @@ testthat::test_that("count_cumulative works with customized arguments", {
     grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
   )
 
-  result <- basic_table() %>%
-    split_cols_by("grp") %>%
+  result <- basic_table() |>
+    split_cols_by("grp") |>
     count_cumulative(
       vars = "a",
       thresholds = c(3, 7),
       lower_tail = FALSE,
       include_eq = FALSE,
       na.rm = FALSE
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -112,10 +112,10 @@ testthat::test_that("count_cumulative works with denom argument specified", {
     grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
   )
 
-  result <- basic_table() %>%
-    split_cols_by("grp") %>%
-    split_rows_by("type") %>%
-    summarize_row_groups(format = "xx.") %>%
+  result <- basic_table() |>
+    split_cols_by("grp") |>
+    split_rows_by("type") |>
+    summarize_row_groups(format = "xx.") |>
     count_cumulative(
       vars = "a",
       thresholds = c(3, 7),
@@ -123,7 +123,7 @@ testthat::test_that("count_cumulative works with denom argument specified", {
       include_eq = FALSE,
       na.rm = FALSE,
       denom = "n"
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -137,31 +137,31 @@ testthat::test_that("Testing label behavior when s_* forecasts label attributes"
     grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
   )
 
-  result <- basic_table() %>%
-    split_cols_by("grp") %>%
+  result <- basic_table() |>
+    split_cols_by("grp") |>
     count_cumulative(
       vars = "a",
       thresholds = c(3, 7),
       show_labels = "hidden"
-    ) %>%
+    ) |>
     build_table(df)
 
   testthat::expect_snapshot(row.names(result))
 
-  result <- basic_table() %>%
-    split_cols_by("grp") %>%
+  result <- basic_table() |>
+    split_cols_by("grp") |>
     count_cumulative(
       vars = "a",
       thresholds = c(3, 7),
       show_labels = "hidden",
       .labels = c("3" = "argh")
-    ) %>%
+    ) |>
     build_table(df)
 
   testthat::expect_snapshot(row.names(result))
 
-  result <- basic_table() %>%
-    split_cols_by("grp") %>%
+  result <- basic_table() |>
+    split_cols_by("grp") |>
     count_cumulative(
       vars = "a",
       thresholds = c(3, 7),
@@ -178,7 +178,7 @@ testthat::test_that("Testing label behavior when s_* forecasts label attributes"
           out
         }
       )
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)

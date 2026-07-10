@@ -147,13 +147,13 @@ in \code{count_cumulative()}.
 
 }}
 \examples{
-basic_table() \%>\%
-  split_cols_by("ARM") \%>\%
-  add_colcounts() \%>\%
+basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_cumulative(
     vars = "AGE",
     thresholds = c(40, 60)
-  ) \%>\%
+  ) |>
   build_table(tern_ex_adsl)
 
 }

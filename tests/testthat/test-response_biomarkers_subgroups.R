@@ -3,8 +3,8 @@ preprocess_adrs <- function(adrs) {
   # Save variable labels before data processing steps.
   adrs_labels <- formatters::var_labels(adrs)
 
-  adrs_mod <- adrs %>%
-    dplyr::filter(PARAMCD == "BESRSPI") %>%
+  adrs_mod <- adrs |>
+    dplyr::filter(PARAMCD == "BESRSPI") |>
     dplyr::mutate(rsp = AVALC == "CR")
 
   reapply_varlabels(
@@ -14,7 +14,7 @@ preprocess_adrs <- function(adrs) {
   )
 }
 
-adrs_local <- tern_ex_adrs %>%
+adrs_local <- tern_ex_adrs |>
   preprocess_adrs()
 
 # extract_rsp_biomarkers ----

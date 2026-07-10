@@ -1,11 +1,11 @@
 # Local data pre-processing
 preprocess_adrs <- function(adrs, n_records = 20) {
   adrs_labels <- formatters::var_labels(adrs)
-  adrs <- adrs %>%
-    dplyr::filter(PARAMCD == "BESRSPI") %>%
-    dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-    dplyr::slice(1:n_records) %>%
-    droplevels() %>%
+  adrs <- adrs |>
+    dplyr::filter(PARAMCD == "BESRSPI") |>
+    dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) |>
+    dplyr::slice(1:n_records) |>
+    droplevels() |>
     dplyr::mutate(
       # Reorder levels of factor to make the placebo group the reference arm.
       ARM = forcats::fct_relevel(ARM, "B: Placebo"),
@@ -15,8 +15,8 @@ preprocess_adrs <- function(adrs, n_records = 20) {
   adrs
 }
 
-adrs_100 <- tern_ex_adrs %>% preprocess_adrs(n_records = 100)
-adrs_200 <- tern_ex_adrs %>% preprocess_adrs(n_records = 200)
+adrs_100 <- tern_ex_adrs |> preprocess_adrs(n_records = 100)
+adrs_200 <- tern_ex_adrs |> preprocess_adrs(n_records = 200)
 
 testthat::test_that("extract_rsp_subgroups functions as expected with valid input and default arguments", {
   adrs <- adrs_100
@@ -115,7 +115,7 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
     method = "chisq"
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_rsp_subgroups(
       df = df,
       vars = c("n", "prop", "n_tot", "or", "ci", "pval")
@@ -136,7 +136,7 @@ testthat::test_that("tabulate_rsp_subgroups correctly calculates column indices"
   )
 
   # Case with both OR and response table parts.
-  result_both <- basic_table() %>%
+  result_both <- basic_table() |>
     tabulate_rsp_subgroups(
       df = df,
       vars = c("n", "prop", "or", "ci", "pval", "n_tot")
@@ -147,7 +147,7 @@ testthat::test_that("tabulate_rsp_subgroups correctly calculates column indices"
   testthat::expect_snapshot(res)
 
   # Case with just OR results.
-  result_or <- basic_table() %>%
+  result_or <- basic_table() |>
     tabulate_rsp_subgroups(
       df = df,
       vars = c("or", "n_tot", "ci")
@@ -181,7 +181,7 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
     conf_level = 0.95
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_rsp_subgroups(df)
 
   res <- testthat::expect_silent(result)
@@ -198,7 +198,7 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with NULL subg
     conf_level = 0.95
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_rsp_subgroups(
       df = df,
       vars = c("n_tot", "n", "prop", "or", "ci", "pval")
@@ -218,7 +218,7 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected when 0 obs in 
     conf_level = 0.95
   )))
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_rsp_subgroups(
       df = df,
       vars = c("n_tot", "n", "prop", "or", "ci", "pval")
@@ -251,7 +251,7 @@ testthat::test_that("tabulate_rsp_subgroups .formats argument works as expected"
     method = "chisq"
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_rsp_subgroups(
       df = df,
       vars = c("n", "prop", "n_tot", "or", "ci", "pval"),
@@ -273,7 +273,7 @@ testthat::test_that("tabulate_rsp_subgroups na_str argument works as expected", 
   )
   df$or$or[2:5] <- NA
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_rsp_subgroups(
       df = df,
       vars = c("n", "prop", "n_tot", "or", "ci", "pval"),
@@ -294,7 +294,7 @@ testthat::test_that("tabulate_rsp_subgroups riskdiff argument works as expected"
     method = "chisq"
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     tabulate_rsp_subgroups(
       df = df,
       vars = c("n", "prop", "n_tot", "or", "ci", "pval"),
@@ -310,7 +310,7 @@ testthat::test_that("tabulate_rsp_subgroups riskdiff argument works as expected"
   testthat::expect_snapshot(res)
 
   # pct works
-  result2 <- basic_table() %>%
+  result2 <- basic_table() |>
     tabulate_rsp_subgroups(
       df = df,
       vars = c("n", "prop", "n_tot", "or", "ci", "pval"),
@@ -339,7 +339,7 @@ testthat::test_that("tabulate_rsp_subgroups pval statistic warning works as expe
 
   # warning when no pval in df
   expect_warning(
-    basic_table() %>%
+    basic_table() |>
       tabulate_rsp_subgroups(
         df = df,
         vars = c("n", "prop", "n_tot", "or", "ci", "pval")

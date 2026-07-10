@@ -74,7 +74,7 @@ stat_mean_ci <- function(x,
     ci <- data.frame(y = ifelse(geom_mean, exp(m), m), ymin = ci[[1]], ymax = ci[[2]])
   }
 
-  return(ci)
+  ci
 }
 
 #' Confidence interval for median
@@ -131,7 +131,7 @@ stat_median_ci <- function(x,
 
   attr(ci, "conf_level") <- empir_conf_level
 
-  return(ci)
+  ci
 }
 
 #' p-Value of the mean
@@ -172,7 +172,7 @@ stat_mean_pval <- function(x,
     pv <- c(p_value = 2 * stats::pt(-abs(ttest), df = n - 1))
   }
 
-  return(pv)
+  pv
 }
 
 #' Proportion difference and confidence interval

@@ -139,14 +139,14 @@ in \code{count_abnormal_lab_worsen_by_baseline()}.
 library(dplyr)
 
 # The direction variable, GRADDR, is based on metadata
-adlb <- tern_ex_adlb \%>\%
+adlb <- tern_ex_adlb |>
   mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "B",
       PARAMCD == "CRP" ~ "L",
       PARAMCD == "IGA" ~ "H"
     )
-  ) \%>\%
+  ) |>
   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 df <- h_adlb_worsen(
@@ -156,11 +156,11 @@ df <- h_adlb_worsen(
   direction_var = "GRADDR"
 )
 
-basic_table() \%>\%
-  split_cols_by("ARMCD") \%>\%
-  add_colcounts() \%>\%
-  split_rows_by("PARAMCD") \%>\%
-  split_rows_by("GRADDR") \%>\%
+basic_table() |>
+  split_cols_by("ARMCD") |>
+  add_colcounts() |>
+  split_rows_by("PARAMCD") |>
+  split_rows_by("GRADDR") |>
   count_abnormal_lab_worsen_by_baseline(
     var = "ATOXGR",
     variables = list(
@@ -168,8 +168,8 @@ basic_table() \%>\%
       baseline_var = "BTOXGR",
       direction_var = "GRADDR"
     )
-  ) \%>\%
-  append_topleft("Direction of Abnormality") \%>\%
+  ) |>
+  append_topleft("Direction of Abnormality") |>
   build_table(df = df, alt_counts_df = tern_ex_adsl)
 
 }

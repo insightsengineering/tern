@@ -1,7 +1,7 @@
 library(nestcolor)
 
-df <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
+df <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(is_event = CNSR == 0)
 
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
@@ -43,9 +43,9 @@ testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
 })
 
 testthat::test_that("g_km plot with < = > in group labels works", {
-  df <- tern_ex_adtte %>%
-    df_explicit_na() %>%
-    dplyr::filter(PARAMCD == "OS", ARM == "A: Drug X") %>%
+  df <- tern_ex_adtte |>
+    df_explicit_na() |>
+    dplyr::filter(PARAMCD == "OS", ARM == "A: Drug X") |>
     dplyr::mutate(
       is_event = CNSR == 0,
       group = as.factor(ifelse(AGE > 34, ">Median", "<=Median"))

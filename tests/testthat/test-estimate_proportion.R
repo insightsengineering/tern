@@ -260,20 +260,20 @@ testthat::test_that("`s_proportion` works with Agresti-Coull CI", {
 
 testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
   # Data loading and processing
-  anl <- tern_ex_adrs %>%
-    dplyr::filter(PARAMCD == "BESRSPI") %>%
+  anl <- tern_ex_adrs |>
+    dplyr::filter(PARAMCD == "BESRSPI") |>
     dplyr::mutate(is_rsp = AVALC %in% c("CR", "PR"))
 
-  result <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    add_colcounts() %>%
-    add_overall_col(label = "All") %>%
+  result <- basic_table() |>
+    split_cols_by(var = "ARM") |>
+    add_colcounts() |>
+    add_overall_col(label = "All") |>
     estimate_proportion(
       vars = "is_rsp",
       conf_level = 0.95,
       method = "wilson",
       .formats = c(n_prop = "xx.xx (xx.xx%)", prop_ci = "(xx.xxxx, xx.xxxx)")
-    ) %>%
+    ) |>
     build_table(anl)
   result <- get_formatted_cells(result)
 
@@ -284,21 +284,21 @@ testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
 testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `rtables`", {
   set.seed(1)
   # Data loading and processing
-  anl <- tern_ex_adrs %>%
-    dplyr::filter(PARAMCD == "BESRSPI") %>%
+  anl <- tern_ex_adrs |>
+    dplyr::filter(PARAMCD == "BESRSPI") |>
     dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
 
-  suppressWarnings(result <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    add_colcounts() %>%
-    add_overall_col(label = "All") %>%
+  suppressWarnings(result <- basic_table() |>
+    split_cols_by(var = "ARM") |>
+    add_colcounts() |>
+    add_overall_col(label = "All") |>
     estimate_proportion(
       vars = "DTHFL",
       conf_level = 0.95,
       method = "strat_wilson",
       variables = list(strata = c("SEX", "REGION1")),
       .formats = c(n_prop = "xx.xx (xx.xx%)", prop_ci = "(xx.xxxx, xx.xxxx)")
-    ) %>%
+    ) |>
     build_table(anl))
 
   result <- get_formatted_cells(result)
@@ -313,16 +313,16 @@ testthat::test_that(
     set.seed(1)
 
     # Data loading and processing
-    anl <- tern_ex_adrs %>%
-      dplyr::filter(PARAMCD == "BESRSPI") %>%
+    anl <- tern_ex_adrs |>
+      dplyr::filter(PARAMCD == "BESRSPI") |>
       dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
 
     # Changing other variables (weights and max_nt)
     n_ws <- length(unique(anl$SEX)) * length(unique(anl$STRATA1))
-    result <- basic_table() %>%
-      split_cols_by(var = "ARM") %>%
-      add_colcounts() %>%
-      add_overall_col(label = "All") %>%
+    result <- basic_table() |>
+      split_cols_by(var = "ARM") |>
+      add_colcounts() |>
+      add_overall_col(label = "All") |>
       estimate_proportion(
         vars = "DTHFL",
         conf_level = 0.95,
@@ -331,8 +331,8 @@ testthat::test_that(
         weights = rep(1 / n_ws, n_ws),
         max_iterations = 1,
         .formats = c(n_prop = "xx.xx (xx.xx%)", prop_ci = "(xx.xxxx, xx.xxxx)")
-      ) %>%
-      build_table(anl) %>%
+      ) |>
+      build_table(anl) |>
       get_formatted_cells()
 
     res <- testthat::expect_silent(result)
@@ -343,41 +343,41 @@ testthat::test_that("`estimate_proportion` works with different denominators", {
   set.seed(1)
 
   # Data loading and processing
-  anl <- tern_ex_adrs %>%
-    dplyr::filter(PARAMCD == "BESRSPI") %>%
+  anl <- tern_ex_adrs |>
+    dplyr::filter(PARAMCD == "BESRSPI") |>
     dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
 
   # Changing other variables (weights and max_nt)
   n_ws <- length(unique(anl$SEX)) * length(unique(anl$STRATA1))
   expect_error(
     {
-      result <- basic_table() %>%
+      result <- basic_table() |>
         estimate_proportion(
           vars = "DTHFL",
           method = "strat_wilson",
           variables = list(strata = c("SEX", "STRATA1")),
           weights = rep(1 / n_ws, n_ws),
           denom = "N_cols"
-        ) %>%
+        ) |>
         build_table(anl)
     },
     "Stratified methods only support"
   )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     estimate_proportion(
       vars = "DTHFL",
       denom = "N_col"
-    ) %>%
+    ) |>
     build_table(anl, col_counts = c(200))
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     estimate_proportion(
       vars = "DTHFL",
       denom = "n"
-    ) %>%
+    ) |>
     build_table(anl)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

@@ -124,5 +124,5 @@ df_explicit_na <- function(data,
       data[, x] <- formatters::with_label(xi, label = xi_label)
     }
   }
-  return(data)
+  data
 }

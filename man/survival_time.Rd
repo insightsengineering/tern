@@ -148,23 +148,23 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 \examples{
 library(dplyr)
 
-adtte_f <- tern_ex_adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
+adtte_f <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
-df <- adtte_f \%>\% filter(ARMCD == "ARM A")
+df <- adtte_f |> filter(ARMCD == "ARM A")
 
-basic_table() \%>\%
-  split_cols_by(var = "ARMCD") \%>\%
-  add_colcounts() \%>\%
+basic_table() |>
+  split_cols_by(var = "ARMCD") |>
+  add_colcounts() |>
   surv_time(
     vars = "AVAL",
     var_labels = "Survival Time (Months)",
     is_event = "is_event",
     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
-  ) \%>\%
+  ) |>
   build_table(df = adtte_f)
 
 a_surv_time(

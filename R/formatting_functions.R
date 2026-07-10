@@ -505,7 +505,7 @@ format_auto <- function(dt_var, x_stat) {
     checkmate::assert_choice(x_stat, c(der_stats, nonder_stats))
 
     # Finds the max number of digits in data
-    detect_dig <- vapply(dt_var, count_decimalplaces, FUN.VALUE = numeric(1)) %>%
+    detect_dig <- vapply(dt_var, count_decimalplaces, FUN.VALUE = numeric(1)) |>
       max()
 
     if (x_stat %in% der_stats) {

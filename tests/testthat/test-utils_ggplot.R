@@ -7,27 +7,27 @@ testthat::test_that("rtable2gg works as expected", {
     AVAL    = c(9:1, rep(NA, 9))
   )
 
-  lyt <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    split_rows_by(var = "AVISIT") %>%
+  lyt <- basic_table() |>
+    split_cols_by(var = "ARM") |>
+    split_rows_by(var = "AVISIT") |>
     analyze_vars(vars = "AVAL")
 
   tbl <- build_table(lyt, df = dta)
 
   # defaults
-  testthat::expect_silent(rtable2gg_default <- tbl %>% rtable2gg())
+  testthat::expect_silent(rtable2gg_default <- tbl |> rtable2gg())
   expect_snapshot_ggplot("rtable2gg_default", rtable2gg_default, width = 5)
 
   # custom fontsize
-  testthat::expect_silent(rtable2gg_fs <- tbl %>% rtable2gg(fontsize = 5))
+  testthat::expect_silent(rtable2gg_fs <- tbl |> rtable2gg(fontsize = 5))
   expect_snapshot_ggplot("rtable2gg_fs", rtable2gg_fs, width = 5)
 
   # custom colwidths
-  testthat::expect_silent(rtable2gg_cw <- tbl %>% rtable2gg(colwidths = c(4, 2, 2, 3)))
+  testthat::expect_silent(rtable2gg_cw <- tbl |> rtable2gg(colwidths = c(4, 2, 2, 3)))
   expect_snapshot_ggplot("rtable2gg_cw", rtable2gg_cw, width = 5)
 
   # custom lbl_col_padding
-  testthat::expect_silent(rtable2gg_lblpad <- tbl %>% rtable2gg(lbl_col_padding = -5))
+  testthat::expect_silent(rtable2gg_lblpad <- tbl |> rtable2gg(lbl_col_padding = -5))
   expect_snapshot_ggplot("rtable2gg_lblpad", rtable2gg_lblpad, width = 5)
 })
 
@@ -41,28 +41,28 @@ testthat::test_that("rtable2gg works with multiple column splits", {
     AVAL    = c(1:15, rep(NA, 3))
   )
 
-  lyt <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by(var = "ARM") %>%
-    split_cols_by(var = "AVISIT") %>%
-    split_cols_by(var = "SEX") %>%
+  lyt <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by(var = "ARM") |>
+    split_cols_by(var = "AVISIT") |>
+    split_cols_by(var = "SEX") |>
     analyze_vars(vars = "AVAL")
 
   tbl <- build_table(lyt, df = dta2)
 
-  testthat::expect_silent(rtable2gg_colsplits <- tbl %>% rtable2gg())
+  testthat::expect_silent(rtable2gg_colsplits <- tbl |> rtable2gg())
   expect_snapshot_ggplot("rtable2gg_colsplits", rtable2gg_colsplits, width = 10, height = 3)
 })
 
 testthat::test_that("df2gg works as expected", {
   # defaults
-  testthat::expect_silent(df2gg_default <- head(iris, 5) %>% df2gg())
+  testthat::expect_silent(df2gg_default <- head(iris, 5) |> df2gg())
   expect_snapshot_ggplot("df2gg_default", df2gg_default, width = 5)
 
   # custom fontsize, background color
-  testthat::expect_silent(df2gg_fs <- head(iris, 5) %>% df2gg(font_size = 15, bg_fill = "#00000020"))
+  testthat::expect_silent(df2gg_fs <- head(iris, 5) |> df2gg(font_size = 15, bg_fill = "#00000020"))
   expect_snapshot_ggplot("df2gg_fs", df2gg_fs, width = 8)
 
   # custom colwidths
-  testthat::expect_silent(df2gg_cw <- head(iris, 5) %>% df2gg(colwidths = c(1, 1, 1, 1, 1)))
+  testthat::expect_silent(df2gg_cw <- head(iris, 5) |> df2gg(colwidths = c(1, 1, 1, 1, 1)))
   expect_snapshot_ggplot("df2gg_cw", df2gg_cw, width = 5)
 })

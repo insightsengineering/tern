@@ -162,7 +162,7 @@ s_count_occurrences_by_grade <- function(df,
   assert_valid_factor(df[[.var]])
   assert_df_with_variables(df, list(grade = .var, id = id))
 
-  denom <- match.arg(denom) %>%
+  denom <- match.arg(denom) |>
     switch(
       n = nlevels(factor(df[[id]])),
       N_row = .N_row,
@@ -285,8 +285,8 @@ a_count_occurrences_by_grade <- function(df,
   .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
-  x_stats <- x_stats[.stats] %>%
-    .unlist_keep_nulls() %>%
+  x_stats <- x_stats[.stats] |>
+    .unlist_keep_nulls() |>
     setNames(names(.formats))
 
   # Auto format handling
@@ -298,10 +298,10 @@ a_count_occurrences_by_grade <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels %>% .unlist_keep_nulls(),
+    .names = .labels |> .unlist_keep_nulls(),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -327,18 +327,18 @@ a_count_occurrences_by_grade <- function(df,
 #'   stringsAsFactors = FALSE
 #' )
 #'
-#' df_adsl <- df %>%
-#'   select(USUBJID, ARM) %>%
+#' df_adsl <- df |>
+#'   select(USUBJID, ARM) |>
 #'   unique()
 #'
 #' # Layout creating function with custom format.
-#' basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   add_colcounts() %>%
+#' basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   add_colcounts() |>
 #'   count_occurrences_by_grade(
 #'     var = "AESEV",
 #'     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
-#'   ) %>%
+#'   ) |>
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' # Define additional grade groupings.
@@ -348,14 +348,14 @@ a_count_occurrences_by_grade <- function(df,
 #'   "Grade 3-5" = c("3", "4", "5")
 #' )
 #'
-#' basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   add_colcounts() %>%
+#' basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   add_colcounts() |>
 #'   count_occurrences_by_grade(
 #'     var = "AETOXGR",
 #'     grade_groups = grade_groups,
 #'     only_grade_groups = TRUE
-#'   ) %>%
+#'   ) |>
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export
@@ -423,22 +423,22 @@ count_occurrences_by_grade <- function(lyt,
 #'
 #' @examples
 #' # Layout creating function with custom format.
-#' basic_table() %>%
-#'   add_colcounts() %>%
-#'   split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
+#' basic_table() |>
+#'   add_colcounts() |>
+#'   split_rows_by("ARM", child_labels = "visible", nested = TRUE) |>
 #'   summarize_occurrences_by_grade(
 #'     var = "AESEV",
 #'     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
-#'   ) %>%
+#'   ) |>
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
-#' basic_table() %>%
-#'   add_colcounts() %>%
-#'   split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
+#' basic_table() |>
+#'   add_colcounts() |>
+#'   split_rows_by("ARM", child_labels = "visible", nested = TRUE) |>
 #'   summarize_occurrences_by_grade(
 #'     var = "AETOXGR",
 #'     grade_groups = grade_groups
-#'   ) %>%
+#'   ) |>
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export

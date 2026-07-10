@@ -305,7 +305,7 @@ testthat::test_that("a_summary works with custom input when compare_with_ref_gro
 testthat::test_that("`analyze_vars` works with healthy input, default `na_rm = TRUE`.", {
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
-  l <- basic_table() %>%
+  l <- basic_table() |>
     analyze_vars(vars = "AVAL")
   result <- build_table(l, df = dta_test)
 
@@ -316,7 +316,7 @@ testthat::test_that("`analyze_vars` works with healthy input, default `na_rm = T
 testthat::test_that("`analyze_vars` works with healthy input, and control function.", {
   dta_test <- data.frame(AVAL = c(1:9))
 
-  l <- basic_table() %>%
+  l <- basic_table() |>
     analyze_vars(
       vars = "AVAL",
       control = control_analyze_vars(quantiles = c(0.1, 0.9), conf_level = 0.9),
@@ -331,7 +331,7 @@ testthat::test_that("`analyze_vars` works with healthy input, and control functi
 testthat::test_that("`analyze_vars` works with healthy input, alternative `na_rm = FALSE`", {
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
-  l <- basic_table() %>%
+  l <- basic_table() |>
     analyze_vars(vars = "AVAL", na_rm = FALSE)
   result <- build_table(l, df = dta_test)
 
@@ -342,8 +342,8 @@ testthat::test_that("`analyze_vars` works with healthy input, alternative `na_rm
 testthat::test_that("`analyze_vars` works with healthy factor input", {
   dta <- data.frame(foo = factor(c("a", "b", "a")))
 
-  result <- basic_table() %>%
-    analyze_vars(vars = "foo") %>%
+  result <- basic_table() |>
+    analyze_vars(vars = "foo") |>
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -353,8 +353,8 @@ testthat::test_that("`analyze_vars` works with healthy factor input", {
 testthat::test_that("`analyze_vars` works with healthy factor input, alternative `na_rm = FALSE`", {
   dta <- data.frame(foo = factor(c("a", NA, "b", "a", NA)))
 
-  result <- basic_table() %>%
-    analyze_vars(vars = "foo", na_rm = FALSE) %>%
+  result <- basic_table() |>
+    analyze_vars(vars = "foo", na_rm = FALSE) |>
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -362,8 +362,8 @@ testthat::test_that("`analyze_vars` works with healthy factor input, alternative
 
   dta <- df_explicit_na(dta)
 
-  result <- basic_table() %>%
-    analyze_vars(vars = "foo", na_rm = FALSE) %>%
+  result <- basic_table() |>
+    analyze_vars(vars = "foo", na_rm = FALSE) |>
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -371,22 +371,22 @@ testthat::test_that("`analyze_vars` works with healthy factor input, alternative
 })
 
 testthat::test_that("`analyze_vars` works with factors and different denominators", {
-  start <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    split_rows_by("SEX", split_fun = drop_split_levels) %>%
+  start <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    split_rows_by("SEX", split_fun = drop_split_levels) |>
     add_rowcounts()
 
-  result_n <- start %>%
-    analyze_vars("RACE", denom = "n") %>%
+  result_n <- start |>
+    analyze_vars("RACE", denom = "n") |>
     build_table(DM)
 
-  result_ncol <- start %>%
-    analyze_vars("RACE", denom = "N_col") %>%
+  result_ncol <- start |>
+    analyze_vars("RACE", denom = "N_col") |>
     build_table(DM)
 
-  result <- start %>%
-    analyze_vars("RACE", denom = "N_row") %>%
+  result <- start |>
+    analyze_vars("RACE", denom = "N_row") |>
     build_table(DM)
 
   testthat::expect_false(identical(result_n, result_ncol))
@@ -397,10 +397,10 @@ testthat::test_that("`analyze_vars` works with factors and different denominator
 })
 
 testthat::test_that("analyze_vars works in demographic table example", {
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("RACE") %>%
-    analyze_vars("COUNTRY", .stats = "count_fraction") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    split_rows_by("RACE") |>
+    analyze_vars("COUNTRY", .stats = "count_fraction") |>
     build_table(DM)
 
   res <- testthat::expect_silent(result)
@@ -413,11 +413,11 @@ testthat::test_that("`analyze_vars` works with character input and gives the sam
     stringsAsFactors = FALSE
   )
 
-  l <- basic_table() %>%
+  l <- basic_table() |>
     analyze_vars(vars = "foo")
   testthat::expect_warning(result <- build_table(l, dta))
 
-  dta_factor <- dta %>%
+  dta_factor <- dta |>
     dplyr::mutate(foo = factor(foo))
   expected <- build_table(l, dta_factor)
 
@@ -431,13 +431,13 @@ testthat::test_that("`analyze_vars` does not work with sparse character input du
     stringsAsFactors = FALSE
   )
 
-  l <- basic_table() %>%
-    split_cols_by("boo") %>%
+  l <- basic_table() |>
+    split_cols_by("boo") |>
     analyze_vars(vars = "foo")
   suppressWarnings(testthat::expect_error(testthat::expect_warning(build_table(l, dta))))
 
   # But when converting to factor, it works because we keep the levels information across columns.
-  dta_factor <- dta %>%
+  dta_factor <- dta |>
     dplyr::mutate(foo = factor(foo))
   testthat::expect_silent(build_table(l, dta_factor))
 })
@@ -447,8 +447,8 @@ testthat::test_that("`analyze_vars` works with logical input", {
     boo = c(TRUE, FALSE, FALSE, TRUE, TRUE)
   )
 
-  result <- basic_table() %>%
-    analyze_vars(vars = "boo") %>%
+  result <- basic_table() |>
+    analyze_vars(vars = "boo") |>
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -458,8 +458,8 @@ testthat::test_that("`analyze_vars` works with logical input", {
 testthat::test_that("`analyze_vars` works with healthy logical input, alternative `na_rm = FALSE`", {
   dta <- data.frame(foo = factor(c(TRUE, NA, FALSE, TRUE, NA)))
 
-  result <- basic_table() %>%
-    analyze_vars(vars = "foo", na_rm = FALSE) %>%
+  result <- basic_table() |>
+    analyze_vars(vars = "foo", na_rm = FALSE) |>
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -467,8 +467,8 @@ testthat::test_that("`analyze_vars` works with healthy logical input, alternativ
 
   dta <- df_explicit_na(dta)
 
-  result <- basic_table() %>%
-    analyze_vars(vars = "foo", na_rm = FALSE) %>%
+  result <- basic_table() |>
+    analyze_vars(vars = "foo", na_rm = FALSE) |>
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -480,12 +480,12 @@ testthat::test_that("`analyze_vars` works with empty named numeric variables", {
     foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c")),
     boo = 1:6
   )
-  dta <- dta %>% dplyr::filter(foo != "a")
+  dta <- dta |> dplyr::filter(foo != "a")
   names(dta$boo) <- dta$foo
 
-  result <- basic_table() %>%
-    split_cols_by("foo") %>%
-    analyze_vars(vars = "boo") %>%
+  result <- basic_table() |>
+    split_cols_by("foo") |>
+    analyze_vars(vars = "boo") |>
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -500,10 +500,10 @@ testthat::test_that("analyze_vars 'na_str' argument works as expected", {
     AVAL    = c(9:1, rep(NA, 9))
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    split_rows_by(var = "AVISIT") %>%
-    analyze_vars(vars = "AVAL", na_str = "-") %>%
+  result <- basic_table() |>
+    split_cols_by(var = "ARM") |>
+    split_rows_by(var = "AVISIT") |>
+    analyze_vars(vars = "AVAL", na_str = "-") |>
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -527,12 +527,12 @@ testthat::test_that("control_analyze_vars fails wrong inputs", {
 
 testthat::test_that("analyze_vars works correctly with auto formats", {
   dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
-  res <- basic_table() %>%
+  res <- basic_table() |>
     analyze_vars(
       vars = "VAR",
       .stats = c("n", "mean", "mean_sd", "range"),
       .formats = c("mean_sd" = "auto", "range" = "auto")
-    ) %>%
+    ) |>
     build_table(dt)
 
   result <- testthat::expect_silent(res)
@@ -541,14 +541,14 @@ testthat::test_that("analyze_vars works correctly with auto formats", {
 
 testthat::test_that("analyze_vars works well with additional stat names (.stat_names)", {
   dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
-  res <- basic_table() %>%
+  res <- basic_table() |>
     analyze_vars(
       vars = "VAR",
       .stats = c("n", "mean", "mean_sd", "range"),
       .stat_names = list("n" = "CoUnT"),
       .formats = c("mean_sd" = "auto", "range" = "auto")
-    ) %>%
-    build_table(dt) %>%
+    ) |>
+    build_table(dt) |>
     as_result_df(make_ard = TRUE)
 
   testthat::expect_equal(res$stat_name, c("CoUnT", "mean", "mean", "sd", "min", "max"))
@@ -556,7 +556,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
 
 testthat::test_that("analyze_vars works well with additional stat names (.stat_names) and stats (custom fnc)", {
   dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4), "VAR2" = letters[seq(5)])
-  res <- basic_table() %>%
+  res <- basic_table() |>
     analyze_vars(
       vars = c("VAR", "VAR2"),
       .stats = c("n", "mean",
@@ -570,10 +570,10 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
       .stat_names = list("n" = "CoUnT", "v" = "something"),
       .formats = c("mean" = "auto", "v" = "xx.xx"),
       verbose = FALSE # now it works
-    ) %>%
+    ) |>
     build_table(dt)
 
-  res2 <- res %>%
+  res2 <- res |>
     as_result_df(make_ard = TRUE)
 
   # stat_names are correctly assigned
@@ -588,7 +588,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
     c("0.00") # i.e. x.xx
   )
 
-  res <- basic_table() %>%
+  res <- basic_table() |>
     analyze_vars(
       vars = c("VAR", "VAR2"),
       .stats = c("n", "mean", "count_fraction",
@@ -600,7 +600,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
       .formats = c("mean" = "auto", "v" = "xx.xx"),
       .labels = list("n" = "N=", "a" = "AAAA", "a_zero" = "A_ZERO"),
       verbose = FALSE # now it works
-    ) %>%
+    ) |>
     build_table(dt)
 
   testthat::expect_equal(
@@ -608,7 +608,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
     c("", "VAR", "N=", "Mean", "A_ZERO", "VAR2", "N=", "AAAA", "b", "c", "d", "e", "A_ZERO")
   )
 
-  res2 <- res %>%
+  res2 <- res |>
     as_result_df(make_ard = TRUE)
 
   # stat_names are correctly assigned
@@ -621,7 +621,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
 
 testthat::test_that("analyze_vars keeps the order of mixed custom fnc and defaults", {
   # Regression test for custom function ordering
-  result <- basic_table() %>%
+  result <- basic_table() |>
     analyze_vars(
       .stats = list("n",
         "another function" = function(x, ...) {
@@ -641,7 +641,7 @@ testthat::test_that("analyze_vars keeps the order of mixed custom fnc and defaul
       vars = "AGE",
       var_labels = "Age (yr)",
       .formats = c("another function" = "xx.xxx", geom_sd_custom = "xx.xx (xx.xx)")
-    ) %>%
+    ) |>
     build_table(tern_ex_adsl)
 
   expect_identical(
@@ -660,8 +660,8 @@ testthat::test_that("analyze_vars keeps the order of mixed custom fnc and defaul
 testthat::test_that("analyze_vars warnings for geom_verbose work", {
   tmp_df <- data.frame("VAR1" = c(1, 2, 3, 0, -1, -2), "VAR2" = 0)
   expect_warning(
-    result <- basic_table() %>%
-      analyze_vars("VAR1", .stats = "geom_mean_sd", geom_verbose = TRUE) %>%
+    result <- basic_table() |>
+      analyze_vars("VAR1", .stats = "geom_mean_sd", geom_verbose = TRUE) |>
       build_table(tmp_df),
     "Negative values were converted to NA"
   )
@@ -672,8 +672,8 @@ testthat::test_that("analyze_vars warnings for geom_verbose work", {
   # All NAs
   expect_warning(
     expect_warning(
-      result2 <- basic_table() %>%
-        analyze_vars("VAR2", .stats = "geom_mean_sd", geom_verbose = TRUE) %>%
+      result2 <- basic_table() |>
+        analyze_vars("VAR2", .stats = "geom_mean_sd", geom_verbose = TRUE) |>
         build_table(tmp_df),
       "Since all values are negative or NA"
     ),
@@ -688,12 +688,12 @@ testthat::test_that("analyze_vars works with all-NA factor input", {
   data_mtcars <- mtcars
   data_mtcars$hp2 <- as.factor("<Missing>")
 
-  res <- basic_table() %>%
+  res <- basic_table() |>
     analyze_vars(
       vars = c("hp2"),
       .stats = c("n", "count_fraction", "count"),
       na_rm = TRUE
-    ) %>%
+    ) |>
     build_table(data_mtcars)
 
   expect_identical(
@@ -710,13 +710,13 @@ testthat::test_that("analyze_vars works with all-NA character input", {
   data_mtcars <- mtcars
   data_mtcars$hp2 <- "<Missing>"
 
-  res <- basic_table() %>%
+  res <- basic_table() |>
     analyze_vars(
       vars = c("hp2"),
       .stats = c("n", "count_fraction", "count"),
       na_rm = TRUE,
       verbose = FALSE
-    ) %>%
+    ) |>
     build_table(data_mtcars)
 
   expect_identical(
@@ -759,9 +759,9 @@ test_that("`analyze_vars` works with new rtables format/na_str options in analyz
     na_strs = rep(c("what?", "OK", "-"), 6)
   )
 
-  lyt <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    split_rows_by(var = "AVISIT") %>%
+  lyt <- basic_table() |>
+    split_cols_by(var = "ARM") |>
+    split_rows_by(var = "AVISIT") |>
     analyze_vars(
       vars = "AVAL",
       .formats = "default",
@@ -780,9 +780,9 @@ test_that("`analyze_vars` works with new rtables format/na_str options in analyz
   )
 
 
-  lyt2 <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    split_rows_by(var = "AVISIT") %>%
+  lyt2 <- basic_table() |>
+    split_cols_by(var = "ARM") |>
+    split_rows_by(var = "AVISIT") |>
     analyze_vars(
       vars = "AVAL",
       .formats = "default",

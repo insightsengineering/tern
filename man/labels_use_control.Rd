@@ -29,7 +29,7 @@ via \code{labels_custom} will not be updated regardless of \code{control}.
 }
 \examples{
 control <- list(conf_level = 0.80, quantiles = c(0.1, 0.83), test_mean = 0.57)
-get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) \%>\%
+get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) |>
   labels_use_control(control = control)
 
 }

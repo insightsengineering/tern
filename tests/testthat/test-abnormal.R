@@ -9,7 +9,7 @@ testthat::test_that("s_count_abnormal works with healthy input and default argum
     stringsAsFactors = FALSE
   )
 
-  df <- df %>% dplyr::filter(
+  df <- df |> dplyr::filter(
     ONTRTFL == "Y"
   )
 
@@ -35,7 +35,7 @@ testthat::test_that("s_count_abnormal works when excluding patients with abnorma
     stringsAsFactors = FALSE
   )
 
-  df <- df %>% dplyr::filter(
+  df <- df |> dplyr::filter(
     ONTRTFL == "Y"
   )
 
@@ -63,7 +63,7 @@ testthat::test_that("s_count_abnormal also works with tibble and custom argument
       stringsAsFactors = FALSE
     )
   )
-  df <- df %>% dplyr::filter(
+  df <- df |> dplyr::filter(
     mytrtfl == "Y"
   )
 
@@ -90,13 +90,13 @@ testthat::test_that("count_abnormal works with default arguments", {
     ONTRTFL = c("", "Y", "", "Y")
   )
 
-  df <- df %>%
+  df <- df |>
     dplyr::filter(
       ONTRTFL == "Y"
     )
 
-  result <- basic_table() %>%
-    count_abnormal(var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"), exclude_base_abn = TRUE) %>%
+  result <- basic_table() |>
+    count_abnormal(var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"), exclude_base_abn = TRUE) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -114,12 +114,12 @@ testthat::test_that("count_abnormal works with custom arguments", {
     stringsAsFactors = FALSE
   )
 
-  df2 <- df2 %>%
+  df2 <- df2 |>
     dplyr::filter(
       ONTRTFL == "Y"
     )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     count_abnormal(
       var = "RANGE",
       abnormal = list("< LLN" = "LOW", "> ULN" = "HIGH"),
@@ -127,7 +127,7 @@ testthat::test_that("count_abnormal works with custom arguments", {
       .indent_mods = c(fraction = 1L),
       .formats = c(fraction = "xx / xx"),
       exclude_base_abn = TRUE
-    ) %>%
+    ) |>
     build_table(df2)
 
   res <- testthat::expect_silent(result)
@@ -146,14 +146,14 @@ testthat::test_that("count_abnormal works with default arguments and visit", {
     ONTRTFL = c("", "Y", "Y", "", "Y", "Y")
   )
 
-  df <- df %>%
+  df <- df |>
     dplyr::filter(
       ONTRTFL == "Y"
     )
 
-  result <- basic_table() %>%
-    split_rows_by("AVISIT", split_fun = drop_split_levels) %>%
-    count_abnormal(var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH")) %>%
+  result <- basic_table() |>
+    split_rows_by("AVISIT", split_fun = drop_split_levels) |>
+    count_abnormal(var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH")) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -171,7 +171,7 @@ testthat::test_that("s_count_abnormal works with healthy input and grouped abnor
     stringsAsFactors = FALSE
   )
 
-  df <- df %>% dplyr::filter(
+  df <- df |> dplyr::filter(
     ONTRTFL == "Y"
   )
 

@@ -1,8 +1,8 @@
 preprocess_adtte <- function(adtte) {
   # Save variable labels before data processing steps.
   adtte_labels <- formatters::var_labels(adtte)
-  adtte_mod <- adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_mod <- adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVALU = as.character(AVALU),
       is_event = CNSR == 0
@@ -14,7 +14,7 @@ preprocess_adtte <- function(adtte) {
   )
 }
 
-adtte_local <- tern_ex_adtte %>%
+adtte_local <- tern_ex_adtte |>
   preprocess_adtte()
 
 # extract_survival_biomarkers ----

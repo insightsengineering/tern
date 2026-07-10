@@ -1,13 +1,13 @@
 testthat::test_that("s_surv_timepoint works with default arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
   result <- s_surv_timepoint(
-    adtte_f %>% dplyr::filter(ARMCD == "ARM B"),
+    adtte_f |> dplyr::filter(ARMCD == "ARM B"),
     .var = "AVAL",
     time_point = 6,
     is_event = "is_event"
@@ -18,15 +18,15 @@ testthat::test_that("s_surv_timepoint works with default arguments", {
 })
 
 testthat::test_that("s_surv_timepoint works with customized arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
   result <- s_surv_timepoint(
-    adtte_f %>% dplyr::filter(ARMCD == "ARM C"),
+    adtte_f |> dplyr::filter(ARMCD == "ARM C"),
     .var = "AVAL",
     is_event = "is_event",
     time_point = 7,
@@ -40,12 +40,12 @@ testthat::test_that("s_surv_timepoint works with customized arguments", {
 })
 
 testthat::test_that("s_surv_timepoint also works when there are 0 patients at risk", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
-    ) %>%
+    ) |>
     # Only take patients from Arm A who have less than 6 months time point,
     # such that no patients are at risk anymore beyond 6 months.
     dplyr::filter(ARMCD == "ARM A", AVAL <= 6)
@@ -62,24 +62,24 @@ testthat::test_that("s_surv_timepoint also works when there are 0 patients at ri
 })
 
 testthat::test_that("surv_timepoint works with default arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-    ) %>%
+    ) |>
     surv_timepoint(
       vars = "AVAL",
       var_labels = "Months",
       time_point = 6,
       is_event = "is_event"
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)
@@ -87,25 +87,25 @@ testthat::test_that("surv_timepoint works with default arguments", {
 })
 
 testthat::test_that("surv_timepoint works with customized arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-    ) %>%
+    ) |>
     surv_timepoint(
       vars = "AVAL",
       var_labels = "Months",
       time_point = 8,
       is_event = "is_event",
       control = control_surv_timepoint(conf_level = 0.9, conf_type = "log-log")
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)
@@ -113,15 +113,15 @@ testthat::test_that("surv_timepoint works with customized arguments", {
 })
 
 testthat::test_that("s_surv_timepoint_diff works with default arguments for comparison group", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
-  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
-  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+  df <- adtte_f |> dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f |> dplyr::filter(ARMCD == "ARM B")
 
   result <- s_surv_timepoint_diff(
     df = df,
@@ -138,15 +138,15 @@ testthat::test_that("s_surv_timepoint_diff works with default arguments for comp
 })
 
 testthat::test_that("s_surv_timepoint_diff works with customized arguments for comparison arm", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
-  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
-  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+  df <- adtte_f |> dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f |> dplyr::filter(ARMCD == "ARM B")
 
   result <- s_surv_timepoint_diff(
     df = df,
@@ -163,25 +163,25 @@ testthat::test_that("s_surv_timepoint_diff works with customized arguments for c
 })
 
 testthat::test_that("surv_timepoint for survival diff works with default arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-    ) %>%
+    ) |>
     surv_timepoint(
       vars = "AVAL",
       var_labels = "Months",
       time_point = 9,
       is_event = "is_event",
       method = "surv_diff"
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)
@@ -189,18 +189,18 @@ testthat::test_that("surv_timepoint for survival diff works with default argumen
 })
 
 testthat::test_that("surv_timepoint for survival diff works with customized arguments", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
 
-  result <- basic_table() %>%
+  result <- basic_table() |>
     split_cols_by(
       var = "ARMCD",
       ref_group = "ARM A"
-    ) %>%
+    ) |>
     surv_timepoint(
       vars = "AVAL",
       var_labels = "Months",
@@ -208,7 +208,7 @@ testthat::test_that("surv_timepoint for survival diff works with customized argu
       is_event = "is_event",
       method = "surv_diff",
       control = control_surv_timepoint(conf_level = 0.99)
-    ) %>%
+    ) |>
     build_table(df = adtte_f)
 
   res <- testthat::expect_silent(result)
@@ -216,23 +216,23 @@ testthat::test_that("surv_timepoint for survival diff works with customized argu
 })
 
 testthat::test_that("surv_timepoint works with method = both", {
-  adtte_f <- tern_ex_adtte %>%
-    dplyr::filter(PARAMCD == "OS") %>%
+  adtte_f <- tern_ex_adtte |>
+    dplyr::filter(PARAMCD == "OS") |>
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
   result <- testthat::expect_silent(
-    basic_table() %>%
-      split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
-      add_colcounts() %>%
+    basic_table() |>
+      split_cols_by(var = "ARMCD", ref_group = "ARM A") |>
+      add_colcounts() |>
       surv_timepoint(
         vars = "AVAL",
         var_labels = "Months",
         is_event = "is_event",
         time_point = 9,
         method = "both"
-      ) %>%
+      ) |>
       build_table(df = adtte_f)
   )
   testthat::expect_snapshot(result)

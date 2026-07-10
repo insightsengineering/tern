@@ -5,7 +5,7 @@ testthat::test_that("groups_list_to_df works as expected", {
     "Grade 3-4 (%)" = c("3", "4"),
     "Grade 5 (%)" = "5"
   )
-  result <- groups_list_to_df(grade_groups) %>% data.frame()
+  result <- groups_list_to_df(grade_groups) |> data.frame()
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -58,10 +58,10 @@ testthat::test_that("split_cols_by_groups manages combinations of columns", {
     "Arms A+B" = c("A: Drug X", "B: Placebo"),
     "Arms A+C" = c("A: Drug X", "C: Combination")
   )
-  result <- basic_table() %>%
-    split_cols_by_groups("ARM", groups) %>%
-    add_colcounts() %>%
-    analyze("AGE") %>%
+  result <- basic_table() |>
+    split_cols_by_groups("ARM", groups) |>
+    add_colcounts() |>
+    analyze("AGE") |>
     build_table(DM)
 
   res <- testthat::expect_silent(result)
@@ -73,8 +73,8 @@ testthat::test_that("split_cols_by_groups manages combinations of columns with r
     "Arms A+B" = c("A: Drug X", "B: Placebo"),
     "Arms A+C" = c("A: Drug X", "C: Combination")
   )
-  result <- basic_table() %>%
-    split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") %>%
+  result <- basic_table() |>
+    split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") |>
     analyze(
       "AGE",
       afun = function(x, .ref_group, .in_ref_col) {
@@ -84,7 +84,7 @@ testthat::test_that("split_cols_by_groups manages combinations of columns with r
           in_rows("Diff. of Averages" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
         }
       }
-    ) %>%
+    ) |>
     build_table(DM)
 
   res <- testthat::expect_silent(result)
@@ -92,10 +92,10 @@ testthat::test_that("split_cols_by_groups manages combinations of columns with r
 })
 
 testthat::test_that("split_cols_by_groups equivalent to split_cols_by when no groups", {
-  result <- basic_table() %>%
-    split_cols_by_groups("ARM") %>%
-    add_colcounts() %>%
-    analyze("AGE") %>%
+  result <- basic_table() |>
+    split_cols_by_groups("ARM") |>
+    add_colcounts() |>
+    analyze("AGE") |>
     build_table(DM)
 
   res <- testthat::expect_silent(result)
@@ -110,10 +110,10 @@ testthat::test_that("split_cols_by_groups equivalent to split_cols_by with ref_c
       in_rows("Diff. of Averages" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
     }
   }
-  result <- basic_table() %>%
-    split_cols_by_groups("ARM", ref_group = "B: Placebo", split_fun = ref_group_position("first")) %>%
-    add_colcounts() %>%
-    analyze("AGE", afun = afun) %>%
+  result <- basic_table() |>
+    split_cols_by_groups("ARM", ref_group = "B: Placebo", split_fun = ref_group_position("first")) |>
+    add_colcounts() |>
+    analyze("AGE", afun = afun) |>
     build_table(DM)
 
   res <- testthat::expect_silent(result)
@@ -128,9 +128,9 @@ testthat::test_that("split_cols_by_groups manages combinations of columns with r
 
   DM_ANL <- DM[1:100, ] # nolint
 
-  result <- basic_table() %>%
-    split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") %>%
-    add_colcounts() %>%
+  result <- basic_table() |>
+    split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") |>
+    add_colcounts() |>
     analyze(
       "AGE",
       afun = function(x, .ref_group, .in_ref_col) {
@@ -140,7 +140,7 @@ testthat::test_that("split_cols_by_groups manages combinations of columns with r
           in_rows("Diff. of Averages" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
         }
       }
-    ) %>%
+    ) |>
     build_table(DM_ANL, alt_counts_df = DM)
 
   res <- testthat::expect_silent(result)

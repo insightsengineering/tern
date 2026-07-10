@@ -717,8 +717,8 @@ testthat::test_that(
 testthat::test_that(
   "clogit_with_tryCatch is silent with healthy input",
   code = {
-    adrs_local <- tern_ex_adrs %>%
-      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+    adrs_local <- tern_ex_adrs |>
+      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) |>
       dplyr::mutate(
         RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
         ARMBIN = droplevels(ARMCD)
@@ -733,8 +733,8 @@ testthat::test_that(
 testthat::test_that(
   "clogit_with_tryCatch fails with wrong input",
   code = {
-    adrs_local <- tern_ex_adrs %>%
-      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+    adrs_local <- tern_ex_adrs |>
+      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) |>
       dplyr::mutate(
         RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
         ARMBIN = droplevels(ARMCD)
@@ -749,8 +749,8 @@ testthat::test_that(
 testthat::test_that(
   "clogit_with_tryCatch works with healthy input",
   code = {
-    adrs_local <- tern_ex_adrs %>%
-      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+    adrs_local <- tern_ex_adrs |>
+      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) |>
       dplyr::mutate(
         RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
         ARMBIN = droplevels(ARMCD)

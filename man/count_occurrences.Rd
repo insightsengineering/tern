@@ -208,31 +208,31 @@ df <- data.frame(
   ARM = rep(c("A", "B"), each = 6),
   SEX = c("F", "F", "M", "M", "M", "M", "F", "F", "F", "M", "M", "F")
 )
-df_adsl <- df \%>\%
-  select(USUBJID, ARM) \%>\%
+df_adsl <- df |>
+  select(USUBJID, ARM) |>
   unique()
 
 # Create table layout
-lyt <- basic_table() \%>\%
-  split_cols_by("ARM") \%>\%
-  add_colcounts() \%>\%
+lyt <- basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_occurrences(vars = "MHDECOD", .stats = c("count_fraction"))
 
 # Apply table layout to data and produce `rtable` object
-tbl <- lyt \%>\%
-  build_table(df, alt_counts_df = df_adsl) \%>\%
+tbl <- lyt |>
+  build_table(df, alt_counts_df = df_adsl) |>
   prune_table()
 
 tbl
 
 # Layout creating function with custom format.
-basic_table() \%>\%
-  add_colcounts() \%>\%
-  split_rows_by("SEX", child_labels = "visible") \%>\%
+basic_table() |>
+  add_colcounts() |>
+  split_rows_by("SEX", child_labels = "visible") |>
   summarize_occurrences(
     var = "MHDECOD",
     .formats = c("count_fraction" = "xx.xx (xx.xx\%)")
-  ) \%>\%
+  ) |>
   build_table(df, alt_counts_df = df_adsl)
 
 # Count unique occurrences per subject.

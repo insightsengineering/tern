@@ -149,8 +149,8 @@ dta <- data.frame(
 )
 
 # With `rtables` pipelines.
-l <- basic_table() \%>\%
-  split_cols_by(var = "grp", ref_group = "B") \%>\%
+l <- basic_table() |>
+  split_cols_by(var = "grp", ref_group = "B") |>
   test_proportion_diff(
     vars = "rsp",
     method = "cmh", variables = list(strata = "strata")

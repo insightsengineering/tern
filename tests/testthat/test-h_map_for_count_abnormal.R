@@ -18,9 +18,9 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for defaul
 
   # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
   # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-  result <- result %>%
-    dplyr::group_by(PARAM) %>%
-    dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+  result <- result |>
+    dplyr::group_by(PARAM) |>
+    dplyr::arrange(ANRIND, .by_group = TRUE) |>
     data.frame()
 
   res <- testthat::expect_silent(result)
@@ -40,9 +40,9 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for range 
 
   # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
   # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-  result <- result %>%
-    dplyr::group_by(PARAM) %>%
-    dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+  result <- result |>
+    dplyr::group_by(PARAM) |>
+    dplyr::arrange(ANRIND, .by_group = TRUE) |>
     data.frame()
 
   res <- testthat::expect_silent(result)
@@ -62,9 +62,9 @@ testthat::test_that(
 
     # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-    result <- result %>%
-      dplyr::group_by(PARAM) %>%
-      dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+    result <- result |>
+      dplyr::group_by(PARAM) |>
+      dplyr::arrange(ANRIND, .by_group = TRUE) |>
       data.frame()
 
     res <- testthat::expect_silent(result)
@@ -89,9 +89,9 @@ testthat::test_that(
 
     # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-    result <- result %>%
-      dplyr::group_by(PARAM) %>%
-      dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+    result <- result |>
+      dplyr::group_by(PARAM) |>
+      dplyr::arrange(ANRIND, .by_group = TRUE) |>
       data.frame()
 
     res <- testthat::expect_silent(result)
@@ -103,7 +103,7 @@ testthat::test_that(
 testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for default method with unused LOW LOW/HIGH HIGH input",
   code = {
-    df <- df %>% dplyr::mutate(
+    df <- df |> dplyr::mutate(
       ANRIND = ifelse(PARAM == "ALT" & ANRIND == "LOW" & USUBJID == "1", "LOW LOW", as.character(ANRIND))
     )
     df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL", "LOW LOW", "HIGH HIGH"))
@@ -116,9 +116,9 @@ testthat::test_that(
 
     # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-    result <- result %>%
-      dplyr::group_by(PARAM) %>%
-      dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+    result <- result |>
+      dplyr::group_by(PARAM) |>
+      dplyr::arrange(ANRIND, .by_group = TRUE) |>
       data.frame()
 
     res <- testthat::expect_silent(result)
@@ -145,9 +145,9 @@ testthat::test_that(
 
     # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-    result <- result %>%
-      dplyr::group_by(PARAM) %>%
-      dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+    result <- result |>
+      dplyr::group_by(PARAM) |>
+      dplyr::arrange(ANRIND, .by_group = TRUE) |>
       data.frame()
 
     res <- testthat::expect_silent(result)
@@ -173,9 +173,9 @@ testthat::test_that(
 
     # because the function doesn't require the order of anl variable, but for unit test stability, we arrange the
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
-    result <- result %>%
-      dplyr::group_by(PARAM) %>%
-      dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+    result <- result |>
+      dplyr::group_by(PARAM) |>
+      dplyr::arrange(ANRIND, .by_group = TRUE) |>
       data.frame()
 
     res <- testthat::expect_silent(result)

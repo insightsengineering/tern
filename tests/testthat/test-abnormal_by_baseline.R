@@ -86,8 +86,8 @@ testthat::test_that("count_abnormal_by_baseline works with default arguments", {
     ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
     BNRIND = factor(c("LOW", "HIGH", "HIGH", "NORMAL"))
   )
-  result <- basic_table() %>%
-    count_abnormal_by_baseline(var = "ANRIND", abnormal = c(Low = "LOW", High = "HIGH")) %>%
+  result <- basic_table() |>
+    count_abnormal_by_baseline(var = "ANRIND", abnormal = c(Low = "LOW", High = "HIGH")) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -100,13 +100,13 @@ testthat::test_that("count_abnormal_by_baseline works with custom arguments", {
     RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
     BLRANGE = factor(c("LOW", "HIGH", "HIGH", "NORMAL"))
   )
-  result <- basic_table() %>%
+  result <- basic_table() |>
     count_abnormal_by_baseline(
       var = "RANGE",
       abnormal = c(Low = "LOW", High = "HIGH"),
       variables = list(id = "ID", baseline = "BLRANGE"),
       .formats = c(fraction = "xx / xx")
-    ) %>%
+    ) |>
     build_table(df2)
 
   res <- testthat::expect_silent(result)
