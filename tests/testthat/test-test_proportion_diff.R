@@ -31,19 +31,27 @@ testthat::test_that("prop_cmh returns right result for odds ratio < 1", {
   result <- prop_cmh(tbl)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
-  expected <- stats::mantelhaen.test(tbl, correct = FALSE)$p.value
+  mh_result <- stats::mantelhaen.test(tbl, correct = FALSE)
+  expected_z_stat <- sqrt(unname(mh_result$statistic))
+  expected <- structure(mh_result$p.value, z_stat = expected_z_stat)
   testthat::expect_equal(result, expected, tolerance = 1e-3)
 
   result_less <- prop_cmh(tbl, alternative = "less")
   res_less <- testthat::expect_silent(result_less)
   testthat::expect_snapshot(res_less)
-  expected_less <- stats::mantelhaen.test(tbl, correct = FALSE, alternative = "less")$p.value
+  expected_less <- structure(
+    stats::mantelhaen.test(tbl, correct = FALSE, alternative = "less")$p.value,
+    z_stat = expected_z_stat
+  )
   testthat::expect_equal(result_less, expected_less, tolerance = 1e-3)
 
   result_greater <- prop_cmh(tbl, alternative = "greater")
   res_greater <- testthat::expect_silent(result_greater)
   testthat::expect_snapshot(res_greater)
-  expected_greater <- stats::mantelhaen.test(tbl, correct = FALSE, alternative = "greater")$p.value
+  expected_greater <- structure(
+    stats::mantelhaen.test(tbl, correct = FALSE, alternative = "greater")$p.value,
+    z_stat = expected_z_stat
+  )
   testthat::expect_equal(result_greater, expected_greater, tolerance = 1e-3)
 })
 
@@ -58,19 +66,27 @@ testthat::test_that("prop_cmh returns right result for odds ratio > 1", {
   result <- prop_cmh(tbl)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
-  expected <- stats::mantelhaen.test(tbl, correct = FALSE)$p.value
+  mh_result <- stats::mantelhaen.test(tbl, correct = FALSE)
+  expected_z_stat <- -sqrt(unname(mh_result$statistic))
+  expected <- structure(mh_result$p.value, z_stat = expected_z_stat)
   testthat::expect_equal(result, expected, tolerance = 1e-3)
 
   result_less <- prop_cmh(tbl, alternative = "less")
   res_less <- testthat::expect_silent(result_less)
   testthat::expect_snapshot(res_less)
-  expected_less <- stats::mantelhaen.test(tbl, correct = FALSE, alternative = "less")$p.value
+  expected_less <- structure(
+    stats::mantelhaen.test(tbl, correct = FALSE, alternative = "less")$p.value,
+    z_stat = expected_z_stat
+  )
   testthat::expect_equal(result_less, expected_less, tolerance = 1e-3)
 
   result_greater <- prop_cmh(tbl, alternative = "greater")
   res_greater <- testthat::expect_silent(result_greater)
   testthat::expect_snapshot(res_greater)
-  expected_greater <- stats::mantelhaen.test(tbl, correct = FALSE, alternative = "greater")$p.value
+  expected_greater <- structure(
+    stats::mantelhaen.test(tbl, correct = FALSE, alternative = "greater")$p.value,
+    z_stat = expected_z_stat
+  )
   testthat::expect_equal(result_greater, expected_greater, tolerance = 1e-3)
 })
 
@@ -191,8 +207,14 @@ testthat::test_that("prop_cmh with Wilson-Hilferty transformation works", {
   result_cmh_less <- prop_cmh(tbl, alternative = "less")
   result_cmh_greater <- prop_cmh(tbl, alternative = "greater")
 
-  expect_equal(result_less, result_cmh_less, tolerance = 1e-1)
-  expect_equal(result_greater, result_cmh_greater, tolerance = 1e-1)
+  expect_equal(as.numeric(result_less), as.numeric(result_cmh_less), tolerance = 1e-1)
+  expect_equal(as.numeric(result_greater), as.numeric(result_cmh_greater), tolerance = 1e-1)
+  expected_z_stat <- {
+    z_stat <- attr(result_cmh_less, "z_stat")
+    ((1 - 2 / 9) - (z_stat^2)^(1 / 3)) / sqrt(2 / 9) * sign(z_stat)
+  }
+  expect_equal(attr(result_less, "z_stat"), expected_z_stat)
+  expect_equal(attr(result_greater, "z_stat"), expected_z_stat)
 })
 
 testthat::test_that("prop_cmh with Sato variance estimator works", {
@@ -212,7 +234,8 @@ testthat::test_that("prop_cmh with Sato variance estimator works", {
     class = "table"
   )
   result1 <- prop_cmh(tbl1, diff_se = "sato")
-  testthat::expect_equal(result1, 0.035, tolerance = 1e-3)
+  testthat::expect_equal(as.numeric(result1), 0.035, tolerance = 1e-3)
+  testthat::expect_equal(attr(result1, "z_stat"), 2.109, tolerance = 1e-3)
 
   tbl2 <- structure(
     c(
@@ -230,7 +253,8 @@ testthat::test_that("prop_cmh with Sato variance estimator works", {
     class = "table"
   )
   result2 <- prop_cmh(tbl2, diff_se = "sato")
-  testthat::expect_equal(result2, 0.004, tolerance = 1e-2)
+  testthat::expect_equal(as.numeric(result2), 0.004, tolerance = 1e-2)
+  testthat::expect_equal(attr(result2, "z_stat"), 2.864, tolerance = 1e-3)
 })
 
 testthat::test_that("prop_cmh with Sato variance estimator and Wilson-Hilferty transformation works", {

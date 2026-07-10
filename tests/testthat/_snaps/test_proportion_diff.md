@@ -25,6 +25,8 @@
       res
     Output
       [1] 0.6477165
+      attr(,"z_stat")
+      [1] 0.4569368
 
 ---
 
@@ -32,6 +34,8 @@
       res_less
     Output
       [1] 0.3238582
+      attr(,"z_stat")
+      [1] 0.4569368
 
 ---
 
@@ -39,6 +43,8 @@
       res_greater
     Output
       [1] 0.6761418
+      attr(,"z_stat")
+      [1] 0.4569368
 
 # prop_cmh returns right result for odds ratio > 1
 
@@ -46,6 +52,8 @@
       res
     Output
       [1] 0.3833285
+      attr(,"z_stat")
+      [1] -0.8717798
 
 ---
 
@@ -53,6 +61,8 @@
       res_less
     Output
       [1] 0.8083357
+      attr(,"z_stat")
+      [1] -0.8717798
 
 ---
 
@@ -60,6 +70,8 @@
       res_greater
     Output
       [1] 0.1916643
+      attr(,"z_stat")
+      [1] -0.8717798
 
 # prop_cmh also works when there are strata with just one observation
 
@@ -67,6 +79,8 @@
       res
     Output
       [1] 0.3325724
+      attr(,"z_stat")
+      [1] -0.9689455
 
 # prop_fisher returns right result
 
@@ -137,6 +151,8 @@
       res_less
     Output
       [1] 0.6522653
+      attr(,"z_stat")
+      [1] -0.3914435
 
 ---
 
@@ -144,10 +160,12 @@
       res_greater
     Output
       [1] 0.3477347
+      attr(,"z_stat")
+      [1] -0.3914435
 
 # prop_cmh with Sato variance estimator and Wilson-Hilferty transformation works
 
-    0.0660308573944943
+    structure(0.0660308573944943, z_stat = -1.83821413735577)
 
 # s_test_proportion_diff and d_test_proportion_diff return right result
 
@@ -160,6 +178,8 @@
       $s
       $s$pval
       [1] 0.6477165
+      attr(,"z_stat")
+      [1] 0.4569368
       attr(,"label")
       [1] "p-value (Cochran-Mantel-Haenszel Test)"
       
@@ -176,6 +196,8 @@
       $s
       $s$pval
       [1] 0.6761418
+      attr(,"z_stat")
+      [1] 0.4569368
       attr(,"label")
       [1] "p-value (Cochran-Mantel-Haenszel Test, 1-sided, direction greater)"
       
@@ -192,6 +214,8 @@
       $s
       $s$pval
       [1] 0.3238582
+      attr(,"z_stat")
+      [1] 0.4569368
       attr(,"label")
       [1] "p-value (Cochran-Mantel-Haenszel Test, 1-sided, direction less)"
       

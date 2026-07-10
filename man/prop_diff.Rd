@@ -25,9 +25,9 @@ estimate_proportion_diff(
   na_rm = TRUE,
   .stats = c("diff", "diff_ci"),
   .stat_names = NULL,
-  .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
+  .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)", se_diff = "xx.x"),
   .labels = NULL,
-  .indent_mods = c(diff = 0L, diff_ci = 1L)
+  .indent_mods = c(diff = 0L, diff_ci = 1L, se_diff = 1L)
 )
 
 s_proportion_diff(
