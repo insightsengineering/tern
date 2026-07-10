@@ -38,6 +38,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item David Munoz Tord \email{david.munoztord@mailbox.org} [contributor]
   \item F. Hoffmann-La Roche AG [copyright holder, funder]
 }
 
