@@ -348,6 +348,12 @@
       attr(,"label")
       [1] "90% CI (CMH, without correction)"
       
+      $se_diff
+      se_diff_cmh 
+         8.978092 
+      attr(,"label")
+      [1] "Standard Error of Difference in Response rate (%)"
+      
 
 # s_proportion_diff works with CMH Sato method
 
@@ -366,10 +372,17 @@
       attr(,"label")
       [1] "90% CI (CMH, Sato variance estimator)"
       
+      $se_diff
+      se_diff_cmh_sato 
+              10.80533 
+      attr(,"label")
+      [1] "Standard Error of Difference in Response rate (%)"
+      
 
 # s_proportion_diff works with CMH Miettinen and Nurminen method
 
     list(diff = structure(c(diff_cmh_mn = 13.7686601988347), label = "Difference in Response rate (%)"), 
         diff_ci = structure(c(diff_ci_cmh_mn_l = -3.45069418895496, 
-        diff_ci_cmh_mn_u = 30.2144371774115), label = "90% CI (CMH, Miettinen and Nurminen)"))
+        diff_ci_cmh_mn_u = 30.2144371774115), label = "90% CI (CMH, Miettinen and Nurminen)"), 
+        se_diff = structure(c(se_diff_cmh_mn = 10.4103330371023), label = "Standard Error of Difference in Response rate (%)"))
 

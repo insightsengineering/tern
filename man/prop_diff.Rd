@@ -120,6 +120,8 @@ the statistics from \code{s_proportion_diff()} to the table layout.
 
 \itemize{
 \item \code{s_proportion_diff()} returns a named list of elements \code{diff} and \code{diff_ci}.
+Depending on the method used, also the standard error of the difference \code{se_diff} is
+returned.
 }
 
 \itemize{
