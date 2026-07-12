@@ -103,7 +103,7 @@ testthat::test_that("factor_level_method = 'sort_radix' uses byte-order sort (up
   # sort_radix is byte-order (uppercase < lowercase, consistent with SAS PROC SORT).
   my_data <- data.frame(x = c("UNKNOWN", "Unknown", "unknown", NA), stringsAsFactors = FALSE)
   result_radix <- df_explicit_na(my_data, factor_level_method = "sort_radix")
-  result_auto  <- df_explicit_na(my_data, factor_level_method = "sort_auto")
+  result_auto <- df_explicit_na(my_data, factor_level_method = "sort_auto")
   # radix: UNKNOWN < Unknown < unknown (ASCII byte order)
   testthat::expect_equal(levels(result_radix$x), c("UNKNOWN", "Unknown", "unknown", "<Missing>"))
 })
