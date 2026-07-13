@@ -1,6 +1,14 @@
 # tern 0.9.10.9017
 
 ### Enhancements
+* Added `factor_level_method` argument to `df_explicit_na()` to control factor level ordering
+  when converting character or logical columns. Supported methods: `"sort_auto"` (default,
+  locale-aware, preserves original behavior), `"sort_radix"` (byte-order / ASCII sort), and
+  `"data"` (first-appearance order). (#1322)
+* Added `factor_as_factor` argument to `df_explicit_na()` to allow re-encoding of existing
+  factor columns using `factor_level_method`. Defaults to `FALSE` to preserve original behavior.
+* Added `factor_level_last_pattern` argument to `df_explicit_na()` to move factor levels
+  matching a regular expression to the end (before `na_level`).
 * Added `alternative` argument to `s_coxph_pairwise()` to allow one-sided hypothesis testing. 
 * Added `lr_stat_df` to the parameters return list of `s_coxph_pairwise()`.
 * Added `uncond_exact_diff` method to `estimate_proportion_diff()` for the unconditional exact confidence interval for the difference in proportions by inverting one-sided tail tests over a nuisance parameter.
