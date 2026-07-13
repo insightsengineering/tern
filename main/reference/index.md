@@ -425,6 +425,12 @@ These functions are useful in defining an analysis.
 - [`h_ppmeans()`](https://insightsengineering.github.io/tern/reference/h_ppmeans.md)
   : Function to return the estimated means using predicted probabilities
 
+- [`prop_chisq()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
+  [`prop_cmh()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
+  [`prop_schouten()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
+  [`prop_fisher()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
+  : Helper functions to test proportion differences
+
 - [`prop_wilson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
   [`prop_strat_wilson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
   [`prop_clopper_pearson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)

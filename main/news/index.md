@@ -1,6 +1,6 @@
 # Changelog
 
-## tern 0.9.10.9019
+## tern 0.9.10.9020
 
 #### Enhancements
 
@@ -41,9 +41,18 @@
 - Added
   [`s_ancova()`](https://insightsengineering.github.io/tern/reference/summarize_ancova.md)
   to exported functions.
+- In `estimate_proportion_diff` now also the standard error is available
+  for selected methods in the `se_diff` statistic.
 - Exported
   [`h_incidence_rate()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
   to allow to reuse the incidence rate estimation logic.
+- Exported
+  [`prop_chisq()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md),
+  [`prop_cmh()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md),
+  [`prop_fisher()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md),
+  and
+  [`prop_schouten()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
+  for standalone proportion difference testing.
 
 #### Bug Fixes
 

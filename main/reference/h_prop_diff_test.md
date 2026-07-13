@@ -78,3 +78,56 @@ A p-value.
 for implementation of these helper functions.
 
 Schouten correction is based upon Schouten et al. (1980) .
+
+## Examples
+
+``` r
+# Chi-Squared test
+tbl <- matrix(
+  c(13, 7, 8, 12),
+  nrow = 2,
+  byrow = TRUE,
+  dimnames = list(group = c("A", "B"), response = c("TRUE", "FALSE"))
+)
+
+prop_chisq(tbl)
+#> [1] 0.1133944
+
+# Cochran-Mantel-Haenszel test with two strata
+ary <- array(
+  c(12, 8, 8, 12, 10, 10, 6, 14),
+  dim = c(2, 2, 2),
+  dimnames = list(
+    group = c("A", "B"),
+    response = c("TRUE", "FALSE"),
+    strata = c("Low", "High")
+  )
+)
+
+prop_cmh(ary)
+#> [1] 0.07437734
+#> attr(,"z_stat")
+#> [1] -1.784285
+
+# Chi-Squared test with Schouten correction
+tbl <- matrix(
+  c(13, 7, 8, 12),
+  nrow = 2,
+  byrow = TRUE,
+  dimnames = list(group = c("A", "B"), response = c("TRUE", "FALSE"))
+)
+
+prop_schouten(tbl)
+#> [1] 0.1594617
+
+# Fisher's exact test
+tbl <- matrix(
+  c(13, 7, 8, 12),
+  nrow = 2,
+  byrow = TRUE,
+  dimnames = list(group = c("A", "B"), response = c("TRUE", "FALSE"))
+)
+
+prop_fisher(tbl)
+#> [1] 0.2049272
+```

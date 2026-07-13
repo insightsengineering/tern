@@ -32,9 +32,9 @@ estimate_proportion_diff(
   na_rm = TRUE,
   .stats = c("diff", "diff_ci"),
   .stat_names = NULL,
-  .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
+  .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)", se_diff = "xx.x"),
   .labels = NULL,
-  .indent_mods = c(diff = 0L, diff_ci = 1L)
+  .indent_mods = c(diff = 0L, diff_ci = 1L, se_diff = 1L)
 )
 
 s_proportion_diff(
@@ -204,7 +204,8 @@ a_proportion_diff(
 &nbsp;
 
 - `s_proportion_diff()` returns a named list of elements `diff` and
-  `diff_ci`.
+  `diff_ci`. Depending on the method used, also the standard error of
+  the difference `se_diff` is returned.
 
 &nbsp;
 
@@ -380,6 +381,12 @@ s_proportion_diff(
 #>      -2.67057      26.78750 
 #> attr(,"label")
 #> [1] "90% CI (CMH, without correction)"
+#> 
+#> $se_diff
+#> se_diff_cmh 
+#>    8.954617 
+#> attr(,"label")
+#> [1] "Standard Error of Difference in Response rate (%)"
 #> 
 
 a_proportion_diff(
