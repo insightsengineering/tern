@@ -21,6 +21,28 @@
 #'   in `data` to factors.
 #' @param na_level (`string`)\cr string used to replace all `NA` or empty
 #'   values inside non-`omit_columns` columns.
+#' @param factor_as_factor (`flag`)\cr whether to re-encode existing factor variables
+#'   using `factor_level_method`. When `FALSE` (default), existing factor levels are
+#'   preserved as-is (original behavior).
+#' @param factor_level_method (`string`)\cr method used to order factor levels when
+#'   converting character or logical variables (or existing factors when
+#'   `factor_as_factor = TRUE`). One of:
+#'   \describe{
+#'     \item{`"sort_auto"`}{`sort(unique(x))` — default R sort, locale-aware (default).
+#'       Preserves the original behavior of this function.}
+#'     \item{`"sort_radix"`}{`sort(unique(x), method = "radix")` — byte-order (ASCII) sort.
+#'       Unlike `"sort_auto"`, this is not locale-sensitive: uppercase letters always sort
+#'       before lowercase. On data where all values share the same case (e.g. all-caps
+#'       ADaM variables) the two methods produce identical results.}
+#'     \item{`"data"`}{`unique(x)` — levels in order of first appearance in the data.}
+#'   }
+#' @param factor_level_last_pattern (`string` or `NULL`)\cr regular expression. Any
+#'   factor levels matching this pattern are moved to the end (before `na_level`).
+#'   `NULL` (default) disables this behaviour. Note: this parameter only takes effect
+#'   when factor levels are being re-encoded (i.e. for character/logical columns with
+#'   `char_as_factor`/`logical_as_factor`, or for existing factor columns with
+#'   `factor_as_factor = TRUE`). Existing factor columns where `factor_as_factor = FALSE`
+#'   are not affected.
 #'
 #' @return A `data.frame` with the chosen modifications applied.
 #'
@@ -66,17 +88,34 @@
 #' adsl$AGE[adsl$AGE < 30] <- NA
 #' adsl <- df_explicit_na(adsl)
 #'
+#' # Example 4: Control factor level ordering
+#' # Use radix sort to match SAS PROC SORT behavior.
+#' df_explicit_na(my_data, factor_level_method = "sort_radix")
+#' # Use data order (first appearance).
+#' df_explicit_na(my_data, factor_level_method = "data")
+#'
+#' # Example 5: Move matching levels to the end
+#' # Levels matching "^Other" are placed last (before na_level).
+#' df_explicit_na(my_data, factor_level_last_pattern = "^Other")
+#'
 #' @export
 df_explicit_na <- function(data,
                            omit_columns = NULL,
                            char_as_factor = TRUE,
                            logical_as_factor = FALSE,
-                           na_level = "<Missing>") {
+                           na_level = "<Missing>",
+                           factor_as_factor = FALSE,
+                           factor_level_method = c("sort_auto", "sort_radix", "data"),
+                           factor_level_last_pattern = NULL) {
   checkmate::assert_character(omit_columns, null.ok = TRUE, min.len = 1, any.missing = FALSE)
   checkmate::assert_data_frame(data)
   checkmate::assert_flag(char_as_factor)
   checkmate::assert_flag(logical_as_factor)
+  checkmate::assert_flag(factor_as_factor)
   checkmate::assert_string(na_level)
+  checkmate::assert_string(factor_level_last_pattern, null.ok = TRUE)
+  factor_level_method <- factor_level_method[[1]]
+  checkmate::assert_choice(factor_level_method, c("sort_auto", "sort_radix", "data"))
 
   target_vars <- if (is.null(omit_columns)) {
     names(data)
@@ -99,6 +138,7 @@ df_explicit_na <- function(data,
     # Determine whether to convert character or logical input.
     do_char_conversion <- is.character(xi) && char_as_factor
     do_logical_conversion <- is.logical(xi) && logical_as_factor
+    do_factor_conversion <- is.factor(xi) && factor_as_factor
 
     # Pre-convert logical to character to deal correctly with replacing NA
     # values below.
@@ -112,8 +152,23 @@ df_explicit_na <- function(data,
 
       # Convert to factors if requested for the original type,
       # set na_level as the last value.
-      if (do_char_conversion || do_logical_conversion) {
-        levels_xi <- setdiff(sort(unique(xi)), na_level)
+      if (do_char_conversion || do_logical_conversion || do_factor_conversion) {
+        if (do_factor_conversion) {
+          xi <- as.character(xi)
+        }
+
+        sort_xi <- switch(factor_level_method,
+          "data" = unique(xi),
+          "sort_radix" = sort(unique(xi), method = "radix"),
+          sort(unique(xi))
+        )
+
+        if (!is.null(factor_level_last_pattern)) {
+          last_levels <- grep(factor_level_last_pattern, sort_xi, value = TRUE)
+          sort_xi <- c(setdiff(sort_xi, last_levels), last_levels)
+        }
+
+        levels_xi <- setdiff(sort_xi, na_level)
         if (na_level %in% unique(xi)) {
           levels_xi <- c(levels_xi, na_level)
         }
