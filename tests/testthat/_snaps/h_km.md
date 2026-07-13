@@ -107,9 +107,9 @@
       res
     Output
              N Median      95% CI
-      ARM A 69 970.00 (690, 1600)
-      ARM B 73 730.00 (560, 1200)
-      ARM C 58 630.00 (390, 1000)
+      ARM A 69    970 (690, 1600)
+      ARM B 73    730 (560, 1200)
+      ARM C 58    630 (390, 1000)
 
 # h_tbl_coxph_pairwise estimates HR, CI and pvalue
 

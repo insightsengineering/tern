@@ -55,8 +55,9 @@ control_surv_med_annot <- function(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill =
 control_coxph_annot <- function(x = 0.29, y = 0.51, w = 0.4, h = 0.125, fill = TRUE, ref_lbls = FALSE) {
   checkmate::assert_logical(ref_lbls, any.missing = FALSE)
 
-  res <- c(control_surv_med_annot(x = x, y = y, w = w, h = h), list(ref_lbls = ref_lbls))
-  res
+  base <- control_surv_med_annot(x = x, y = y, w = w, h = h, fill = fill)
+  base[["digits"]] <- NULL
+  c(base, list(ref_lbls = ref_lbls))
 }
 
 #' Helper function to calculate x-tick positions
