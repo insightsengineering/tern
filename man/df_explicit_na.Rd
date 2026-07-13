@@ -9,7 +9,10 @@ df_explicit_na(
   omit_columns = NULL,
   char_as_factor = TRUE,
   logical_as_factor = FALSE,
-  na_level = "<Missing>"
+  na_level = "<Missing>",
+  factor_as_factor = FALSE,
+  factor_level_method = c("sort_auto", "sort_radix", "data"),
+  factor_level_last_pattern = NULL
 )
 }
 \arguments{
@@ -26,6 +29,31 @@ in \code{data} to factors.}
 
 \item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty
 values inside non-\code{omit_columns} columns.}
+
+\item{factor_as_factor}{(\code{flag})\cr whether to re-encode existing factor variables
+using \code{factor_level_method}. When \code{FALSE} (default), existing factor levels are
+preserved as-is (original behavior).}
+
+\item{factor_level_method}{(\code{string})\cr method used to order factor levels when
+converting character or logical variables (or existing factors when
+\code{factor_as_factor = TRUE}). One of:
+\describe{
+\item{\code{"sort_auto"}}{\code{sort(unique(x))} — default R sort, locale-aware (default).
+Preserves the original behavior of this function.}
+\item{\code{"sort_radix"}}{\code{sort(unique(x), method = "radix")} — byte-order (ASCII) sort.
+Unlike \code{"sort_auto"}, this is not locale-sensitive: uppercase letters always sort
+before lowercase. On data where all values share the same case (e.g. all-caps
+ADaM variables) the two methods produce identical results.}
+\item{\code{"data"}}{\code{unique(x)} — levels in order of first appearance in the data.}
+}}
+
+\item{factor_level_last_pattern}{(\code{string} or \code{NULL})\cr regular expression. Any
+factor levels matching this pattern are moved to the end (before \code{na_level}).
+\code{NULL} (default) disables this behaviour. Note: this parameter only takes effect
+when factor levels are being re-encoded (i.e. for character/logical columns with
+\code{char_as_factor}/\code{logical_as_factor}, or for existing factor columns with
+\code{factor_as_factor = TRUE}). Existing factor columns where \code{factor_as_factor = FALSE}
+are not affected.}
 }
 \value{
 A \code{data.frame} with the chosen modifications applied.
@@ -83,6 +111,16 @@ adsl <- df_explicit_na(adsl, na_level = "Missing Values")
 adsl <- tern_ex_adsl
 adsl$AGE[adsl$AGE < 30] <- NA
 adsl <- df_explicit_na(adsl)
+
+# Example 4: Control factor level ordering
+# Use radix sort to match SAS PROC SORT behavior.
+df_explicit_na(my_data, factor_level_method = "sort_radix")
+# Use data order (first appearance).
+df_explicit_na(my_data, factor_level_method = "data")
+
+# Example 5: Move matching levels to the end
+# Levels matching "^Other" are placed last (before na_level).
+df_explicit_na(my_data, factor_level_last_pattern = "^Other")
 
 }
 \seealso{
