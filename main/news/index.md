@@ -1,9 +1,25 @@
 # Changelog
 
-## tern 0.9.10.9017
+## tern 0.9.10.9018
 
 #### Enhancements
 
+- Added `factor_level_method` argument to
+  [`df_explicit_na()`](https://insightsengineering.github.io/tern/reference/df_explicit_na.md)
+  to control factor level ordering when converting character or logical
+  columns. Supported methods: `"sort_auto"` (default, locale-aware,
+  preserves original behavior), `"sort_radix"` (byte-order / ASCII
+  sort), and `"data"` (first-appearance order).
+  ([\#1322](https://github.com/insightsengineering/tern/issues/1322))
+- Added `factor_as_factor` argument to
+  [`df_explicit_na()`](https://insightsengineering.github.io/tern/reference/df_explicit_na.md)
+  to allow re-encoding of existing factor columns using
+  `factor_level_method`. Defaults to `FALSE` to preserve original
+  behavior.
+- Added `factor_level_last_pattern` argument to
+  [`df_explicit_na()`](https://insightsengineering.github.io/tern/reference/df_explicit_na.md)
+  to move factor levels matching a regular expression to the end (before
+  `na_level`).
 - Added `alternative` argument to
   [`s_coxph_pairwise()`](https://insightsengineering.github.io/tern/reference/survival_coxph_pairwise.md)
   to allow one-sided hypothesis testing.

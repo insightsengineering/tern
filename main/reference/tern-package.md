@@ -50,4 +50,6 @@ Authors:
 
 Other contributors:
 
+- David Munoz Tord <david.munoztord@mailbox.org> \[contributor\]
+
 - F. Hoffmann-La Roche AG \[copyright holder, funder\]
