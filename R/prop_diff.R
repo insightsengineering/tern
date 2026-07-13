@@ -47,6 +47,8 @@ NULL
 #'
 #' @return
 #' * `s_proportion_diff()` returns a named list of elements `diff` and `diff_ci`.
+#'   Depending on the method used, also the standard error of the difference `se_diff` is
+#'   returned.
 #'
 #' @note When performing an unstratified analysis, methods `"cmh"`, `"cmh_sato"`, `"strat_newcombe"`,
 #'   and `"strat_newcombecc"` are not permitted. For stratified analysis, method
@@ -138,6 +140,7 @@ s_proportion_diff <- function(df,
       weights_method <- "cmh"
     }
 
+    y_stats_from_cmh <- c("diff", "diff_ci", "se_diff")
     y <- switch(method,
       "wald" = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
       "waldcc" = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
@@ -158,14 +161,17 @@ s_proportion_diff <- function(df,
         conf_level,
         correct = TRUE
       ),
-      "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "standard")[c("diff", "diff_ci")],
-      "cmh_sato" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "sato")[c("diff", "diff_ci")],
-      "cmh_mn" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "miettinen_nurminen")[c("diff", "diff_ci")],
+      "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "standard")[y_stats_from_cmh],
+      "cmh_sato" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "sato")[y_stats_from_cmh],
+      "cmh_mn" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "miettinen_nurminen")[y_stats_from_cmh],
       "uncond_exact_diff" = prop_diff_uncond_exact(rsp, grp, conf_level)
     )
 
     y$diff <- setNames(y$diff * 100, paste0("diff_", method))
     y$diff_ci <- setNames(y$diff_ci * 100, paste0("diff_ci_", method, c("_l", "_u")))
+    if (!is.null(y$se_diff)) {
+      y$se_diff <- setNames(y$se_diff * 100, paste0("se_diff_", method))
+    }
   }
 
   attr(y$diff, "label") <- "Difference in Response rate (%)"
@@ -173,6 +179,9 @@ s_proportion_diff <- function(df,
     conf_level, method,
     long = FALSE
   )
+  if (!is.null(y$se_diff)) {
+    attr(y$se_diff, "label") <- paste0("Standard Error of Difference in Response rate (%)")
+  }
 
   y
 }
@@ -314,9 +323,9 @@ estimate_proportion_diff <- function(lyt,
                                      na_rm = TRUE,
                                      .stats = c("diff", "diff_ci"),
                                      .stat_names = NULL,
-                                     .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
+                                     .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)", se_diff = "xx.x"),
                                      .labels = NULL,
-                                     .indent_mods = c(diff = 0L, diff_ci = 1L)) {
+                                     .indent_mods = c(diff = 0L, diff_ci = 1L, se_diff = 1L)) {
   # Depending on main functions
   extra_args <- list(
     "na_rm" = na_rm,

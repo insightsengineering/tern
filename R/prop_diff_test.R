@@ -308,7 +308,18 @@ NULL
 
 #' @describeIn h_prop_diff_test Performs Chi-Squared test. Internally calls [stats::prop.test()].
 #'
-#' @keywords internal
+#' @examples
+#' # Chi-Squared test
+#' tbl <- matrix(
+#'   c(13, 7, 8, 12),
+#'   nrow = 2,
+#'   byrow = TRUE,
+#'   dimnames = list(group = c("A", "B"), response = c("TRUE", "FALSE"))
+#' )
+#'
+#' prop_chisq(tbl)
+#'
+#' @export
 prop_chisq <- function(tbl, alternative = c("two.sided", "less", "greater")) {
   checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
@@ -329,7 +340,21 @@ prop_chisq <- function(tbl, alternative = c("two.sided", "less", "greater")) {
 #' @param transform (`string`)\cr either `none` or `wilson_hilferty`; specifies whether to apply
 #'   the Wilson-Hilferty transformation of the chi-squared statistic.
 #'
-#' @keywords internal
+#' @examples
+#' # Cochran-Mantel-Haenszel test with two strata
+#' ary <- array(
+#'   c(12, 8, 8, 12, 10, 10, 6, 14),
+#'   dim = c(2, 2, 2),
+#'   dimnames = list(
+#'     group = c("A", "B"),
+#'     response = c("TRUE", "FALSE"),
+#'     strata = c("Low", "High")
+#'   )
+#' )
+#'
+#' prop_cmh(ary)
+#'
+#' @export
 prop_cmh <- function(ary,
                      alternative = c("two.sided", "less", "greater"),
                      diff_se = c("standard", "sato"),
@@ -375,18 +400,34 @@ prop_cmh <- function(ary,
     z_stat <- num / denom * sign(z_stat) # Preserve the direction of effect.
   }
 
-  if (alternative == "two.sided") {
+  pval <- if (alternative == "two.sided") {
     2 * stats::pnorm(-abs(z_stat))
   } else {
     stats::pnorm(z_stat, lower.tail = (alternative == "greater"))
   }
+
+  structure(
+    pval,
+    z_stat = z_stat
+  )
 }
 
 #' @describeIn h_prop_diff_test Performs the Chi-Squared test with Schouten correction.
 #'
 #' @seealso Schouten correction is based upon \insertCite{Schouten1980-kd;textual}{tern}.
 #'
-#' @keywords internal
+#' @examples
+#' # Chi-Squared test with Schouten correction
+#' tbl <- matrix(
+#'   c(13, 7, 8, 12),
+#'   nrow = 2,
+#'   byrow = TRUE,
+#'   dimnames = list(group = c("A", "B"), response = c("TRUE", "FALSE"))
+#' )
+#'
+#' prop_schouten(tbl)
+#'
+#' @export
 prop_schouten <- function(tbl, alternative = c("two.sided", "less", "greater")) {
   checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
   alternative <- match.arg(alternative)
@@ -422,7 +463,18 @@ prop_schouten <- function(tbl, alternative = c("two.sided", "less", "greater")) 
 
 #' @describeIn h_prop_diff_test Performs the Fisher's exact test. Internally calls [stats::fisher.test()].
 #'
-#' @keywords internal
+#' @examples
+#' # Fisher's exact test
+#' tbl <- matrix(
+#'   c(13, 7, 8, 12),
+#'   nrow = 2,
+#'   byrow = TRUE,
+#'   dimnames = list(group = c("A", "B"), response = c("TRUE", "FALSE"))
+#' )
+#'
+#' prop_fisher(tbl)
+#'
+#' @export
 prop_fisher <- function(tbl, alternative = c("two.sided", "less", "greater")) {
   checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
   alternative <- match.arg(alternative) # Is needed here, because stats::fisher.test does not handle defaults.

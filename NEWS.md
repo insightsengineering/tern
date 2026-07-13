@@ -1,4 +1,4 @@
-# tern 0.9.10.9018
+# tern 0.9.10.9020
 
 ### Enhancements
 * Added `factor_level_method` argument to `df_explicit_na()` to control factor level ordering
@@ -16,7 +16,9 @@
 * Added `range_with_cens_info` statistic to `s_surv_time()`.
 * Added `lsmean_se`, `lsmean_ci`, and `lsmean_diffci` statistics to `s_ancova()`.
 * Added `s_ancova()` to exported functions.
+* In `estimate_proportion_diff` now also the standard error is available for selected methods in the `se_diff` statistic.
 * Exported `h_incidence_rate()` to allow to reuse the incidence rate estimation logic.
+* Exported `prop_chisq()`, `prop_cmh()`, `prop_fisher()`, and `prop_schouten()` for standalone proportion difference testing.
 
 ### Bug Fixes
 * Fixed bug in `prop_diff_cmh()` which previously failed when strata combinations had 0 observations.
