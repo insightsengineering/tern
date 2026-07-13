@@ -53,7 +53,7 @@ Imports:
     rlang (>= 1.1.0),
     scales (>= 1.2.0),
     stats,
-    survival (>= 3.8-8),
+    survival (>= 3.8-9),
     tibble (>= 3.2.1),
     tidyr (>= 0.8.3),
     utils
@@ -72,8 +72,6 @@ VignetteBuilder:
 RdMacros:
     lifecycle,
     Rdpack
-Remotes: 
-    therneau/survival@master
 Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     cran/car, mllg/checkmate, wilkelab/cowplot, tidyverse/dplyr,
     rvlenth/emmeans, tidyverse/forcats, insightsengineering/formatters,
