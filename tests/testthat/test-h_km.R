@@ -84,6 +84,13 @@ testthat::test_that("h_tbl_median_surv estimates median survival time with CI", 
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("h_tbl_median_surv works with custom digits parameter", {
+  result <- h_tbl_median_surv(fit_km = test_fit, digits = 2)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
   df <- tern_ex_adtte |>
     filter(PARAMCD == "OS") |>
