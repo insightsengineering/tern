@@ -9,7 +9,14 @@ annotation tables that can be added to plots generated via
 ## Usage
 
 ``` r
-control_surv_med_annot(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill = TRUE)
+control_surv_med_annot(
+  x = 0.8,
+  y = 0.85,
+  w = 0.32,
+  h = 0.16,
+  fill = TRUE,
+  digits = 4
+)
 
 control_coxph_annot(
   x = 0.29,
@@ -49,6 +56,12 @@ control_coxph_annot(
   whether the annotation table should have a background fill color. Can
   also be a color code to use as the background fill color. If `TRUE`,
   color code defaults to `"#00000020"`.
+
+- digits:
+
+  (`integer(1)`)\
+  number of significant digits for median survival time and confidence
+  interval values. Defaults to `4`.
 
 - ref_lbls:
 
@@ -99,6 +112,28 @@ control_surv_med_annot()
 #> 
 #> $fill
 #> [1] TRUE
+#> 
+#> $digits
+#> [1] 4
+#> 
+control_surv_med_annot(digits = 2)
+#> $x
+#> [1] 0.8
+#> 
+#> $y
+#> [1] 0.85
+#> 
+#> $w
+#> [1] 0.32
+#> 
+#> $h
+#> [1] 0.16
+#> 
+#> $fill
+#> [1] TRUE
+#> 
+#> $digits
+#> [1] 2
 #> 
 
 control_coxph_annot()
