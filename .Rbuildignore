@@ -39,3 +39,4 @@ pkgdown
 ^\.covrignore$
 ^\.vscode$
 ^[.]?air[.]toml$
+^CRAN-SUBMISSION$
