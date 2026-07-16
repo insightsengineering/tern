@@ -19,6 +19,7 @@
 * In `estimate_proportion_diff` now also the standard error is available for selected methods in the `se_diff` statistic.
 * Exported `h_incidence_rate()` to allow to reuse the incidence rate estimation logic.
 * Exported `prop_chisq()`, `prop_cmh()`, `prop_fisher()`, and `prop_schouten()` for standalone proportion difference testing.
+* Added `digits` argument to `h_tbl_median_surv()` and `control_surv_med_annot()` to control the `signif()` precision of the median survival time and confidence interval values annotated in `g_km()`. (#1469)
 
 ### Bug Fixes
 * Fixed bug in `prop_diff_cmh()` which previously failed when strata combinations had 0 observations.
