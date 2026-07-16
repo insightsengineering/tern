@@ -97,8 +97,8 @@ testthat::test_that("prop_cmh also works when there are strata with just one obs
       0L, 0L, 0L, 1L, 0L, 21L, 18L, 3L, 4L, 79L, 16L, 30L, 9L, 1L,
       0L, 13L, 4L
     ),
-    .Dim = c(2L, 2L, 7L),
-    .Dimnames = list(
+    dim = c(2L, 2L, 7L),
+    dimnames = list(
       grp = c("Placebo", "Treatment"),
       x = c("no", "yes"),
       strata = c("A", "B", "C", "D", "E", "F", "G")
@@ -225,8 +225,8 @@ testthat::test_that("prop_cmh with Sato variance estimator works", {
       2L, 7L, 17L, 13L,
       4L, 5L, 13L, 12L
     ),
-    .Dim = c(2L, 2L, 4L),
-    .Dimnames = list(
+    dim = c(2L, 2L, 4L),
+    dimnames = list(
       grp = c("B", "A"),
       rsp = c("TRUE", "FALSE"),
       strata = c("S1", "S2", "S3", "S4")
@@ -244,8 +244,8 @@ testthat::test_that("prop_cmh with Sato variance estimator works", {
       2L, 10L, 17L, 10L,
       4L, 5L, 13L, 12L
     ),
-    .Dim = c(2L, 2L, 4L),
-    .Dimnames = list(
+    dim = c(2L, 2L, 4L),
+    dimnames = list(
       grp = c("B", "A"),
       rsp = c("TRUE", "FALSE"),
       strata = c("S1", "S2", "S3", "S4")
@@ -265,8 +265,8 @@ testthat::test_that("prop_cmh with Sato variance estimator and Wilson-Hilferty t
       2L, 7L, 17L, 13L,
       4L, 5L, 13L, 12L
     ),
-    .Dim = c(2L, 2L, 4L),
-    .Dimnames = list(
+    dim = c(2L, 2L, 4L),
+    dimnames = list(
       grp = c("B", "A"),
       rsp = c("TRUE", "FALSE"),
       strata = c("S1", "S2", "S3", "S4")
