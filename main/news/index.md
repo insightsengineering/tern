@@ -1,6 +1,6 @@
 # Changelog
 
-## tern 0.9.10.9021
+## tern 0.9.11.9000
 
 #### Enhancements
 
@@ -53,6 +53,15 @@
   and
   [`prop_schouten()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
   for standalone proportion difference testing.
+- Added `digits` argument to
+  [`h_tbl_median_surv()`](https://insightsengineering.github.io/tern/reference/h_tbl_median_surv.md)
+  and
+  [`control_surv_med_annot()`](https://insightsengineering.github.io/tern/reference/control_annot.md)
+  to control the [`signif()`](https://rdrr.io/r/base/Round.html)
+  precision of the median survival time and confidence interval values
+  annotated in
+  [`g_km()`](https://insightsengineering.github.io/tern/reference/g_km.md).
+  ([\#1469](https://github.com/insightsengineering/tern/issues/1469))
 
 #### Bug Fixes
 
