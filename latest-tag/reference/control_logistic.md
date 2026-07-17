@@ -16,7 +16,7 @@ control_logistic(response_definition = "response", conf_level = 0.95)
 
 - response_definition:
 
-  (`string`)  
+  (`string`)\
   the definition of what an event is in terms of `response`. This will
   be used when fitting the logistic regression model on the left hand
   side of the formula. Note that the evaluated expression should result
@@ -26,7 +26,7 @@ control_logistic(response_definition = "response", conf_level = 0.95)
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 ## Value

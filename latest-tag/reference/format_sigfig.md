@@ -13,12 +13,12 @@ format_sigfig(sigfig, format = "xx", num_fmt = "fg")
 
 - sigfig:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of significant figures to display.
 
 - format:
 
-  (`string`)  
+  (`string`)\
   the format label (string) to apply when printing the value. Decimal
   places in string are ignored in favor of formatting by significant
   figures. Formats options are: `"xx"`, `"xx / xx"`, `"(xx, xx)"`,
@@ -26,7 +26,7 @@ format_sigfig(sigfig, format = "xx", num_fmt = "fg")
 
 - num_fmt:
 
-  (`string`)  
+  (`string`)\
   numeric format modifiers to apply to the value. Defaults to `"fg"` for
   standard significant figures formatting - fixed (non-scientific
   notation) format (`"f"`) and `sigfig` equal to number of significant
@@ -51,6 +51,7 @@ Other formatting functions:
 [`format_fraction()`](https://insightsengineering.github.io/tern/reference/format_fraction.md),
 [`format_fraction_fixed_dp()`](https://insightsengineering.github.io/tern/reference/format_fraction_fixed_dp.md),
 [`format_fraction_threshold()`](https://insightsengineering.github.io/tern/reference/format_fraction_threshold.md),
+[`format_range_cens()`](https://insightsengineering.github.io/tern/reference/format_range_cens.md),
 [`format_xx()`](https://insightsengineering.github.io/tern/reference/format_xx.md),
 [`formatting_functions`](https://insightsengineering.github.io/tern/reference/formatting_functions.md)
 

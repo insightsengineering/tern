@@ -17,17 +17,17 @@ h_split_param(param, value, f)
 
 - param:
 
-  (`vector`)  
+  (`vector`)\
   the parameter to be split.
 
 - value:
 
-  (`vector`)  
+  (`vector`)\
   the value used to split.
 
 - f:
 
-  (`list`)  
+  (`list`)\
   the reference to make the split.
 
 ## Value

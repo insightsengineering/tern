@@ -32,68 +32,74 @@ h_coxph_subgroups_df(
 
 - tte:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of time-to-event duration values.
 
 - is_event:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` if event, `FALSE` if time to event is censored.
 
 - arm:
 
-  (`factor`)  
+  (`factor`)\
   the treatment group variable.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - groups_lists:
 
-  (named `list` of `list`)  
+  (named `list` of `list`)\
   optionally contains for each `subgroups` variable a list, which
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
 - label_all:
 
-  (`string`)  
+  (`string`)\
   label for the total population analysis.
 
 - strata_data:
 
-  (`factor`, `data.frame`, or `NULL`)  
+  (`factor`, `data.frame`, or `NULL`)\
   required if stratified analysis is performed.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   parameters for comparison details, specified by using the helper
   function
   [`control_coxph()`](https://insightsengineering.github.io/tern/reference/control_coxph.md).
   Some possible parameter options are:
 
-  - `pval_method` (`string`)  
+  - `pval_method` (`string`)\
     p-value method for testing the null hypothesis that hazard ratio
     = 1. Default method is `"log-rank"` which comes from
     [`survival::survdiff()`](https://rdrr.io/pkg/survival/man/survdiff.html),
     can also be set to `"wald"` or `"likelihood"` (from
     [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html)).
 
-  - `ties` (`string`)  
+  - `ties` (`string`)\
     specifying the method for tie handling. Default is `"efron"`, can
     also be set to `"breslow"` or `"exact"`. See more in
     [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html).
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for HR.
+
+  - `alternative` (`string`)\
+    alternative hypothesis for the p-value test. Default is
+    `"two.sided"`, can also be set to `"less"` or `"greater"` for
+    one-sided testing. Note that one-sided testing is not supported when
+    `pval_method = "likelihood"`.
 
 ## Value
 
@@ -156,12 +162,12 @@ adtte <- tern_ex_adtte
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte)
 
-adtte_f <- adtte %>%
+adtte_f <- adtte |>
   filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X"),
     SEX %in% c("M", "F")
-  ) %>%
+  ) |>
   mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),

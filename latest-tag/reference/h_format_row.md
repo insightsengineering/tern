@@ -12,13 +12,13 @@ h_format_row(x, format, labels = NULL)
 
 - x:
 
-  (named `list`)  
+  (named `list`)\
   list of numerical values to be formatted and optionally labeled.
   Elements of `x` must be `numeric` vectors.
 
 - format:
 
-  (named `character` or `NULL`)  
+  (named `character` or `NULL`)\
   format patterns for `x`. Names of the `format` must match the names of
   `x`. This parameter is passed directly to the
   [`rtables::format_rcell`](https://insightsengineering.github.io/rtables/latest-tag/reference/format_rcell.html)
@@ -26,7 +26,7 @@ h_format_row(x, format, labels = NULL)
 
 - labels:
 
-  (named `character` or `NULL`)  
+  (named `character` or `NULL`)\
   optional labels for `x`. Names of the `labels` must match the names of
   `x`. When a label is not specified for an element of `x`, then this
   function tries to use `label` or `names` (in this order) attribute of

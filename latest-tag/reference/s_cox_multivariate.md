@@ -28,25 +28,25 @@ s_cox_multivariate(
 
 - formula:
 
-  (`formula`)  
+  (`formula`)\
   a formula corresponding to the investigated
   [`survival::Surv()`](https://rdrr.io/pkg/survival/man/Surv.html)
   survival model including covariates.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   a data frame which includes the variable in formula and covariates.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   the confidence level for the hazard ratio interval estimations.
   Default is 0.95.
 
 - pval_method:
 
-  (`string`)  
+  (`string`)\
   the method used for the estimation of p-values, should be one of
   `"wald"` (default) or `"likelihood"`.
 

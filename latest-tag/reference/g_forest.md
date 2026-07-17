@@ -34,32 +34,32 @@ g_forest(
 
 - tbl:
 
-  (`VTableTree`)  
+  (`VTableTree`)\
   `rtables` table with at least one column with a single value and one
   column with 2 values.
 
 - col_x:
 
-  (`integer(1)` or `NULL`)  
+  (`integer(1)` or `NULL`)\
   column index with estimator. By default tries to get this from `tbl`
   attribute `col_x`, otherwise needs to be manually specified. If
   `NULL`, points will be excluded from forest plot.
 
 - col_ci:
 
-  (`integer(1)` or `NULL`)  
+  (`integer(1)` or `NULL`)\
   column index with confidence intervals. By default tries to get this
   from `tbl` attribute `col_ci`, otherwise needs to be manually
   specified. If `NULL`, lines will be excluded from forest plot.
 
 - vline:
 
-  (`numeric(1)` or `NULL`)  
+  (`numeric(1)` or `NULL`)\
   x coordinate for vertical line, if `NULL` then the line is omitted.
 
 - forest_header:
 
-  (`character(2)`)  
+  (`character(2)`)\
   text displayed to the left and right of `vline`, respectively. If
   `vline = NULL` then `forest_header` is not printed. By default tries
   to get this from `tbl` attribute `forest_header`. If `NULL`, defaults
@@ -68,17 +68,17 @@ g_forest(
 
 - xlim:
 
-  (`numeric(2)`)  
+  (`numeric(2)`)\
   limits for x axis.
 
 - logx:
 
-  (`flag`)  
+  (`flag`)\
   show the x-values on logarithm scale.
 
 - x_at:
 
-  (`numeric`)  
+  (`numeric`)\
   x-tick locations, if `NULL`, `x_at` is set to `vline` and both `xlim`
   values.
 
@@ -88,7 +88,7 @@ g_forest(
 
 - width_columns:
 
-  (`numeric`)  
+  (`numeric`)\
   a vector of column widths. Each element's position in `colwidths`
   corresponds to the column of `tbl` in the same position. If `NULL`,
   column widths are calculated according to maximum number of characters
@@ -100,7 +100,7 @@ g_forest(
 
 - lbl_col_padding:
 
-  (`numeric`)  
+  (`numeric`)\
   additional padding to use when calculating spacing between the first
   (label) column and the second column of `tbl`. If `colwidths` is
   specified, the width of the first column becomes
@@ -108,19 +108,19 @@ g_forest(
 
 - rel_width_forest:
 
-  (`proportion`)  
+  (`proportion`)\
   proportion of total width to allocate to the forest plot. Relative
   width of table is then `1 - rel_width_forest`. If `as_list = TRUE`,
   this parameter is ignored.
 
 - font_size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   font size.
 
 - col_symbol_size:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   column index from `tbl` containing data to be used to determine
   relative size for estimator plot symbol. Typically, the symbol size is
   proportional to the sample size used to calculate the estimator. If
@@ -130,18 +130,18 @@ g_forest(
 
 - col:
 
-  (`character`)  
+  (`character`)\
   color(s).
 
 - ggtheme:
 
-  (`theme`)  
+  (`theme`)\
   a graphical theme as provided by `ggplot2` to control styling of the
   plot.
 
 - as_list:
 
-  (`flag`)  
+  (`flag`)\
   whether the two `ggplot` objects should be returned as a list. If
   `TRUE`, a named list with two elements, `table` and `plot`, will be
   returned. If `FALSE` (default) the table and forest plot are printed
@@ -186,11 +186,11 @@ library(forcats)
 adrs <- tern_ex_adrs
 n_records <- 20
 adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
-adrs <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
-  filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-  slice(seq_len(n_records)) %>%
-  droplevels() %>%
+adrs <- adrs |>
+  filter(PARAMCD == "BESRSPI") |>
+  filter(ARM %in% c("A: Drug X", "B: Placebo")) |>
+  slice(seq_len(n_records)) |>
+  droplevels() |>
   mutate(
     # Reorder levels of factor to make the placebo group the reference arm.
     ARM = fct_relevel(ARM, "B: Placebo"),
@@ -203,14 +203,14 @@ df <- extract_rsp_subgroups(
 )
 # Full commonly used response table.
 
-tbl <- basic_table() %>%
+tbl <- basic_table() |>
   tabulate_rsp_subgroups(df)
 g_forest(tbl)
 
 
 # Odds ratio only table.
 
-tbl_or <- basic_table() %>%
+tbl_or <- basic_table() |>
   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
 g_forest(
   tbl_or,
@@ -222,12 +222,12 @@ g_forest(
 adtte <- tern_ex_adtte
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte, fill = TRUE)
-adtte_f <- adtte %>%
+adtte_f <- adtte |>
   filter(
     PARAMCD == "OS",
     ARM %in% c("B: Placebo", "A: Drug X"),
     SEX %in% c("M", "F")
-  ) %>%
+  ) |>
   mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
@@ -250,7 +250,7 @@ df <- extract_survival_subgroups(
   ),
   data = adtte_f
 )
-table_hr <- basic_table() %>%
+table_hr <- basic_table() |>
   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
 g_forest(table_hr)
 

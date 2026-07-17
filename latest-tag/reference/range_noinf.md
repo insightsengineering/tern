@@ -15,17 +15,17 @@ range_noinf(x, na.rm = FALSE, finite = FALSE)
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   a sequence of numbers for which the range is computed.
 
 - na.rm:
 
-  (`flag`)  
+  (`flag`)\
   flag indicating if `NA` should be omitted.
 
 - finite:
 
-  (`flag`)  
+  (`flag`)\
   flag indicating if non-finite elements should be removed.
 
 ## Value
@@ -37,7 +37,7 @@ A 2-element vector of class `numeric`.
 ``` r
 x <- rnorm(20, 1)
 range_noinf(x, na.rm = TRUE)
-#> [1] -0.6737692  2.7887837
+#> [1] -1.285365  2.766043
 range_noinf(rep(NA, 20), na.rm = TRUE)
 #> [1] NA NA
 range(rep(NA, 20), na.rm = TRUE)

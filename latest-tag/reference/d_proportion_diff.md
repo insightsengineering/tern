@@ -15,17 +15,17 @@ d_proportion_diff(conf_level, method, long = FALSE)
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - method:
 
-  (`string`)  
+  (`string`)\
   the method used for the confidence interval estimation.
 
 - long:
 
-  (`flag`)  
+  (`flag`)\
   whether a long (`TRUE`) or a short (`FALSE`, default) description is
   required.
 

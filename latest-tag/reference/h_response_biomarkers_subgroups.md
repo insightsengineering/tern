@@ -17,22 +17,22 @@ h_logistic_mult_cont_df(variables, data, control = control_logistic())
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - biomarker:
 
-  (`string`)  
+  (`string`)\
   the name of the biomarker variable.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - control:
 
-  (named `list`)  
+  (named `list`)\
   controls for the response definition and the confidence level produced
   by
   [`control_logistic()`](https://insightsengineering.github.io/tern/reference/control_logistic.md).
@@ -74,8 +74,8 @@ library(forcats)
 adrs <- tern_ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
-adrs_f <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
+adrs_f <- adrs |>
+  filter(PARAMCD == "BESRSPI") |>
   mutate(rsp = AVALC == "CR")
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 

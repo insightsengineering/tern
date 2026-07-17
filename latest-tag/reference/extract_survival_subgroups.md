@@ -29,47 +29,53 @@ extract_survival_subgroups(
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - groups_lists:
 
-  (named `list` of `list`)  
+  (named `list` of `list`)\
   optionally contains for each `subgroups` variable a list, which
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   parameters for comparison details, specified by using the helper
   function
   [`control_coxph()`](https://insightsengineering.github.io/tern/reference/control_coxph.md).
   Some possible parameter options are:
 
-  - `pval_method` (`string`)  
+  - `pval_method` (`string`)\
     p-value method for testing the null hypothesis that hazard ratio
     = 1. Default method is `"log-rank"` which comes from
     [`survival::survdiff()`](https://rdrr.io/pkg/survival/man/survdiff.html),
     can also be set to `"wald"` or `"likelihood"` (from
     [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html)).
 
-  - `ties` (`string`)  
+  - `ties` (`string`)\
     specifying the method for tie handling. Default is `"efron"`, can
     also be set to `"breslow"` or `"exact"`. See more in
     [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html).
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for HR.
+
+  - `alternative` (`string`)\
+    alternative hypothesis for the p-value test. Default is
+    `"two.sided"`, can also be set to `"less"` or `"greater"` for
+    one-sided testing. Note that one-sided testing is not supported when
+    `pval_method = "likelihood"`.
 
 - label_all:
 
-  (`string`)  
+  (`string`)\
   label for the total population analysis.
 
 ## Value

@@ -47,19 +47,19 @@ a_response_subgroups(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - df:
 
-  (`list`)  
+  (`list`)\
   a list of data frames containing all analysis variables. List should
   be created using
   [`extract_rsp_subgroups()`](https://insightsengineering.github.io/tern/reference/extract_rsp_subgroups.md).
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   the names of statistics to be reported among:
 
   - `n`: Total number of observations per group.
@@ -79,19 +79,19 @@ a_response_subgroups(
 
 - groups_lists:
 
-  (named `list` of `list`)  
+  (named `list` of `list`)\
   optionally contains for each `subgroups` variable a list, which
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
 - label_all:
 
-  (`string`)  
+  (`string`)\
   label for the total population analysis.
 
 - riskdiff:
 
-  (`list`)  
+  (`list`)\
   if a risk (proportion) difference column should be added, a list of
   settings to apply within the column. See
   [`control_riskdiff()`](https://insightsengineering.github.io/tern/reference/control_riskdiff.md)
@@ -101,7 +101,7 @@ a_response_subgroups(
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - ...:
@@ -110,7 +110,7 @@ a_response_subgroups(
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -118,24 +118,24 @@ a_response_subgroups(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -143,7 +143,7 @@ a_response_subgroups(
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
 ## Value
@@ -184,10 +184,10 @@ library(forcats)
 adrs <- tern_ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
-adrs_f <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
-  filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-  droplevels() %>%
+adrs_f <- adrs |>
+  filter(PARAMCD == "BESRSPI") |>
+  filter(ARM %in% c("A: Drug X", "B: Placebo")) |>
+  droplevels() |>
   mutate(
     # Reorder levels of factor to make the placebo group the reference arm.
     ARM = fct_relevel(ARM, "B: Placebo"),
@@ -356,7 +356,7 @@ df_grouped
 #> 
 
 # Table with default columns
-basic_table() %>%
+basic_table() |>
   tabulate_rsp_subgroups(df)
 #>                                             B: Placebo           A: Drug X                                 
 #> Baseline Risk Factors          Total n   n    Response (%)   n    Response (%)   Odds Ratio      95% CI    
@@ -371,7 +371,7 @@ basic_table() %>%
 #>   HIGH                           43      26      76.9%       17      88.2%          2.25      (0.40, 12.75)
 
 # Table with selected columns
-basic_table() %>%
+basic_table() |>
   tabulate_rsp_subgroups(
     df = df,
     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
@@ -389,7 +389,7 @@ basic_table() %>%
 #>   HIGH                           43      26       20          76.9%       17       15          88.2%          2.25      (0.40, 12.75)
 
 # Table with risk difference column added
-basic_table() %>%
+basic_table() |>
   tabulate_rsp_subgroups(
     df,
     riskdiff = control_riskdiff(

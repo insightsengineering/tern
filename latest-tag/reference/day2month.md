@@ -12,7 +12,7 @@ day2month(x)
 
 - x:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   time in days.
 
 ## Value

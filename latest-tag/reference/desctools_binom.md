@@ -35,18 +35,18 @@ desctools_binomci(
 
 - conf.level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level, defaults to 0.95.
 
 - sides:
 
-  (`string`)  
+  (`string`)\
   side of the confidence interval to compute. Must be one of
   `"two-sided"` (default), `"left"`, or `"right"`.
 
 - method:
 
-  (`string`)  
+  (`string`)\
   method to use. Can be one out of: `"wald"`, `"wilson"`, `"wilsoncc"`,
   `"agresti-coull"`, `"jeffreys"`, `"modified wilson"`,
   `"modified jeffreys"`, `"clopper-pearson"`, `"arcsine"`, `"logit"`,
@@ -54,12 +54,12 @@ desctools_binomci(
 
 - x:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of successes.
 
 - n:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of trials.
 
 ## Value

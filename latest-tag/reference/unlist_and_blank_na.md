@@ -12,7 +12,7 @@ unlist_and_blank_na(x)
 
 - x:
 
-  (`vector`)  
+  (`vector`)\
   input for a cell.
 
 ## Value

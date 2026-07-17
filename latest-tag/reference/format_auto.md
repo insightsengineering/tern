@@ -21,7 +21,7 @@ format_auto(dt_var, x_stat)
 
 - dt_var:
 
-  (`numeric`)  
+  (`numeric`)\
   variable data the statistics were calculated from. Used only to find
   significant digits. In
   [analyze_vars](https://insightsengineering.github.io/tern/reference/analyze_variables.md)
@@ -32,7 +32,7 @@ format_auto(dt_var, x_stat)
 
 - x_stat:
 
-  (`string`)  
+  (`string`)\
   string indicating the current statistical method used.
 
 ## Value
@@ -58,6 +58,7 @@ Other formatting functions:
 [`format_fraction()`](https://insightsengineering.github.io/tern/reference/format_fraction.md),
 [`format_fraction_fixed_dp()`](https://insightsengineering.github.io/tern/reference/format_fraction_fixed_dp.md),
 [`format_fraction_threshold()`](https://insightsengineering.github.io/tern/reference/format_fraction_threshold.md),
+[`format_range_cens()`](https://insightsengineering.github.io/tern/reference/format_range_cens.md),
 [`format_sigfig()`](https://insightsengineering.github.io/tern/reference/format_sigfig.md),
 [`format_xx()`](https://insightsengineering.github.io/tern/reference/format_xx.md),
 [`formatting_functions`](https://insightsengineering.github.io/tern/reference/formatting_functions.md)

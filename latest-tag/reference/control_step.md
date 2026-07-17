@@ -21,13 +21,13 @@ control_step(
 
 - biomarker:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   optional provision of the numeric biomarker variable, which could be
   used to infer `bandwidth`, see below.
 
 - use_percentile:
 
-  (`flag`)  
+  (`flag`)\
   if `TRUE`, the running windows are created according to quantiles
   rather than actual values, i.e. the bandwidth refers to the percentage
   of data covered in each window. Suggest `TRUE` if the biomarker
@@ -35,7 +35,7 @@ control_step(
 
 - bandwidth:
 
-  (`numeric(1)` or `NULL`)  
+  (`numeric(1)` or `NULL`)\
   indicating the bandwidth of each window. Depending on the argument
   `use_percentile`, it can be either the length of actual-value windows
   on the real biomarker scale, or percentage windows. If
@@ -47,7 +47,7 @@ control_step(
 
 - degree:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   the degree of polynomial function of the biomarker as an interaction
   term with the treatment arm fitted at each window. If 0 (default),
   then the biomarker variable is not included in the model fitted in
@@ -55,7 +55,7 @@ control_step(
 
 - num_points:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   the number of points at which the hazard ratios are estimated. The
   smallest number is 2.
 

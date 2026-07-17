@@ -13,8 +13,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Cox proportional hazards regression — cox_regression">
 <meta name="description" content="
@@ -33,7 +33,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.11</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
     <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
     <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
     <li><a class="dropdown-item" href="../articles/tern_functions_guide.html">Understanding `tern` functions</a></li>
+    <li><a class="dropdown-item" href="../articles/uncond_exact_prop_diff_ci.html">Unconditional Exact Confidence Interval for Difference in Proportions</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -68,6 +69,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.11">v0.9.11</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
@@ -114,7 +116,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Cox proportional hazards regression</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/summarize_coxreg.R" class="external-link"><code>R/summarize_coxreg.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.11/R/summarize_coxreg.R" class="external-link"><code>R/summarize_coxreg.R</code></a></small>
       <div class="d-none name"><code>cox_regression.Rd</code></div>
     </div>
 
@@ -250,7 +252,7 @@ treatment and covariate sections and the second between different covariates.</p
 <dt id="arg-model-df">model_df<a class="anchor" aria-label="anchor" href="#arg-model-df"></a>
 </dt>
 <dd><p>(<code>data.frame</code>)<br> contains the resulting model fit from a <a href="fit_coxreg.html">fit_coxreg</a>
-function with tidying applied via <code><a href="https://broom.tidymodels.org/reference/reexports.html" class="external-link">broom::tidy()</a></code>.</p></dd>
+function with tidying applied via <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code>.</p></dd>
 
 
 <dt id="arg--which-vars">.which_vars<a class="anchor" aria-label="anchor" href="#arg--which-vars"></a>
@@ -369,11 +371,11 @@ Cox regression models, respectively.</p>
 <span class="r-in"><span>    TIME <span class="op">=</span> <span class="va">stop</span>,</span></span>
 <span class="r-in"><span>    STATUS <span class="op">=</span> <span class="va">event</span>,</span></span>
 <span class="r-in"><span>    ARM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">rx</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    COVAR1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">enum</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/formatters/latest-tag/reference/with_label.html" class="external-link">with_label</a></span><span class="op">(</span><span class="st">"A Covariate Label"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    COVAR1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">enum</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/formatters/latest-tag/reference/with_label.html" class="external-link">with_label</a></span><span class="op">(</span><span class="st">"A Covariate Label"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    COVAR2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">enum</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      levels <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"M"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/formatters/latest-tag/reference/with_label.html" class="external-link">with_label</a></span><span class="op">(</span><span class="st">"Sex (F/M)"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">formatters</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/formatters/latest-tag/reference/with_label.html" class="external-link">with_label</a></span><span class="op">(</span><span class="st">"Sex (F/M)"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dta_bladder</span><span class="op">$</span><span class="va">AGE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">20</span><span class="op">:</span><span class="fl">60</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">dta_bladder</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -393,8 +395,8 @@ Cox regression models, respectively.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># summarize_coxreg</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">result_univar</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">summarize_coxreg</span><span class="op">(</span>variables <span class="op">=</span> <span class="va">u1_variables</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">result_univar</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_coxreg</span><span class="op">(</span>variables <span class="op">=</span> <span class="va">u1_variables</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">dta_bladder</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result_univar</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                        n    Hazard Ratio      95% CI      p-value</span>
@@ -405,10 +407,10 @@ Cox regression models, respectively.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A Covariate Label   340       0.61       (0.41, 0.90)   0.0126 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Sex (F/M)           340       0.62       (0.42, 0.92)   0.0182 </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">result_univar_covs</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">result_univar_covs</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_coxreg</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    variables <span class="op">=</span> <span class="va">u2_variables</span>,</span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">dta_bladder</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result_univar_covs</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                       Hazard Ratio      95% CI      p-value</span>
@@ -421,11 +423,11 @@ Cox regression models, respectively.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Sex (F/M) (reference = F)                                                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     M                                     1.33       (0.91, 1.94)   0.1414 </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">result_multivar</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">result_multivar</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_coxreg</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    variables <span class="op">=</span> <span class="va">m1_variables</span>,</span></span>
 <span class="r-in"><span>    multivar <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">dta_bladder</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result_multivar</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                       Hazard Ratio      95% CI      p-value</span>
@@ -441,12 +443,12 @@ Cox regression models, respectively.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Sex (F/M) (reference = F)                                                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     M                                     1.29       (0.88, 1.89)   0.1911 </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">result_multivar_covs</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">result_multivar_covs</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_coxreg</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    variables <span class="op">=</span> <span class="va">m2_variables</span>,</span></span>
 <span class="r-in"><span>    multivar <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>    varlabels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Covariate 1"</span>, <span class="st">"Covariate 2"</span><span class="op">)</span> <span class="co"># custom labels</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">dta_bladder</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result_multivar_covs</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                 Hazard Ratio      95% CI      p-value</span>

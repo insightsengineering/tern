@@ -19,19 +19,19 @@ labels_use_control(labels_default, control, labels_custom = NULL)
 
 - labels_default:
 
-  (named `character`)  
+  (named `character`)\
   a named vector of statistic labels to modify according to the control
   specifications. Labels that are explicitly defined in `labels_custom`
   will not be affected.
 
 - control:
 
-  (named `list`)  
+  (named `list`)\
   list of control parameters to apply to adjust default labels.
 
 - labels_custom:
 
-  (named `character`)  
+  (named `character`)\
   named vector of labels that are customized by the user and should not
   be affected by `control`.
 
@@ -44,7 +44,7 @@ to relevant labels.
 
 ``` r
 control <- list(conf_level = 0.80, quantiles = c(0.1, 0.83), test_mean = 0.57)
-get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) %>%
+get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) |>
   labels_use_control(control = control)
 #>                          mean_ci                        quantiles 
 #>                    "Mean 80% CI"                "10% and 83%-ile" 

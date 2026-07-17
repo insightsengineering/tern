@@ -13,27 +13,27 @@ h_miettinen_nurminen_var_est(n1, n2, x1, x2, diff_par)
 
 - n1:
 
-  (`numeric`)  
+  (`numeric`)\
   sample sizes in group 1.
 
 - n2:
 
-  (`numeric`)  
+  (`numeric`)\
   sample sizes in group 2.
 
 - x1:
 
-  (`numeric`)  
+  (`numeric`)\
   number of responders in group 1.
 
 - x2:
 
-  (`numeric`)  
+  (`numeric`)\
   number of responders in group 2.
 
 - diff_par:
 
-  (`numeric`)  
+  (`numeric`)\
   assumed difference in true proportions (group 2 minus group 1).
 
 ## Value

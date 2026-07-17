@@ -13,12 +13,12 @@ combine_counts(fct, groups_list = NULL)
 
 - fct:
 
-  (`factor`)  
+  (`factor`)\
   the variable with levels which needs to be grouped.
 
 - groups_list:
 
-  (named `list` of `character`)  
+  (named `list` of `character`)\
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
@@ -41,10 +41,10 @@ col_counts <- combine_counts(
   groups_list = groups
 )
 
-basic_table() %>%
-  split_cols_by_groups("ARM", groups) %>%
-  add_colcounts() %>%
-  analyze_vars("AGE") %>%
+basic_table() |>
+  split_cols_by_groups("ARM", groups) |>
+  add_colcounts() |>
+  analyze_vars("AGE") |>
   build_table(DM, col_counts = col_counts)
 #>             A: Drug X/B: Placebo   C: Combination
 #>                   (N=227)             (N=129)    
@@ -61,10 +61,10 @@ col_counts <- combine_counts(
   groups_list = groups
 )
 
-basic_table() %>%
-  split_cols_by_groups("ARM", groups) %>%
-  add_colcounts() %>%
-  analyze_vars("AGE") %>%
+basic_table() |>
+  split_cols_by_groups("ARM", groups) |>
+  add_colcounts() |>
+  analyze_vars("AGE") |>
   build_table(DM, col_counts = col_counts)
 #>              A: Drug X    B: Placebo/C: Combination
 #>               (N=121)              (N=235)         

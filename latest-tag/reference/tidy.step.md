@@ -15,7 +15,7 @@ tidy(x, ...)
 
 - x:
 
-  (`matrix`)  
+  (`matrix`)\
   results from
   [`fit_survival_step()`](https://insightsengineering.github.io/tern/reference/fit_survival_step.md).
 

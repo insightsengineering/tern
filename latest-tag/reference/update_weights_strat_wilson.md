@@ -24,39 +24,39 @@ update_weights_strat_wilson(
 
 - vars:
 
-  (`numeric`)  
+  (`numeric`)\
   normalized proportions for each strata.
 
 - strata_qnorm:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   initial estimation with identical weights of the quantiles.
 
 - initial_weights:
 
-  (`numeric`)  
+  (`numeric`)\
   initial weights used to calculate `strata_qnorm`. This can be
   optimized in the future if we need to estimate better initial weights.
 
 - n_per_strata:
 
-  (`numeric`)  
+  (`numeric`)\
   number of elements in each strata.
 
 - max_iterations:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   maximum number of iterations to be tried. Convergence is always
   checked.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - tol:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   tolerance threshold for convergence.
 
 ## Value

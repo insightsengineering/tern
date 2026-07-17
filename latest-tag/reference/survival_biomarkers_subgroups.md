@@ -37,13 +37,13 @@ tabulate_survival_biomarkers(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   containing all analysis variables, as returned by
   [`extract_survival_biomarkers()`](https://insightsengineering.github.io/tern/reference/extract_survival_biomarkers.md).
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   the names of statistics to be reported among:
 
   - `n_tot_events`: Total number of events per group.
@@ -61,33 +61,33 @@ tabulate_survival_biomarkers(
 
 - groups_lists:
 
-  (named `list` of `list`)  
+  (named `list` of `list`)\
   optionally contains for each `subgroups` variable a list, which
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   a list of parameters as returned by the helper function
   [`control_coxreg()`](https://insightsengineering.github.io/tern/reference/control_coxreg.md).
 
 - label_all:
 
-  **\[deprecated\]**  
+  **\[deprecated\]**\
   please assign the `label_all` parameter within the
   [`extract_survival_biomarkers()`](https://insightsengineering.github.io/tern/reference/extract_survival_biomarkers.md)
   function when creating `df`.
 
 - time_unit:
 
-  (`string`)  
+  (`string`)\
   label with unit of median survival time. Default `NULL` skips
   displaying unit.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - ...:
@@ -96,7 +96,7 @@ tabulate_survival_biomarkers(
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -104,18 +104,18 @@ tabulate_survival_biomarkers(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
@@ -157,8 +157,8 @@ adtte <- tern_ex_adtte
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte)
 
-adtte_f <- adtte %>%
-  filter(PARAMCD == "OS") %>%
+adtte_f <- adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(
     AVALU = as.character(AVALU),
     is_event = CNSR == 0

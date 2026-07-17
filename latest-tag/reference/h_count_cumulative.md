@@ -22,33 +22,33 @@ h_count_cumulative(
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze.
 
 - threshold:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   a cutoff value as threshold to count values of `x`.
 
 - lower_tail:
 
-  (`flag`)  
+  (`flag`)\
   whether to count lower tail, default is `TRUE`.
 
 - include_eq:
 
-  (`flag`)  
+  (`flag`)\
   whether to include value equal to the `threshold` in count, default is
   `TRUE`.
 
 - na_rm:
 
-  (`flag`)  
+  (`flag`)\
   whether `NA` values should be removed from `x` prior to analysis.
 
 - denom:
 
-  (`string`)  
+  (`string`)\
   choice of denominator for proportion. Options are:
 
   - `n`: number of values in this row and column intersection.

@@ -32,20 +32,20 @@ has_counts_difference(atleast, ...)
 
 - row_condition:
 
-  (`CombinationFunction`)  
+  (`CombinationFunction`)\
   condition function which works on individual analysis rows and flags
   whether these should be kept in the pruned table.
 
 - content_row_condition:
 
-  (`CombinationFunction`)  
+  (`CombinationFunction`)\
   condition function which works on individual first content rows of
   leaf tables and flags whether these leaf tables should be kept in the
   pruned table.
 
 - atleast:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   threshold which should be met in order to keep the row.
 
 - ...:
@@ -147,12 +147,12 @@ interface.
 
 ``` r
 # \donttest{
-tab <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("RACE") %>%
-  split_rows_by("STRATA1") %>%
-  summarize_row_groups() %>%
-  analyze_vars("COUNTRY", .stats = "count_fraction") %>%
+tab <- basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("RACE") |>
+  split_rows_by("STRATA1") |>
+  summarize_row_groups() |>
+  analyze_vars("COUNTRY", .stats = "count_fraction") |>
   build_table(DM)
 # }
 

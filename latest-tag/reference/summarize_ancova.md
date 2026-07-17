@@ -70,65 +70,65 @@ a_ancova(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables, with expected elements:
 
-  - `arm` (`string`)  
+  - `arm` (`string`)\
     group variable, for which the covariate adjusted means of multiple
     groups will be summarized. Specifically, the first level of `arm`
     variable is taken as the reference group.
 
-  - `covariates` (`character`)  
+  - `covariates` (`character`)\
     a vector that can contain single variable names (such as `"X1"`),
     and/or interaction terms indicated by `"X1 * X2"`.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - interaction_y:
 
-  (`string` or `flag`)  
+  (`string` or `flag`)\
   a selected item inside of the `interaction_item` variable which will
   be used to select the specific ANCOVA results. if the interaction is
   not needed, the default option is `FALSE`.
 
 - interaction_item:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   name of the variable that should have interactions with arm. if the
   interaction is not needed, the default option is `NULL`.
 
 - weights_emmeans:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   argument from
   [`emmeans::emmeans()`](https://rvlenth.github.io/emmeans/reference/emmeans.html)
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -140,25 +140,26 @@ a_ancova(
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
-  Options are: `'n', 'lsmean', 'lsmean_diff', 'lsmean_diff_ci', 'pval'`
+  Options are:
+  `'n', 'lsmean', 'lsmean_se', 'lsmean_ci', 'lsmean_diff', 'lsmean_diff_ci', 'lsmean_diff_with_ci', 'pval'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -166,46 +167,46 @@ a_ancova(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - .df_row:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set that includes all the variables that are called in `.var` and
   `variables`.
 
 - .ref_group:
 
-  (`data.frame` or `vector`)  
+  (`data.frame` or `vector`)\
   the data corresponding to the reference group.
 
 - .in_ref_col:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` when working with the reference level, `FALSE` otherwise.
 
 ## Value
@@ -218,11 +219,17 @@ a_ancova(
 
 &nbsp;
 
-- `s_ancova()` returns a named list of 5 statistics:
+- `s_ancova()` returns a named list of 8 statistics:
 
   - `n`: Count of complete sample size for the group.
 
   - `lsmean`: Estimated marginal means in the group.
+
+  - `lsmean_se`: Adjusted mean with standard error as a 2-element vector
+    `c(emmean, SE)`.
+
+  - `lsmean_ci`: Adjusted mean with confidence interval as a 3-element
+    vector `c(emmean, lower.CL, upper.CL)`.
 
   - `lsmean_diff`: Difference in estimated marginal means in comparison
     to the reference group. If working with the reference group, this
@@ -230,6 +237,9 @@ a_ancova(
 
   - `lsmean_diff_ci`: Confidence level for difference in estimated
     marginal means in comparison to the reference group.
+
+  - `lsmean_diff_with_ci`: Difference in adjusted means with confidence
+    interval as a 3-element vector `c(estimate, lower.CL, upper.CL)`.
 
   - `pval`: p-value (not adjusted for multiple comparisons).
 
@@ -254,22 +264,22 @@ a_ancova(
 ## Examples
 
 ``` r
-basic_table() %>%
-  split_cols_by("Species", ref_group = "setosa") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by("Species", ref_group = "setosa") |>
+  add_colcounts() |>
   summarize_ancova(
     vars = "Petal.Length",
     variables = list(arm = "Species", covariates = NULL),
     table_names = "unadj",
     conf_level = 0.95, var_labels = "Unadjusted comparison",
     .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
-  ) %>%
+  ) |>
   summarize_ancova(
     vars = "Petal.Length",
     variables = list(arm = "Species", covariates = c("Sepal.Length", "Sepal.Width")),
     table_names = "adj",
     conf_level = 0.95, var_labels = "Adjusted comparison (covariates: Sepal.Length and Sepal.Width)"
-  ) %>%
+  ) |>
   build_table(iris)
 #>                                                                  setosa    versicolor     virginica  
 #>                                                                  (N=50)      (N=50)         (N=50)   

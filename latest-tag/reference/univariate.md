@@ -15,7 +15,7 @@ univariate(x)
 
 - x:
 
-  (`character`)  
+  (`character`)\
   a vector of variable names separated by commas.
 
 ## Value

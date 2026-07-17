@@ -27,19 +27,19 @@ add_riskdiff(
 
 - arm_x:
 
-  (`string`)  
+  (`string`)\
   name of reference arm to use in risk difference calculations.
 
 - arm_y:
 
-  (`character`)  
+  (`character`)\
   names of one or more arms to compare to reference arm in risk
   difference calculations. A new column will be added for each value of
   `arm_y`.
 
 - col_label:
 
-  (`character`)  
+  (`character`)\
   labels to use when rendering the risk difference column within the
   table. If more than one comparison arm is specified in `arm_y`,
   default labels will specify which two arms are being compared
@@ -47,7 +47,7 @@ add_riskdiff(
 
 - pct:
 
-  (`flag`)  
+  (`flag`)\
   whether output should be returned as percentages. Defaults to `TRUE`.
 
 ## Value
@@ -67,8 +67,8 @@ for details on risk difference calculation.
 adae <- tern_ex_adae
 adae$AESEV <- factor(adae$AESEV)
 
-lyt <- basic_table() %>%
-  split_cols_by("ARMCD", split_fun = add_riskdiff(arm_x = "ARM A", arm_y = c("ARM B", "ARM C"))) %>%
+lyt <- basic_table() |>
+  split_cols_by("ARMCD", split_fun = add_riskdiff(arm_x = "ARM A", arm_y = c("ARM B", "ARM C"))) |>
   count_occurrences_by_grade(
     var = "AESEV",
     riskdiff = TRUE

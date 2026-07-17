@@ -21,34 +21,34 @@ h_km_layout(
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   survival data as pre-processed by `h_data_plot`.
 
 - g_el:
 
-  (`list` of `gtable`)  
+  (`list` of `gtable`)\
   list as obtained by
   [`h_decompose_gg()`](https://insightsengineering.github.io/tern/reference/h_decompose_gg.md).
 
 - title:
 
-  (`string`)  
+  (`string`)\
   plot title.
 
 - footnotes:
 
-  (`string`)  
+  (`string`)\
   plot footnotes.
 
 - annot_at_risk:
 
-  (`flag`)  
+  (`flag`)\
   compute and add the annotation table reporting the number of patient
   at risk matching the main grid of the Kaplan-Meier curve.
 
 - annot_at_risk_title:
 
-  (`flag`)  
+  (`flag`)\
   whether the "Patients at Risk" title should be added above the
   `annot_at_risk` table. Has no effect if `annot_at_risk` is `FALSE`.
   Defaults to `TRUE`.
@@ -79,9 +79,9 @@ library(dplyr)
 library(survival)
 library(grid)
 
-fit_km <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
-  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+fit_km <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
+  (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))()
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
 gg <- h_ggkm(

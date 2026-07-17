@@ -74,31 +74,31 @@ a_count_abnormal_lab_worsen_by_baseline(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables including:
 
-  - `id` (`string`)  
+  - `id` (`string`)\
     subject variable name.
 
-  - `baseline_var` (`string`)  
+  - `baseline_var` (`string`)\
     name of the data column containing baseline toxicity variable.
 
-  - `direction_var` (`string`)  
+  - `direction_var` (`string`)\
     see `direction_var` for more details.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -116,12 +116,12 @@ a_count_abnormal_lab_worsen_by_baseline(
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -129,29 +129,29 @@ a_count_abnormal_lab_worsen_by_baseline(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var, var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
@@ -207,14 +207,14 @@ process input data.
 library(dplyr)
 
 # The direction variable, GRADDR, is based on metadata
-adlb <- tern_ex_adlb %>%
+adlb <- tern_ex_adlb |>
   mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "B",
       PARAMCD == "CRP" ~ "L",
       PARAMCD == "IGA" ~ "H"
     )
-  ) %>%
+  ) |>
   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 df <- h_adlb_worsen(
@@ -224,11 +224,11 @@ df <- h_adlb_worsen(
   direction_var = "GRADDR"
 )
 
-basic_table() %>%
-  split_cols_by("ARMCD") %>%
-  add_colcounts() %>%
-  split_rows_by("PARAMCD") %>%
-  split_rows_by("GRADDR") %>%
+basic_table() |>
+  split_cols_by("ARMCD") |>
+  add_colcounts() |>
+  split_rows_by("PARAMCD") |>
+  split_rows_by("GRADDR") |>
   count_abnormal_lab_worsen_by_baseline(
     var = "ATOXGR",
     variables = list(
@@ -236,8 +236,8 @@ basic_table() %>%
       baseline_var = "BTOXGR",
       direction_var = "GRADDR"
     )
-  ) %>%
-  append_topleft("Direction of Abnormality") %>%
+  ) |>
+  append_topleft("Direction of Abnormality") |>
   build_table(df = df, alt_counts_df = tern_ex_adsl)
 #>                                ARM A           ARM B           ARM C    
 #> Direction of Abnormality      (N=69)          (N=73)          (N=58)    

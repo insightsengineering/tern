@@ -17,12 +17,12 @@ add_rowcounts(lyt, alt_counts = FALSE)
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - alt_counts:
 
-  (`flag`)  
+  (`flag`)\
   whether row counts should be taken from `alt_counts_df` (`TRUE`) or
   from `df` (`FALSE`). Defaults to `FALSE`.
 
@@ -41,12 +41,12 @@ pruning.
 ## Examples
 
 ``` r
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
-  split_rows_by("RACE", split_fun = drop_split_levels) %>%
-  add_rowcounts() %>%
-  analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
+  split_rows_by("RACE", split_fun = drop_split_levels) |>
+  add_rowcounts() |>
+  analyze("AGE", afun = list_wrap_x(summary), format = "xx.xx") |>
   build_table(DM)
 #>                                    A: Drug X   B: Placebo   C: Combination
 #>                                     (N=121)     (N=106)        (N=129)    

@@ -59,39 +59,39 @@ g_km(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - variables:
 
-  (named `list`)  
+  (named `list`)\
   variable names. Details are:
 
-  - `tte` (`numeric`)  
+  - `tte` (`numeric`)\
     variable indicating time-to-event duration values.
 
-  - `is_event` (`logical`)  
+  - `is_event` (`logical`)\
     event variable. `TRUE` if event, `FALSE` if time to event is
     censored.
 
-  - `arm` (`factor`)  
+  - `arm` (`factor`)\
     the treatment group variable.
 
-  - `strata` (`character` or `NULL`)  
+  - `strata` (`character` or `NULL`)\
     variable names indicating stratification factors.
 
 - control_surv:
 
-  (`list`)  
+  (`list`)\
   parameters for comparison details, specified by using the helper
   function
   [`control_surv_timepoint()`](https://insightsengineering.github.io/tern/reference/control_surv_timepoint.md).
   Some possible parameter options are:
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for survival rate.
 
-  - `conf_type` (`string`)  
+  - `conf_type` (`string`)\
     `"plain"` (default), `"log"`, `"log-log"` for confidence interval
     type, see more in
     [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
@@ -99,50 +99,50 @@ g_km(
 
 - col:
 
-  (`character`)  
+  (`character`)\
   lines colors. Length of a vector should be equal to number of strata
   from
   [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
 
 - lty:
 
-  (`numeric`)  
+  (`numeric`)\
   line type. If a vector is given, its length should be equal to the
   number of strata from
   [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
 
 - lwd:
 
-  (`numeric`)  
+  (`numeric`)\
   line width. If a vector is given, its length should be equal to the
   number of strata from
   [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
 
 - censor_show:
 
-  (`flag`)  
+  (`flag`)\
   whether to show censored observations.
 
 - pch:
 
-  (`string`)  
+  (`string`)\
   name of symbol or character to use as point symbol to indicate
   censored cases.
 
 - size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   size of censored point symbols.
 
 - max_time:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   maximum value to show on x-axis. Only data values less than or up to
   this threshold value will be plotted (defaults to `NULL`).
 
 - xticks:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   numeric vector of tick positions or a single number with spacing
   between ticks on the x-axis. If `NULL` (default),
   [`labeling::extended()`](https://rdrr.io/pkg/labeling/man/extended.html)
@@ -150,115 +150,115 @@ g_km(
 
 - xlab:
 
-  (`string`)  
+  (`string`)\
   x-axis label.
 
 - yval:
 
-  (`string`)  
+  (`string`)\
   type of plot, to be plotted on the y-axis. Options are `Survival`
   (default) and `Failure` probability.
 
 - ylab:
 
-  (`string`)  
+  (`string`)\
   y-axis label.
 
 - ylim:
 
-  (`numeric(2)`)  
+  (`numeric(2)`)\
   vector containing lower and upper limits for the y-axis, respectively.
   If `NULL` (default), the default scale range is used.
 
 - title:
 
-  (`string`)  
+  (`string`)\
   plot title.
 
 - footnotes:
 
-  (`string`)  
+  (`string`)\
   plot footnotes.
 
 - font_size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   font size to use for all text.
 
 - ci_ribbon:
 
-  (`flag`)  
+  (`flag`)\
   whether the confidence interval should be drawn around the
   Kaplan-Meier curve.
 
 - annot_at_risk:
 
-  (`flag`)  
+  (`flag`)\
   compute and add the annotation table reporting the number of patient
   at risk matching the main grid of the Kaplan-Meier curve.
 
 - annot_at_risk_title:
 
-  (`flag`)  
+  (`flag`)\
   whether the "Patients at Risk" title should be added above the
   `annot_at_risk` table. Has no effect if `annot_at_risk` is `FALSE`.
   Defaults to `TRUE`.
 
 - annot_surv_med:
 
-  (`flag`)  
+  (`flag`)\
   compute and add the annotation table on the Kaplan-Meier curve
   estimating the median survival time per group.
 
 - annot_coxph:
 
-  (`flag`)  
+  (`flag`)\
   whether to add the annotation table from a
   [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html)
   model.
 
 - annot_stats:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   statistics annotations to add to the plot. Options are `median`
   (median survival follow-up time) and `min` (minimum survival follow-up
   time).
 
 - annot_stats_vlines:
 
-  (`flag`)  
+  (`flag`)\
   add vertical lines corresponding to each of the statistics specified
   by `annot_stats`. If `annot_stats` is `NULL` no lines will be added.
 
 - control_coxph_pw:
 
-  (`list`)  
+  (`list`)\
   parameters for comparison details, specified using the helper function
   [`control_coxph()`](https://insightsengineering.github.io/tern/reference/control_coxph.md).
   Some possible parameter options are:
 
-  - `pval_method` (`string`)  
+  - `pval_method` (`string`)\
     p-value method for testing hazard ratio = 1. Default method is
     `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
 
-  - `ties` (`string`)  
+  - `ties` (`string`)\
     method for tie handling. Default is `"efron"`, can also be set to
     `"breslow"` or `"exact"`. See more in
     [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html)
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for HR.
 
 - ref_group_coxph:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   level of arm variable to use as reference group in calculations for
   `annot_coxph` table. If `NULL` (default), uses the first level of the
   arm variable.
 
 - control_annot_surv_med:
 
-  (`list`)  
+  (`list`)\
   parameters to control the position and size of the annotation table
   added to the plot when `annot_surv_med = TRUE`, specified using the
   [`control_surv_med_annot()`](https://insightsengineering.github.io/tern/reference/control_annot.md)
@@ -268,7 +268,7 @@ g_km(
 
 - control_annot_coxph:
 
-  (`list`)  
+  (`list`)\
   parameters to control the position and size of the annotation table
   added to the plot when `annot_coxph = TRUE`, specified using the
   [`control_coxph_annot()`](https://insightsengineering.github.io/tern/reference/control_annot.md)
@@ -279,7 +279,7 @@ g_km(
 
 - legend_pos:
 
-  (`numeric(2)` or `NULL`)  
+  (`numeric(2)` or `NULL`)\
   vector containing x- and y-coordinates, respectively, for the legend
   position relative to the KM plot area. If `NULL` (default), the legend
   is positioned in the bottom right corner of the plot, or the middle
@@ -287,7 +287,7 @@ g_km(
 
 - rel_height_plot:
 
-  (`proportion`)  
+  (`proportion`)\
   proportion of total figure height to allocate to the Kaplan-Meier
   plot. Relative height of patients at risk table is then
   `1 - rel_height_plot`. If `annot_at_risk = FALSE` or `as_list = TRUE`,
@@ -295,13 +295,13 @@ g_km(
 
 - ggtheme:
 
-  (`theme`)  
+  (`theme`)\
   a graphical theme as provided by `ggplot2` to format the Kaplan-Meier
   plot.
 
 - as_list:
 
-  (`flag`)  
+  (`flag`)\
   whether the two `ggplot` objects should be returned as a list when
   `annot_at_risk = TRUE`. If `TRUE`, a named list with two elements,
   `plot` and `table`, will be returned. If `FALSE` (default) the
@@ -358,8 +358,8 @@ A `ggplot` Kaplan-Meier plot and (optionally) summary table.
 ``` r
 library(dplyr)
 
-df <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
+df <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(is_event = CNSR == 0)
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 

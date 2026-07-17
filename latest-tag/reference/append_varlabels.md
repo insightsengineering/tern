@@ -17,22 +17,22 @@ append_varlabels(lyt, df, vars, indent = 0L)
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names of which the labels are to be looked up in `df`.
 
 - indent:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   non-negative number of nested indent space, default to 0L which means
   no indent. 1L means two spaces indent, 2L means four spaces indent and
   so on.
@@ -52,12 +52,12 @@ necessary anymore.
 ## Examples
 
 ``` r
-lyt <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
-  split_rows_by("SEX") %>%
-  append_varlabels(DM, "SEX") %>%
-  analyze("AGE", afun = mean) %>%
+lyt <- basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
+  split_rows_by("SEX") |>
+  append_varlabels(DM, "SEX") |>
+  analyze("AGE", afun = mean) |>
   append_varlabels(DM, "AGE", indent = 1)
 build_table(lyt, DM)
 #> SEX                   A: Drug X          B: Placebo       C: Combination 
@@ -72,10 +72,10 @@ build_table(lyt, DM)
 #> UNDIFFERENTIATED                                                         
 #>   mean                    NA                 NA                 NA       
 
-lyt <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("SEX") %>%
-  analyze("AGE", afun = mean) %>%
+lyt <- basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("SEX") |>
+  analyze("AGE", afun = mean) |>
   append_varlabels(DM, c("SEX", "AGE"))
 build_table(lyt, DM)
 #> SEX / Age             A: Drug X          B: Placebo       C: Combination 

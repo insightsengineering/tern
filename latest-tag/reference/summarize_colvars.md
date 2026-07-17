@@ -38,12 +38,12 @@ summarize_colvars(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - ...:
@@ -53,12 +53,12 @@ summarize_colvars(
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -66,18 +66,18 @@ summarize_colvars(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `vector` of `integer`)  
+  (named `vector` of `integer`)\
   indent modifiers for the labels. Each element of the vector should be
   a name-value pair with name corresponding to a statistic specified in
   `.stats` and value the indentation for that statistic's row label.
@@ -110,11 +110,11 @@ dta_test <- data.frame(
 )
 
 ## Default output within a `rtables` pipeline.
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("AVISIT") %>%
-  split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
-  summarize_colvars() %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("AVISIT") |>
+  split_cols_by_multivar(vars = c("AVAL", "CHG")) |>
+  summarize_colvars() |>
   build_table(dta_test)
 #>                         A                             B                             C          
 #>                 AVAL         CHG           AVAL               CHG           AVAL         CHG   
@@ -136,15 +136,15 @@ basic_table() %>%
 #>   Min - Max   4.0 - 7.0   3.0 - 6.0      1.0 - 1.0         9.0 - 9.0      <Missing>   <Missing>
 
 ## Selection of statistics, formats and labels also work.
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("AVISIT") %>%
-  split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("AVISIT") |>
+  split_cols_by_multivar(vars = c("AVAL", "CHG")) |>
   summarize_colvars(
     .stats = c("n", "mean_sd"),
     .formats = c("mean_sd" = "xx.x, xx.x"),
     .labels = c(n = "n", mean_sd = "Mean, SD")
-  ) %>%
+  ) |>
   build_table(dta_test)
 #>                       A                           B                            C          
 #>                AVAL       CHG           AVAL             CHG           AVAL         CHG   
@@ -160,11 +160,11 @@ basic_table() %>%
 #>   Mean, SD   5.5, 2.1   4.5, 2.1   1.0, <Missing>   9.0, <Missing>   <Missing>   <Missing>
 
 ## Use arguments interpreted by `s_summary`.
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("AVISIT") %>%
-  split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
-  summarize_colvars(na.rm = FALSE) %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("AVISIT") |>
+  split_cols_by_multivar(vars = c("AVAL", "CHG")) |>
+  summarize_colvars(na.rm = FALSE) |>
   build_table(dta_test)
 #>                         A                             B                             C          
 #>                 AVAL         CHG           AVAL               CHG           AVAL         CHG   

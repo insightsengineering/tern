@@ -16,7 +16,7 @@ d_survival_subgroups_colvars(vars, conf_level, method, time_unit = NULL)
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   the names of statistics to be reported among:
 
   - `n_tot_events`: Total number of events per group.
@@ -38,17 +38,17 @@ d_survival_subgroups_colvars(vars, conf_level, method, time_unit = NULL)
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - method:
 
-  (`string`)  
+  (`string`)\
   p-value method for testing hazard ratio = 1.
 
 - time_unit:
 
-  (`string`)  
+  (`string`)\
   label with unit of median survival time. Default `NULL` skips
   displaying unit.
 

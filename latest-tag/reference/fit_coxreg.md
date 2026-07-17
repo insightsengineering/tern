@@ -16,7 +16,7 @@ fit_coxreg_multivar(variables, data, control = control_coxreg())
 
 - variables:
 
-  (named `list`)  
+  (named `list`)\
   the names of the variables found in `data`, passed as a named list and
   corresponding to the `time`, `event`, `arm`, `strata`, and
   `covariates` terms. If `arm` is missing from `variables`, then only
@@ -25,18 +25,18 @@ fit_coxreg_multivar(variables, data, control = control_coxreg())
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to fit the models.
 
 - at:
 
-  (`list` of `numeric`)  
+  (`list` of `numeric`)\
   when the candidate covariate is a `numeric`, use `at` to specify the
   value of the covariate at which the effect should be estimated.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   a list of parameters as returned by the helper function
   [`control_coxreg()`](https://insightsengineering.github.io/tern/reference/control_coxreg.md).
 

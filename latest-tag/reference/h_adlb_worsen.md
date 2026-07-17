@@ -20,24 +20,24 @@ h_adlb_worsen(
 
 - adlb:
 
-  (`data.frame`)  
+  (`data.frame`)\
   ADLB data frame.
 
 - worst_flag_low:
 
-  (named `vector`)  
+  (named `vector`)\
   worst low post-baseline lab grade flag variable. See how this is
   implemented in the following examples.
 
 - worst_flag_high:
 
-  (named `vector`)  
+  (named `vector`)\
   worst high post-baseline lab grade flag variable. See how this is
   implemented in the following examples.
 
 - direction_var:
 
-  (`string`)  
+  (`string`)\
   name of the direction variable specifying the direction of the shift
   table of interest. Only lab records flagged by `L`, `H` or `B` are
   included in the shift table.
@@ -69,14 +69,14 @@ direction.
 library(dplyr)
 
 # The direction variable, GRADDR, is based on metadata
-adlb <- tern_ex_adlb %>%
+adlb <- tern_ex_adlb |>
   mutate(
     GRADDR = case_when(
       PARAMCD == "ALT" ~ "B",
       PARAMCD == "CRP" ~ "L",
       PARAMCD == "IGA" ~ "H"
     )
-  ) %>%
+  ) |>
   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
 
 df <- h_adlb_worsen(

@@ -15,12 +15,12 @@ h_col_indices(table_tree, col_names)
 
 - table_tree:
 
-  (`VTableTree`)  
+  (`VTableTree`)\
   `rtables` table object to extract the indices from.
 
 - col_names:
 
-  (`character`)  
+  (`character`)\
   vector of column names.
 
 ## Value

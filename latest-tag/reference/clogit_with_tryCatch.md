@@ -24,7 +24,7 @@ clogit_with_tryCatch(formula, data, ...)
 
 ## Value
 
-When model fitting is successful, an object of class "clogit".  
+When model fitting is successful, an object of class "clogit".\
 When model fitting failed, an error message is shown.
 
 ## Examples
@@ -32,8 +32,8 @@ When model fitting failed, an error message is shown.
 ``` r
 if (FALSE) { # \dontrun{
 library(dplyr)
-adrs_local <- tern_ex_adrs %>%
-  dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+adrs_local <- tern_ex_adrs |>
+  dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) |>
   dplyr::mutate(
     RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
     ARMBIN = droplevels(ARMCD)

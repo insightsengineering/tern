@@ -3,8 +3,8 @@
 **\[stable\]**
 
 Helper method (for
-[`broom::tidy()`](https://broom.tidymodels.org/reference/reexports.html))
-to prepare a data frame from a `glm` object with `binomial` family.
+[`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html)) to
+prepare a data frame from a `glm` object with `binomial` family.
 
 ## Usage
 
@@ -17,19 +17,19 @@ tidy(x, conf_level = 0.95, at = NULL, ...)
 
 - x:
 
-  (`glm`)  
+  (`glm`)\
   logistic regression model fitted by
   [`stats::glm()`](https://rdrr.io/r/stats/glm.html) with "binomial"
   family.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - at:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   optional values for the interaction variable. Otherwise the median is
   used.
 
@@ -52,9 +52,9 @@ for relevant helper functions.
 library(dplyr)
 library(broom)
 
-adrs_f <- tern_ex_adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
-  filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+adrs_f <- tern_ex_adrs |>
+  filter(PARAMCD == "BESRSPI") |>
+  filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) |>
   mutate(
     Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
     RACE = factor(RACE),

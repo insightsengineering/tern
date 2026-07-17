@@ -27,31 +27,31 @@ extract_rsp_biomarkers(
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - groups_lists:
 
-  (named `list` of `list`)  
+  (named `list` of `list`)\
   optionally contains for each `subgroups` variable a list, which
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
 - control:
 
-  (named `list`)  
+  (named `list`)\
   controls for the response definition and the confidence level produced
   by
   [`control_logistic()`](https://insightsengineering.github.io/tern/reference/control_logistic.md).
 
 - label_all:
 
-  (`string`)  
+  (`string`)\
   label for the total population analysis.
 
 ## Value
@@ -80,8 +80,8 @@ library(forcats)
 adrs <- tern_ex_adrs
 adrs_labels <- formatters::var_labels(adrs)
 
-adrs_f <- adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
+adrs_f <- adrs |>
+  filter(PARAMCD == "BESRSPI") |>
   mutate(rsp = AVALC == "CR")
 
 # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,

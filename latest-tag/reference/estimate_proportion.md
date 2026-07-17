@@ -64,22 +64,22 @@ a_proportion(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - method:
 
-  (`string`)  
+  (`string`)\
   the method used to construct the confidence interval for proportion of
   successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`,
   `wilson`, `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull`
@@ -87,35 +87,35 @@ a_proportion(
 
 - weights:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   weights for each level of the strata. If `NULL`, they are estimated
   using the iterative algorithm proposed in Yan and Su (2010) that
   minimizes the weighted squared length of the confidence interval.
 
 - max_iterations:
 
-  (`count`)  
+  (`count`)\
   maximum number of iterations for the iterative procedure used to find
   estimates of optimal weights.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - long:
 
-  (`flag`)  
+  (`flag`)\
   whether a long description is required.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -127,25 +127,25 @@ a_proportion(
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'n_prop', 'prop_ci'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -153,24 +153,24 @@ a_proportion(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`logical` or `data.frame`)  
+  (`logical` or `data.frame`)\
   if only a logical vector is used, it indicates whether each subject is
   a responder or not. `TRUE` represents a successful outcome. If a
   `data.frame` is provided, also the `strata` variable names must be
@@ -180,13 +180,13 @@ a_proportion(
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - denom:
 
-  (`string`)  
+  (`string`)\
   choice of denominator for proportion. Options are:
 
   - `n`: number of values in this row and column intersection.
@@ -237,12 +237,12 @@ dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),
   ARM = rep(LETTERS[1:3], each = 4),
   AVAL = rep(LETTERS[1:3], each = 4)
-) %>%
+) |>
   dplyr::mutate(is_rsp = AVAL == "A")
 
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  estimate_proportion(vars = "is_rsp") %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  estimate_proportion(vars = "is_rsp") |>
   build_table(df = dta_test)
 #>                                        A              B             C     
 #> ——————————————————————————————————————————————————————————————————————————
@@ -281,13 +281,13 @@ s_proportion(
   method = "strat_wilson"
 )
 #> $n_prop
-#> [1] 47.00  0.47
+#> [1] 49.00  0.49
 #> attr(,"label")
 #> [1] "Responders"
 #> 
 #> $prop_ci
 #>    lower    upper 
-#> 38.15468 53.64792 
+#> 40.80675 56.65017 
 #> attr(,"label")
 #> [1] "90% CI (Stratified Wilson, without correction)"
 #> 

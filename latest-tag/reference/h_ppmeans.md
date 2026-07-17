@@ -17,26 +17,26 @@ h_ppmeans(obj, .df_row, arm, conf_level)
 
 - obj:
 
-  (`glm.fit`)  
+  (`glm.fit`)\
   fitted model object used to derive the mean rate estimates in each
   treatment arm.
 
 - .df_row:
 
-  (`data.frame`)  
+  (`data.frame`)\
   dataset that includes all the variables that are called in `.var` and
   `variables`.
 
 - arm:
 
-  (`string`)  
+  (`string`)\
   group variable, for which the covariate adjusted means of multiple
   groups will be summarized. Specifically, the first level of `arm`
   variable is taken as the reference group.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   value used to derive the confidence interval for the rate.
 
 ## Value

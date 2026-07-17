@@ -25,18 +25,18 @@ fit_rsp_step(variables, data, control = c(control_step(), control_logistic()))
 
 - variables:
 
-  (named `list` of `character`)  
+  (named `list` of `character`)\
   list of analysis variables: needs `response`, `arm`, `biomarker`, and
   optional `covariates` and `strata`.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - control:
 
-  (named `list`)  
+  (named `list`)\
   combined control list from
   [`control_step()`](https://insightsengineering.github.io/tern/reference/control_step.md)
   and
@@ -68,11 +68,11 @@ for the available customization options.
 library(survival)
 library(dplyr)
 
-adrs_f <- tern_ex_adrs %>%
+adrs_f <- tern_ex_adrs |>
   filter(
     PARAMCD == "BESRSPI",
     ARM %in% c("B: Placebo", "A: Drug X")
-  ) %>%
+  ) |>
   mutate(
     # Reorder levels of ARM to have Placebo as reference arm for Odds Ratio calculations.
     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),

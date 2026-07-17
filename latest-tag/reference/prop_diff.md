@@ -20,7 +20,7 @@ estimate_proportion_diff(
   variables = list(strata = NULL),
   conf_level = 0.95,
   method = c("waldcc", "wald", "cmh", "cmh_sato", "cmh_mn", "ha", "newcombe",
-    "newcombecc", "strat_newcombe", "strat_newcombecc"),
+    "newcombecc", "strat_newcombe", "strat_newcombecc", "uncond_exact_diff"),
   weights_method = "cmh",
   var_labels = vars,
   na_str = default_na_str(),
@@ -32,9 +32,9 @@ estimate_proportion_diff(
   na_rm = TRUE,
   .stats = c("diff", "diff_ci"),
   .stat_names = NULL,
-  .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
+  .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)", se_diff = "xx.x"),
   .labels = NULL,
-  .indent_mods = c(diff = 0L, diff_ci = 1L)
+  .indent_mods = c(diff = 0L, diff_ci = 1L, se_diff = 1L)
 )
 
 s_proportion_diff(
@@ -45,7 +45,7 @@ s_proportion_diff(
   variables = list(strata = NULL),
   conf_level = 0.95,
   method = c("waldcc", "wald", "cmh", "cmh_sato", "cmh_mn", "ha", "newcombe",
-    "newcombecc", "strat_newcombe", "strat_newcombecc"),
+    "newcombecc", "strat_newcombe", "strat_newcombecc", "uncond_exact_diff"),
   weights_method = "cmh",
   ...
 )
@@ -65,48 +65,48 @@ a_proportion_diff(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - method:
 
-  (`string`)  
+  (`string`)\
   the method used for the confidence interval estimation.
 
 - weights_method:
 
-  (`string`)  
+  (`string`)\
   weights method. Can be either `"cmh"` or `"heuristic"` and directs the
   way weights are estimated.
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -114,18 +114,18 @@ a_proportion_diff(
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - section_div:
 
-  (`string`)  
+  (`string`)\
   string which should be repeated as a section divider after each group
   defined by this split instruction, or `NA_character_` (the default)
   for no section divider.
@@ -136,19 +136,19 @@ a_proportion_diff(
 
 - na_rm:
 
-  (`flag`)  
+  (`flag`)\
   whether `NA` values should be removed from `x` prior to analysis.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'diff', 'diff_ci'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -156,40 +156,40 @@ a_proportion_diff(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - .ref_group:
 
-  (`data.frame` or `vector`)  
+  (`data.frame` or `vector`)\
   the data corresponding to the reference group.
 
 - .in_ref_col:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` when working with the reference level, `FALSE` otherwise.
 
 ## Value
@@ -204,7 +204,8 @@ a_proportion_diff(
 &nbsp;
 
 - `s_proportion_diff()` returns a named list of elements `diff` and
-  `diff_ci`.
+  `diff_ci`. Depending on the method used, also the standard error of
+  the difference `se_diff` is returned.
 
 &nbsp;
 
@@ -244,6 +245,9 @@ The possible methods are:
 - `"strat_newcombecc"`: Stratified Newcombe confidence interval with
   continuity correction (Yan and Su 2010) .
 
+- `"uncond_exact_diff"`: Unconditional exact confidence interval for the
+  difference in proportions (Santner and Snell 1980) .
+
 ## Functions
 
 - `estimate_proportion_diff()`: Layout-creating function which can take
@@ -260,7 +264,8 @@ The possible methods are:
 ## Note
 
 When performing an unstratified analysis, methods `"cmh"`, `"cmh_sato"`,
-`"strat_newcombe"`, and `"strat_newcombecc"` are not permitted.
+`"strat_newcombe"`, and `"strat_newcombecc"` are not permitted. For
+stratified analysis, method `"uncond_exact_diff"` is not permitted.
 
 ## References
 
@@ -268,31 +273,37 @@ Agresti A, Coull BA (1998). “Approximate is Better than "Exact" for
 Interval Estimation of Binomial Proportions.” *The American
 Statistician*, **52**(2), 119–126.
 [doi:10.1080/00031305.1998.10480550](https://doi.org/10.1080/00031305.1998.10480550)
-.  
-  
+.\
+\
 Hauck WW, Anderson S (1986). “A Comparison of Large-Sample Confidence
 Interval Methods for the Difference of Two Binomial Probabilities.” *The
 American Statistician*, **40**(4), 318–322.
-[doi:10.2307/2684618](https://doi.org/10.2307/2684618) .  
-  
+[doi:10.2307/2684618](https://doi.org/10.2307/2684618) .\
+\
 Mantel N, Haenszel W (1959). “Statistical aspects of the analysis of
 data from retrospective studies of disease.” *Journal of the National
-Cancer Institute*, **22**(4), 719–748.  
-  
+Cancer Institute*, **22**(4), 719–748.\
+\
 Miettinen OS, Nurminen M (1985). “Comparative analysis of two rates.”
 *Statistics in Medicine*, **4**(2), 213–226.
-[doi:10.1002/sim.4780040211](https://doi.org/10.1002/sim.4780040211) .  
-  
+[doi:10.1002/sim.4780040211](https://doi.org/10.1002/sim.4780040211) .\
+\
 Newcombe RG (1998). “Interval estimation for the difference between
 independent proportions: comparison of eleven methods.” *Statistics in
 Medicine*, **17**(8), 873-890.
 [doi:10.1002/(SICI)1097-0258(19980430)17:8\<873::AID-SIM779\>3.0.CO;2-I](https://doi.org/10.1002/%28SICI%291097-0258%2819980430%2917%3A8%3C873%3A%3AAID-SIM779%3E3.0.CO%3B2-I)
-.  
-  
+.\
+\
+Santner TJ, Snell MK (1980). “Small-Sample Confidence Intervals for p1 -
+p2 and p1/p2 in 2 x 2 Contingency Tables.” *Journal of the American
+Statistical Association*, **75**(370), 386–394.
+[doi:10.1080/01621459.1980.10477482](https://doi.org/10.1080/01621459.1980.10477482)
+.\
+\
 Sato T, Greenland S, Robins JM (1989). “On the variance estimator for
 the Mantel-Haenszel Risk Difference.” *Biometrics*, **45**(4),
-1323–1324. <http://www.jstor.org/stable/2531784>.  
-  
+1323–1324. <http://www.jstor.org/stable/2531784>.\
+\
 Yan X, Su XG (2010). “Stratified Wilson and Newcombe Confidence
 Intervals for Multiple Binomial Proportions.” *Stat. Biopharm. Res.*,
 **2**(3), 329–335.
@@ -314,8 +325,8 @@ dta <- data.frame(
   stringsAsFactors = TRUE
 )
 
-l <- basic_table() %>%
-  split_cols_by(var = "grp", ref_group = "B") %>%
+l <- basic_table() |>
+  split_cols_by(var = "grp", ref_group = "B") |>
   estimate_proportion_diff(
     vars = "rsp",
     conf_level = 0.90,
@@ -361,15 +372,21 @@ s_proportion_diff(
 )
 #> $diff
 #> diff_cmh 
-#> 12.27932 
+#> 12.05847 
 #> attr(,"label")
 #> [1] "Difference in Response rate (%)"
 #> 
 #> $diff_ci
 #> diff_ci_cmh_l diff_ci_cmh_u 
-#>     -2.657093     27.215725 
+#>      -2.67057      26.78750 
 #> attr(,"label")
 #> [1] "90% CI (CMH, without correction)"
+#> 
+#> $se_diff
+#> se_diff_cmh 
+#>    8.954617 
+#> attr(,"label")
+#> [1] "Standard Error of Difference in Response rate (%)"
 #> 
 
 a_proportion_diff(

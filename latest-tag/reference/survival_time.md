@@ -51,53 +51,53 @@ a_surv_time(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - is_event:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` if event, `FALSE` if time to event is censored.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   parameters for comparison details, specified by using the helper
   function
   [`control_surv_time()`](https://insightsengineering.github.io/tern/reference/control_surv_time.md).
   Some possible parameter options are:
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for survival time.
 
-  - `conf_type` (`string`)  
+  - `conf_type` (`string`)\
     confidence interval type. Options are "plain" (default), "log", or
     "log-log", see more in
     [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
     Note option "none" is not supported.
 
-  - `quantiles` (`numeric`)  
+  - `quantiles` (`numeric`)\
     vector of length two to specify the quantiles of survival time.
 
 - ref_fn_censor:
 
-  (`flag`)  
+  (`flag`)\
   whether referential footnotes indicating censored observations should
   be printed when the `range` statistic is included.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -109,31 +109,31 @@ a_surv_time(
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are:
-  `'median', 'median_ci', 'median_ci_3d', 'quantiles', 'quantiles_lower', 'quantiles_upper', 'range_censor', 'range_event', 'range'`
+  `'median', 'median_ci', 'median_ci_3d', 'quantiles', 'quantiles_lower', 'quantiles_upper', 'range_censor', 'range_event', 'range', 'range_with_cens_info'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -141,36 +141,36 @@ a_surv_time(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Each element of the vector should be
   a name-value pair with name corresponding to a statistic specified in
   `.stats` and value the indentation for that statistic's row label.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -208,6 +208,9 @@ a_surv_time(
 
   - `range`: Survival time range for all observations.
 
+  - `range_with_cens_info`: Survival time range for all observations,
+    with `+` suffix on censored bounds.
+
 &nbsp;
 
 - `a_surv_time()` returns the corresponding list with formatted
@@ -230,23 +233,23 @@ a_surv_time(
 ``` r
 library(dplyr)
 
-adtte_f <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
+adtte_f <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
-df <- adtte_f %>% filter(ARMCD == "ARM A")
+df <- adtte_f |> filter(ARMCD == "ARM A")
 
-basic_table() %>%
-  split_cols_by(var = "ARMCD") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARMCD") |>
+  add_colcounts() |>
   surv_time(
     vars = "AVAL",
     var_labels = "Survival Time (Months)",
     is_event = "is_event",
     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
-  ) %>%
+  ) |>
   build_table(df = adtte_f)
 #>                             ARM A          ARM B          ARM C    
 #>                             (N=69)         (N=73)         (N=58)   
@@ -265,14 +268,26 @@ a_surv_time(
 )
 #> RowsVerticalSection (in_rows) object print method:
 #> ----------------------------
-#>          row_name        formatted_cell indent_mod        row_label
-#> 1          median                  32.0          0           Median
-#> 2       median_ci        (22.51, 49.31)          0    Median 95% CI
-#> 3    median_ci_3d 32.02 (22.51 - 49.31)          0  Median (95% CI)
-#> 4       quantiles           17.4 - 65.3          0  25% and 75%-ile
-#> 5 quantiles_lower 17.37 (10.13 - 22.51)          0 25%-ile (95% CI)
-#> 6 quantiles_upper 65.28 (49.31 - 87.21)          0 75%-ile (95% CI)
-#> 7    range_censor           0.8 to 63.5          0 Range (censored)
-#> 8     range_event          0.3 to 155.5          0    Range (event)
-#> 9           range           0.3 - 155.5          0        Min - Max
+#>                row_name        formatted_cell indent_mod
+#> 1                median                  32.0          0
+#> 2             median_ci        (22.51, 49.31)          0
+#> 3          median_ci_3d 32.02 (22.51 - 49.31)          0
+#> 4             quantiles           17.4 - 65.3          0
+#> 5       quantiles_lower 17.37 (10.13 - 22.51)          0
+#> 6       quantiles_upper 65.28 (49.31 - 87.21)          0
+#> 7          range_censor           0.8 to 63.5          0
+#> 8           range_event          0.3 to 155.5          0
+#> 9                 range           0.3 - 155.5          0
+#> 10 range_with_cens_info          0.3 to 155.5          0
+#>                     row_label
+#> 1                      Median
+#> 2               Median 95% CI
+#> 3             Median (95% CI)
+#> 4             25% and 75%-ile
+#> 5            25%-ile (95% CI)
+#> 6            75%-ile (95% CI)
+#> 7            Range (censored)
+#> 8               Range (event)
+#> 9                   Min - Max
+#> 10 Min - Max (with censoring)
 ```

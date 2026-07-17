@@ -27,22 +27,22 @@ h_grob_coxph(
 
 - x:
 
-  (`proportion`)  
+  (`proportion`)\
   a value between 0 and 1 specifying x-location.
 
 - y:
 
-  (`proportion`)  
+  (`proportion`)\
   a value between 0 and 1 specifying y-location.
 
 - width:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   width (as a unit) to use when printing the grob.
 
 - ttheme:
 
-  (`list`)  
+  (`list`)\
   see
   [`gridExtra::ttheme_default()`](https://rdrr.io/pkg/gridExtra/man/tableGrob.html).
 
@@ -61,8 +61,8 @@ library(grid)
 
 grid::grid.newpage()
 grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
-data <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
+data <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(is_event = CNSR == 0)
 tbl_grob <- h_grob_coxph(
   df = data,

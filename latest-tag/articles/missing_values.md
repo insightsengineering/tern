@@ -3,6 +3,7 @@
 The packages used in this vignette are:
 
 ``` r
+
 library(rtables)
 library(formatters)
 library(tern)
@@ -19,6 +20,7 @@ happens when we try splitting the rows by this variable. To fix this,
 being generated.
 
 ``` r
+
 adsl <- tern_ex_adsl
 adsl$SEX <- as.factor(adsl$SEX)
 
@@ -30,13 +32,13 @@ var_labels <- c(
   "Continous Level Biomarker 1"
 )
 
-result <- basic_table(show_colcounts = TRUE) %>%
-  split_cols_by(var = "ARM") %>%
-  add_overall_col("All Patients") %>%
+result <- basic_table(show_colcounts = TRUE) |>
+  split_cols_by(var = "ARM") |>
+  add_overall_col("All Patients") |>
   analyze_vars(
     vars = vars,
     var_labels = var_labels
-  ) %>%
+  ) |>
   build_table(adsl)
 result
 #>                                                A: Drug X    B: Placebo    C: Combination   All Patients
@@ -77,6 +79,7 @@ values are not included in the `n` count and they are not included in
 the denominator value for calculating the percent values.
 
 ``` r
+
 adsl <- tern_ex_adsl
 adsl$SEX[adsl$SEX == "M"] <- NA
 adsl <- df_explicit_na(adsl)
@@ -87,13 +90,13 @@ var_labels <- c(
   "Sex"
 )
 
-result <- basic_table(show_colcounts = TRUE) %>%
-  split_cols_by(var = "ARM") %>%
-  add_overall_col("All Patients") %>%
+result <- basic_table(show_colcounts = TRUE) |>
+  split_cols_by(var = "ARM") |>
+  add_overall_col("All Patients") |>
   analyze_vars(
     vars = vars,
     var_labels = var_labels
-  ) %>%
+  ) |>
   build_table(adsl)
 result
 #>                A: Drug X    B: Placebo    C: Combination   All Patients
@@ -115,17 +118,18 @@ the `n` count and as the denominator for calculating percent values, use
 the `na_level` argument.
 
 ``` r
+
 adsl <- tern_ex_adsl
 adsl$SEX[adsl$SEX == "M"] <- NA
 adsl <- df_explicit_na(adsl, na_level = "Missing Values")
 
-result <- basic_table(show_colcounts = TRUE) %>%
-  split_cols_by(var = "ARM") %>%
-  add_overall_col("All Patients") %>%
+result <- basic_table(show_colcounts = TRUE) |>
+  split_cols_by(var = "ARM") |>
+  add_overall_col("All Patients") |>
   analyze_vars(
     vars = vars,
     var_labels = var_labels
-  ) %>%
+  ) |>
   build_table(adsl)
 result
 #>                     A: Drug X    B: Placebo    C: Combination   All Patients
@@ -153,6 +157,7 @@ missing in the `AGE` variable and only the valued greater than 30 are
 included in the table below.
 
 ``` r
+
 adsl <- tern_ex_adsl
 adsl$AGE[adsl$AGE < 30] <- NA
 adsl <- df_explicit_na(adsl)
@@ -163,13 +168,13 @@ var_labels <- c(
   "Sex"
 )
 
-result <- basic_table(show_colcounts = TRUE) %>%
-  split_cols_by(var = "ARM") %>%
-  add_overall_col("All Patients") %>%
+result <- basic_table(show_colcounts = TRUE) |>
+  split_cols_by(var = "ARM") |>
+  add_overall_col("All Patients") |>
   analyze_vars(
     vars = vars,
     var_labels = var_labels
-  ) %>%
+  ) |>
   build_table(adsl)
 result
 #>                A: Drug X    B: Placebo    C: Combination   All Patients

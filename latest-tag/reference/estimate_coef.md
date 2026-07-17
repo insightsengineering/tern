@@ -22,19 +22,19 @@ estimate_coef(
 
 - variable, given:
 
-  (`character(2)`)  
+  (`character(2)`)\
   names of the two variables in the interaction. We seek the estimation
   of the levels of `variable` given the levels of `given`.
 
 - lvl_var, lvl_given:
 
-  (`character`)  
+  (`character`)\
   corresponding levels given by
   [`levels()`](https://rdrr.io/r/base/levels.html).
 
 - coef:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of estimated coefficients.
 
 - mmat:
@@ -44,12 +44,12 @@ estimate_coef(
 
 - vcov:
 
-  (`matrix`)  
+  (`matrix`)\
   variance-covariance matrix of underlying model.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of estimate intervals.
 
 ## Value
@@ -95,10 +95,10 @@ of 0.95.
 library(dplyr)
 library(survival)
 
-ADSL <- tern_ex_adsl %>%
+ADSL <- tern_ex_adsl |>
   filter(SEX %in% c("F", "M"))
 
-adtte <- tern_ex_adtte %>% filter(PARAMCD == "PFS")
+adtte <- tern_ex_adtte |> filter(PARAMCD == "PFS")
 adtte$ARMCD <- droplevels(adtte$ARMCD)
 adtte$SEX <- droplevels(adtte$SEX)
 

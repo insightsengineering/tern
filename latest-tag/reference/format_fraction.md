@@ -14,7 +14,7 @@ format_fraction(x, ...)
 
 - x:
 
-  (named `integer`)  
+  (named `integer`)\
   vector with elements `num` and `denom`.
 
 - ...:
@@ -38,6 +38,7 @@ Other formatting functions:
 [`format_extreme_values_ci()`](https://insightsengineering.github.io/tern/reference/format_extreme_values_ci.md),
 [`format_fraction_fixed_dp()`](https://insightsengineering.github.io/tern/reference/format_fraction_fixed_dp.md),
 [`format_fraction_threshold()`](https://insightsengineering.github.io/tern/reference/format_fraction_threshold.md),
+[`format_range_cens()`](https://insightsengineering.github.io/tern/reference/format_range_cens.md),
 [`format_sigfig()`](https://insightsengineering.github.io/tern/reference/format_sigfig.md),
 [`format_xx()`](https://insightsengineering.github.io/tern/reference/format_xx.md),
 [`formatting_functions`](https://insightsengineering.github.io/tern/reference/formatting_functions.md)

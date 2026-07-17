@@ -56,37 +56,37 @@ a_count_missed_doses(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - thresholds:
 
-  (`numeric`)  
+  (`numeric`)\
   minimum number of missed doses the patients had.
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -94,7 +94,7 @@ a_count_missed_doses(
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
@@ -104,19 +104,19 @@ a_count_missed_doses(
 
 - na_rm:
 
-  (`flag`)  
+  (`flag`)\
   whether `NA` values should be removed from `x` prior to analysis.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'n', 'count_fraction'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -124,42 +124,42 @@ a_count_missed_doses(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze.
 
 - .N_col:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   column-wise N (column count) for the full column being analyzed that
   is typically passed by `rtables`.
 
 - .N_row:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   row-wise N (row group count) for the group of observations being
   analyzed (i.e. with no column-based subsetting) that is typically
   passed by `rtables`.
 
 - denom:
 
-  (`string`)  
+  (`string`)\
   choice of denominator for proportion. Options are:
 
   - `n`: number of values in this row and column intersection.
@@ -216,8 +216,8 @@ a_count_missed_doses(
 ``` r
 library(dplyr)
 
-anl <- tern_ex_adsl %>%
-  distinct(STUDYID, USUBJID, ARM) %>%
+anl <- tern_ex_adsl |>
+  distinct(STUDYID, USUBJID, ARM) |>
   mutate(
     PARAMCD = "TNDOSMIS",
     PARAM = "Total number of missed doses during study",
@@ -225,18 +225,18 @@ anl <- tern_ex_adsl %>%
     AVALC = ""
   )
 
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
-  count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
+  count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") |>
   build_table(anl, alt_counts_df = tern_ex_adsl)
 #>                              A: Drug X    B: Placebo   C: Combination
 #>                                (N=69)       (N=73)         (N=58)    
 #> —————————————————————————————————————————————————————————————————————
 #> Missed Doses                                                         
 #>   n                              69           73             58      
-#>   At least 1 missed dose     66 (95.7%)   67 (91.8%)     53 (91.4%)  
-#>   At least 5 missed doses    54 (78.3%)   58 (79.5%)      40 (69%)   
-#>   At least 10 missed doses    40 (58%)    37 (50.7%)     28 (48.3%)  
-#>   At least 15 missed doses   18 (26.1%)   21 (28.8%)     15 (25.9%)  
+#>   At least 1 missed dose     64 (92.8%)   69 (94.5%)     55 (94.8%)  
+#>   At least 5 missed doses    56 (81.2%)   55 (75.3%)     41 (70.7%)  
+#>   At least 10 missed doses   36 (52.2%)   38 (52.1%)     35 (60.3%)  
+#>   At least 15 missed doses   19 (27.5%)   22 (30.1%)     17 (29.3%)  
 ```

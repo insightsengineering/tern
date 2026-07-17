@@ -14,14 +14,14 @@ bins_percent_labels(probs, digits = 0)
 
 - probs:
 
-  (`numeric`)  
+  (`numeric`)\
   the probabilities identifying the quantiles. This is a sorted vector
   of unique `proportion` values, i.e. between 0 and 1, where the
   boundaries 0 and 1 must not be included.
 
 - digits:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of decimal places to round the percent numbers.
 
 ## Value

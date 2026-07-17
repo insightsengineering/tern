@@ -17,7 +17,7 @@ as.rtable(x, format = "xx.xx", ...)
 
 - x:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the object which should be converted to an `rtable`.
 
 - ...:
@@ -26,7 +26,7 @@ as.rtable(x, format = "xx.xx", ...)
 
 - format:
 
-  (`string` or `function`)  
+  (`string` or `function`)\
   the format which should be used for the columns.
 
 ## Value
@@ -49,14 +49,14 @@ x <- data.frame(
 as.rtable(x)
 #>        a       b  
 #> ——————————————————
-#> 1    1.00    0.02 
-#> 2    2.00    0.03 
-#> 3    3.00    0.55 
-#> 4    4.00    -2.27
-#> 5    5.00    2.68 
-#> 6    6.00    -0.36
-#> 7    7.00    0.21 
-#> 8    8.00    1.07 
-#> 9    9.00    -0.67
-#> 10   10.00   1.11 
+#> 1    1.00    0.07 
+#> 2    2.00    -0.64
+#> 3    3.00    -0.05
+#> 4    4.00    -0.25
+#> 5    5.00    0.44 
+#> 6    6.00    2.76 
+#> 7    7.00    0.05 
+#> 8    8.00    0.58 
+#> 9    9.00    0.12 
+#> 10   10.00   -1.91
 ```

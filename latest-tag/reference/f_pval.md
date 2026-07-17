@@ -12,7 +12,7 @@ f_pval(test_mean)
 
 - test_mean:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   mean value to test under the null hypothesis.
 
 ## Value

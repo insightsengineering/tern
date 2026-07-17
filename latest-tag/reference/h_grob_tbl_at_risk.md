@@ -17,25 +17,25 @@ h_grob_tbl_at_risk(data, annot_tbl, xlim, title = TRUE)
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   survival data as pre-processed by `h_data_plot`.
 
 - annot_tbl:
 
-  (`data.frame`)  
+  (`data.frame`)\
   annotation as prepared by
   [`survival::summary.survfit()`](https://rdrr.io/pkg/survival/man/summary.survfit.html)
   which includes the number of patients at risk at given time points.
 
 - xlim:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   the maximum value on the x-axis (used to ensure the at risk table
   aligns with the KM graph).
 
 - title:
 
-  (`flag`)  
+  (`flag`)\
   whether the "Patients at Risk" title should be added above the
   `annot_at_risk` table. Has no effect if `annot_at_risk` is `FALSE`.
   Defaults to `TRUE`.
@@ -54,9 +54,9 @@ library(dplyr)
 library(survival)
 library(grid)
 
-fit_km <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
-  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+fit_km <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
+  (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))()
 
 data_plot <- h_data_plot(fit_km = fit_km)
 

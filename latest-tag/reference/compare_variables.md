@@ -61,27 +61,27 @@ s_compare(x, ...)
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -109,30 +109,30 @@ s_compare(x, ...)
 
 - na_rm:
 
-  (`flag`)  
+  (`flag`)\
   whether `NA` values should be removed from `x` prior to analysis.
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - section_div:
 
-  (`string`)  
+  (`string`)\
   string which should be repeated as a section divider after each group
   defined by this split instruction, or `NA_character_` (the default)
   for no section divider.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options for numeric variables are:
@@ -143,7 +143,7 @@ s_compare(x, ...)
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -151,25 +151,25 @@ s_compare(x, ...)
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Each element of the vector should be
   a name-value pair with name corresponding to a statistic specified in
   `.stats` and value the indentation for that statistic's row label.
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze.
 
 ## Value
@@ -247,8 +247,8 @@ which is used (with `compare = TRUE`) as the analysis function for
 # `compare_vars()` in `rtables` pipelines
 
 ## Default output within a `rtables` pipeline.
-lyt <- basic_table() %>%
-  split_cols_by("ARMCD", ref_group = "ARM B") %>%
+lyt <- basic_table() |>
+  split_cols_by("ARMCD", ref_group = "ARM B") |>
   compare_vars(c("AGE", "SEX"))
 build_table(lyt, tern_ex_adsl)
 #>                                  ARM A        ARM B        ARM C   
@@ -264,8 +264,8 @@ build_table(lyt, tern_ex_adsl)
 #>   p-value (chi-squared test)     1.0000                    1.0000  
 
 ## Select and format statistics output.
-lyt <- basic_table() %>%
-  split_cols_by("ARMCD", ref_group = "ARM C") %>%
+lyt <- basic_table() |>
+  split_cols_by("ARMCD", ref_group = "ARM C") |>
   compare_vars(
     vars = "AGE",
     .stats = c("mean_sd", "pval"),
@@ -288,69 +288,69 @@ s_compare(rnorm(10, 5, 1), .ref_group = rnorm(5, -5, 1), .in_ref_col = FALSE)
 #> 
 #> $sum
 #>      sum 
-#> 51.54276 
+#> 48.58708 
 #> 
 #> $mean
 #>     mean 
-#> 5.154276 
+#> 4.858708 
 #> 
 #> $sd
-#>        sd 
-#> 0.7601901 
+#>       sd 
+#> 1.035277 
 #> 
 #> $se
 #>        se 
-#> 0.2403932 
+#> 0.3273835 
 #> 
 #> $mean_sd
-#>      mean        sd 
-#> 5.1542760 0.7601901 
+#>     mean       sd 
+#> 4.858708 1.035277 
 #> 
 #> $mean_se
 #>      mean        se 
-#> 5.1542760 0.2403932 
+#> 4.8587081 0.3273835 
 #> 
 #> $mean_ci
 #> mean_ci_lwr mean_ci_upr 
-#>    4.610469    5.698083 
+#>    4.118115    5.599301 
 #> attr(,"label")
 #> [1] "Mean 95% CI"
 #> 
 #> $mean_sei
 #> mean_sei_lwr mean_sei_upr 
-#>     4.913883     5.394669 
+#>     4.531325     5.186092 
 #> attr(,"label")
 #> [1] "Mean -/+ 1xSE"
 #> 
 #> $mean_sdi
 #> mean_sdi_lwr mean_sdi_upr 
-#>     4.394086     5.914466 
+#>     3.823431     5.893985 
 #> attr(,"label")
 #> [1] "Mean -/+ 1xSD"
 #> 
 #> $mean_ci_3d
 #>        mean mean_ci_lwr mean_ci_upr 
-#>    5.154276    4.610469    5.698083 
+#>    4.858708    4.118115    5.599301 
 #> attr(,"label")
 #> [1] "Mean (95% CI)"
 #> 
 #> $mean_pval
 #>      p_value 
-#> 4.911465e-09 
+#> 1.237431e-07 
 #> attr(,"label")
 #> [1] "Mean p-value (H0: mean = 0)"
 #> 
 #> $median
 #>   median 
-#> 5.270756 
+#> 4.991035 
 #> 
 #> $mad
-#> mad 
-#>   0 
+#>           mad 
+#> -4.440892e-16 
 #> 
 #> $median_ci
 #> median_ci_lwr median_ci_upr 
-#>      4.286272      5.988843 
+#>      3.557876      5.381277 
 #> attr(,"conf_level")
 #> [1] 0.9785156
 #> attr(,"label")
@@ -358,72 +358,72 @@ s_compare(rnorm(10, 5, 1), .ref_group = rnorm(5, -5, 1), .in_ref_col = FALSE)
 #> 
 #> $median_ci_3d
 #>        median median_ci_lwr median_ci_upr 
-#>      5.270756      4.286272      5.988843 
+#>      4.991035      3.557876      5.381277 
 #> attr(,"label")
 #> [1] "Median (95% CI)"
 #> 
 #> $quantiles
 #> quantile_0.25 quantile_0.75 
-#>      4.613857      5.713109 
+#>      4.640286      5.355950 
 #> attr(,"label")
 #> [1] "25% and 75%-ile"
 #> 
 #> $iqr
-#>      iqr 
-#> 1.099252 
+#>       iqr 
+#> 0.7156635 
 #> 
 #> $range
 #>      min      max 
-#> 3.890038 6.269690 
+#> 3.038082 6.827787 
 #> 
 #> $min
 #>      min 
-#> 3.890038 
+#> 3.038082 
 #> 
 #> $max
-#>     max 
-#> 6.26969 
+#>      max 
+#> 6.827787 
 #> 
 #> $median_range
 #>   median      min      max 
-#> 5.270756 3.890038 6.269690 
+#> 4.991035 3.038082 6.827787 
 #> attr(,"label")
 #> [1] "Median (Min - Max)"
 #> 
 #> $cv
 #>       cv 
-#> 14.74873 
+#> 21.30767 
 #> 
 #> $geom_mean
 #> geom_mean 
-#>  5.102148 
+#>    4.7534 
 #> 
 #> $geom_sd
 #>  geom_sd 
-#> 1.163981 
+#> 1.253226 
 #> 
 #> $geom_mean_sd
 #> geom_mean   geom_sd 
-#>  5.102148  1.163981 
+#>  4.753400  1.253226 
 #> 
 #> $geom_mean_ci
 #> mean_ci_lwr mean_ci_upr 
-#>    4.576971    5.687584 
+#>    4.044626    5.586379 
 #> attr(,"label")
 #> [1] "Geometric Mean 95% CI"
 #> 
 #> $geom_cv
 #>  geom_cv 
-#> 15.27254 
+#> 22.86269 
 #> 
 #> $geom_mean_ci_3d
 #>   geom_mean mean_ci_lwr mean_ci_upr 
-#>    5.102148    4.576971    5.687584 
+#>    4.753400    4.044626    5.586379 
 #> attr(,"label")
 #> [1] "Geometric Mean (95% CI)"
 #> 
 #> $pval
-#> [1] 8.812242e-08
+#> [1] 7.05039e-08
 #> 
 
 ## If one group has not more than 1 value, then p-value is not calculated.
@@ -434,69 +434,69 @@ s_compare(rnorm(10, 5, 1), .ref_group = 1, .in_ref_col = FALSE)
 #> 
 #> $sum
 #>      sum 
-#> 50.50699 
+#> 47.88014 
 #> 
 #> $mean
 #>     mean 
-#> 5.050699 
+#> 4.788014 
 #> 
 #> $sd
-#>        sd 
-#> 0.6005475 
+#>       sd 
+#> 1.131472 
 #> 
 #> $se
-#>        se 
-#> 0.1899098 
+#>       se 
+#> 0.357803 
 #> 
 #> $mean_sd
-#>      mean        sd 
-#> 5.0506992 0.6005475 
+#>     mean       sd 
+#> 4.788014 1.131472 
 #> 
 #> $mean_se
-#>      mean        se 
-#> 5.0506992 0.1899098 
+#>     mean       se 
+#> 4.788014 0.357803 
 #> 
 #> $mean_ci
 #> mean_ci_lwr mean_ci_upr 
-#>    4.621093    5.480305 
+#>    3.978607    5.597421 
 #> attr(,"label")
 #> [1] "Mean 95% CI"
 #> 
 #> $mean_sei
 #> mean_sei_lwr mean_sei_upr 
-#>     4.860789     5.240609 
+#>     4.430211     5.145817 
 #> attr(,"label")
 #> [1] "Mean -/+ 1xSE"
 #> 
 #> $mean_sdi
 #> mean_sdi_lwr mean_sdi_upr 
-#>     4.450152     5.651247 
+#>     3.656542     5.919487 
 #> attr(,"label")
 #> [1] "Mean -/+ 1xSD"
 #> 
 #> $mean_ci_3d
 #>        mean mean_ci_lwr mean_ci_upr 
-#>    5.050699    4.621093    5.480305 
+#>    4.788014    3.978607    5.597421 
 #> attr(,"label")
 #> [1] "Mean (95% CI)"
 #> 
 #> $mean_pval
 #>      p_value 
-#> 7.263863e-10 
+#> 3.027715e-07 
 #> attr(,"label")
 #> [1] "Mean p-value (H0: mean = 0)"
 #> 
 #> $median
 #>   median 
-#> 5.282426 
+#> 5.138623 
 #> 
 #> $mad
-#> mad 
-#>   0 
+#>          mad 
+#> 4.440892e-16 
 #> 
 #> $median_ci
 #> median_ci_lwr median_ci_upr 
-#>      4.824951      5.458242 
+#>      3.283128      5.713109 
 #> attr(,"conf_level")
 #> [1] 0.9785156
 #> attr(,"label")
@@ -504,67 +504,67 @@ s_compare(rnorm(10, 5, 1), .ref_group = 1, .in_ref_col = FALSE)
 #> 
 #> $median_ci_3d
 #>        median median_ci_lwr median_ci_upr 
-#>      5.282426      4.824951      5.458242 
+#>      5.138623      3.283128      5.713109 
 #> attr(,"label")
 #> [1] "Median (95% CI)"
 #> 
 #> $quantiles
 #> quantile_0.25 quantile_0.75 
-#>      4.877169      5.428594 
+#>      3.890038      5.597566 
 #> attr(,"label")
 #> [1] "25% and 75%-ile"
 #> 
 #> $iqr
-#>       iqr 
-#> 0.5514257 
+#>      iqr 
+#> 1.707528 
 #> 
 #> $range
 #>      min      max 
-#> 3.527308 5.616535 
+#> 2.620075 6.007268 
 #> 
 #> $min
 #>      min 
-#> 3.527308 
+#> 2.620075 
 #> 
 #> $max
 #>      max 
-#> 5.616535 
+#> 6.007268 
 #> 
 #> $median_range
 #>   median      min      max 
-#> 5.282426 3.527308 5.616535 
+#> 5.138623 2.620075 6.007268 
 #> attr(,"label")
 #> [1] "Median (Min - Max)"
 #> 
 #> $cv
 #>       cv 
-#> 11.89038 
+#> 23.63135 
 #> 
 #> $geom_mean
 #> geom_mean 
-#>  5.013102 
+#>  4.643798 
 #> 
 #> $geom_sd
 #>  geom_sd 
-#> 1.143702 
+#> 1.315383 
 #> 
 #> $geom_mean_sd
 #> geom_mean   geom_sd 
-#>  5.013102  1.143702 
+#>  4.643798  1.315383 
 #> 
 #> $geom_mean_ci
 #> mean_ci_lwr mean_ci_upr 
-#>    4.553988    5.518502 
+#>    3.816880    5.649867 
 #> attr(,"label")
 #> [1] "Geometric Mean 95% CI"
 #> 
 #> $geom_cv
 #>  geom_cv 
-#> 13.48782 
+#> 27.93594 
 #> 
 #> $geom_mean_ci_3d
 #>   geom_mean mean_ci_lwr mean_ci_upr 
-#>    5.013102    4.553988    5.518502 
+#>    4.643798    3.816880    5.649867 
 #> attr(,"label")
 #> [1] "Geometric Mean (95% CI)"
 #> 

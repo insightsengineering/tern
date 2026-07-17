@@ -17,18 +17,18 @@ or_clogit(data, conf_level, method = "exact")
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data frame containing at least the variables `rsp` and `grp`, and
   optionally `strata` for `or_clogit()`.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - method:
 
-  (`string`)  
+  (`string`)\
   whether to use the correct (`"exact"`) calculation in the conditional
   likelihood or one of the approximations. See
   [`survival::clogit()`](https://rdrr.io/pkg/survival/man/clogit.html)

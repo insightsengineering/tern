@@ -21,24 +21,24 @@ control_incidence_rate(
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - conf_type:
 
-  (`string`)  
+  (`string`)\
   `normal` (default), `normal_log`, `exact`, or `byar` for confidence
   interval type.
 
 - input_time_unit:
 
-  (`string`)  
+  (`string`)\
   `day`, `week`, `month`, or `year` (default) indicating time unit for
   data input.
 
 - num_pt_year:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number of patient-years to use when calculating adverse event rates.
 
 ## Value

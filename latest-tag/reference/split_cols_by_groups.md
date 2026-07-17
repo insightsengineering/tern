@@ -12,24 +12,24 @@ split_cols_by_groups(lyt, var, groups_list = NULL, ref_group = NULL, ...)
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - groups_list:
 
-  (named `list` of `character`)  
+  (named `list` of `character`)\
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
 - ref_group:
 
-  (`data.frame` or `vector`)  
+  (`data.frame` or `vector`)\
   the data corresponding to the reference group.
 
 - ...:
@@ -56,10 +56,10 @@ including the given groups to the table layout.
 
 # Without group combination `split_cols_by_groups` is
 # equivalent to [rtables::split_cols_by()].
-basic_table() %>%
-  split_cols_by_groups("ARM") %>%
-  add_colcounts() %>%
-  analyze("AGE") %>%
+basic_table() |>
+  split_cols_by_groups("ARM") |>
+  add_colcounts() |>
+  analyze("AGE") |>
   build_table(DM)
 #>        A: Drug X   B: Placebo   C: Combination
 #>         (N=121)     (N=106)        (N=129)    
@@ -67,9 +67,9 @@ basic_table() %>%
 #> Mean     34.91       33.02          34.57     
 
 # Add a reference column.
-basic_table() %>%
-  split_cols_by_groups("ARM", ref_group = "B: Placebo") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by_groups("ARM", ref_group = "B: Placebo") |>
+  add_colcounts() |>
   analyze(
     "AGE",
     afun = function(x, .ref_group, .in_ref_col) {
@@ -79,7 +79,7 @@ basic_table() %>%
         in_rows("Diff Mean" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
       }
     }
-  ) %>%
+  ) |>
   build_table(DM)
 #>             A: Drug X   B: Placebo   C: Combination
 #>              (N=121)     (N=106)        (N=129)    
@@ -95,10 +95,10 @@ groups <- list(
 )
 
 # Use of split_cols_by_groups without reference column.
-basic_table() %>%
-  split_cols_by_groups("ARM", groups) %>%
-  add_colcounts() %>%
-  analyze("AGE") %>%
+basic_table() |>
+  split_cols_by_groups("ARM", groups) |>
+  add_colcounts() |>
+  analyze("AGE") |>
   build_table(DM)
 #>        Arms A+B   Arms A+C
 #>        (N=227)    (N=250) 
@@ -106,8 +106,8 @@ basic_table() %>%
 #> Mean    34.03      34.73  
 
 # Including differentiated output in the reference column.
-basic_table() %>%
-  split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") %>%
+basic_table() |>
+  split_cols_by_groups("ARM", groups_list = groups, ref_group = "Arms A+B") |>
   analyze(
     "AGE",
     afun = function(x, .ref_group, .in_ref_col) {
@@ -117,7 +117,7 @@ basic_table() %>%
         in_rows("Diff. of Averages" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
       }
     }
-  ) %>%
+  ) |>
   build_table(DM)
 #>                     Arms A+B   Arms A+C
 #> ———————————————————————————————————————
@@ -139,10 +139,10 @@ groups
 #> 
 
 # Use group definition without reference column.
-basic_table() %>%
-  split_cols_by_groups("ARM", groups_list = groups) %>%
-  add_colcounts() %>%
-  analyze("AGE") %>%
+basic_table() |>
+  split_cols_by_groups("ARM", groups_list = groups) |>
+  add_colcounts() |>
+  analyze("AGE") |>
   build_table(DM)
 #>        A: Drug X/B: Placebo   C: Combination
 #>              (N=227)             (N=129)    
@@ -150,9 +150,9 @@ basic_table() %>%
 #> Mean          34.03               34.57     
 
 # Use group definition with reference column (first item of groups).
-basic_table() %>%
-  split_cols_by_groups("ARM", groups, ref_group = names(groups)[1]) %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by_groups("ARM", groups, ref_group = names(groups)[1]) |>
+  add_colcounts() |>
   analyze(
     "AGE",
     afun = function(x, .ref_group, .in_ref_col) {
@@ -162,7 +162,7 @@ basic_table() %>%
         in_rows("Diff Mean" = rcell(mean(x) - mean(.ref_group), format = "xx.xx"))
       }
     }
-  ) %>%
+  ) |>
   build_table(DM)
 #>             A: Drug X/B: Placebo   C: Combination
 #>                   (N=227)             (N=129)    

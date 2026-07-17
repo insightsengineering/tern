@@ -33,40 +33,40 @@ prop_jeffreys(rsp, n = length(rsp), conf_level)
 
 - rsp:
 
-  (`logical`)  
+  (`logical`)\
   vector indicating whether each subject is a responder or not.
 
 - n:
 
-  (`count`)  
+  (`count`)\
   number of participants (if `denom = "N_col"`) or the number of
   responders (if `denom = "n"`, the default).
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - correct:
 
-  (`flag`)  
+  (`flag`)\
   whether to apply continuity correction.
 
 - strata:
 
-  (`factor`)  
+  (`factor`)\
   variable with one level per stratum and same length as `rsp`.
 
 - weights:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   weights for each level of the strata. If `NULL`, they are estimated
   using the iterative algorithm proposed in Yan and Su (2010) that
   minimizes the weighted squared length of the confidence interval.
 
 - max_iterations:
 
-  (`count`)  
+  (`count`)\
   maximum number of iterations for the iterative procedure used to find
   estimates of optimal weights.
 

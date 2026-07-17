@@ -60,56 +60,56 @@ a_incidence_rate(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - n_events:
 
-  (`string`)  
+  (`string`)\
   name of integer variable indicating whether an event has been
   observed (1) or not (0).
 
 - id_var:
 
-  (`string`)  
+  (`string`)\
   name of variable used as patient identifier if `"n_unique"` is
   included in `.stats`. Defaults to `"USUBJID"`.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   parameters for estimation details, specified by using the helper
   function
   [`control_incidence_rate()`](https://insightsengineering.github.io/tern/reference/control_incidence_rate.md).
   Possible parameter options are:
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level for the estimated incidence rate.
 
-  - `conf_type` (`string`)  
+  - `conf_type` (`string`)\
     `normal` (default), `normal_log`, `exact`, or `byar` for confidence
     interval type.
 
-  - `input_time_unit` (`string`)  
+  - `input_time_unit` (`string`)\
     `day`, `week`, `month`, or `year` (default) indicating time unit for
     data input.
 
-  - `num_pt_year` (`numeric`)  
+  - `num_pt_year` (`numeric`)\
     time unit for desired output (in person-years).
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -117,14 +117,14 @@ a_incidence_rate(
 
 - summarize:
 
-  (`flag`)  
+  (`flag`)\
   whether the function should act as an analyze function
   (`summarize = FALSE`), or a summarize function (`summarize = TRUE`).
   Defaults to `FALSE`.
 
 - label_fmt:
 
-  (`string`)  
+  (`string`)\
   how labels should be formatted after a row split occurs if
   `summarize = TRUE`. The string should use `"%s"` to represent row
   split levels, and `"%.labels"` to represent labels supplied to the
@@ -136,18 +136,18 @@ a_incidence_rate(
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are:
@@ -155,7 +155,7 @@ a_incidence_rate(
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -163,40 +163,40 @@ a_incidence_rate(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - is_event:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` if event, `FALSE` if time to event is censored.
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -265,8 +265,8 @@ df <- data.frame(
 )
 df$n_events <- 1 - df$CNSR
 
-basic_table(show_colcounts = TRUE) %>%
-  split_cols_by("ARM") %>%
+basic_table(show_colcounts = TRUE) |>
+  split_cols_by("ARM") |>
   estimate_incidence_rate(
     vars = "AVAL",
     n_events = "n_events",
@@ -274,7 +274,7 @@ basic_table(show_colcounts = TRUE) %>%
       input_time_unit = "month",
       num_pt_year = 100
     )
-  ) %>%
+  ) |>
   build_table(df)
 #>                                            A                 B       
 #>                                          (N=3)             (N=3)     
@@ -285,16 +285,16 @@ basic_table(show_colcounts = TRUE) %>%
 #> 95% CI                              (-25.15, 77.55)   (-7.53, 122.00)
 
 # summarize = TRUE
-basic_table(show_colcounts = TRUE) %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("STRATA1", child_labels = "visible") %>%
+basic_table(show_colcounts = TRUE) |>
+  split_cols_by("ARM") |>
+  split_rows_by("STRATA1", child_labels = "visible") |>
   estimate_incidence_rate(
     vars = "AVAL",
     n_events = "n_events",
     .stats = c("n_unique", "n_rate"),
     summarize = TRUE,
     label_fmt = "%.labels"
-  ) %>%
+  ) |>
   build_table(df)
 #>                                                                          A         B   
 #>                                                                        (N=3)     (N=3) 

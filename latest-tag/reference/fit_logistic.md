@@ -19,17 +19,17 @@ fit_logistic(
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the data frame on which the model was fit.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - response_definition:
 
-  (`string`)  
+  (`string`)\
   the definition of what an event is in terms of `response`. This will
   be used when fitting the (conditional) logistic regression model on
   the left hand side of the formula.
@@ -59,9 +59,9 @@ The `variables` list needs to include the following elements:
 ``` r
 library(dplyr)
 
-adrs_f <- tern_ex_adrs %>%
-  filter(PARAMCD == "BESRSPI") %>%
-  filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+adrs_f <- tern_ex_adrs |>
+  filter(PARAMCD == "BESRSPI") |>
+  filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) |>
   mutate(
     Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
     RACE = factor(RACE),

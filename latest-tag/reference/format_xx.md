@@ -13,7 +13,7 @@ format_xx(str)
 
 - str:
 
-  (`string`)  
+  (`string`)\
   template.
 
 ## Value
@@ -33,6 +33,7 @@ Other formatting functions:
 [`format_fraction()`](https://insightsengineering.github.io/tern/reference/format_fraction.md),
 [`format_fraction_fixed_dp()`](https://insightsengineering.github.io/tern/reference/format_fraction_fixed_dp.md),
 [`format_fraction_threshold()`](https://insightsengineering.github.io/tern/reference/format_fraction_threshold.md),
+[`format_range_cens()`](https://insightsengineering.github.io/tern/reference/format_range_cens.md),
 [`format_sigfig()`](https://insightsengineering.github.io/tern/reference/format_sigfig.md),
 [`formatting_functions`](https://insightsengineering.github.io/tern/reference/formatting_functions.md)
 

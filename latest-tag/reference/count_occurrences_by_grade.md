@@ -92,22 +92,22 @@ a_count_occurrences_by_grade(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - id:
 
-  (`string`)  
+  (`string`)\
   subject variable name.
 
 - grade_groups:
 
-  (named `list` of `character`)  
+  (named `list` of `character`)\
   list containing groupings of grades.
 
 - remove_single:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` to not include the elements of one-element grade groups in the
   the output list; in this case only the grade groups names will be
   included in the output. If `only_grade_groups` is set to `TRUE` this
@@ -115,24 +115,24 @@ a_count_occurrences_by_grade(
 
 - only_grade_groups:
 
-  (`flag`)  
+  (`flag`)\
   whether only the specified grade groups should be included, with
   individual grade rows removed (`TRUE`), or all grades and grade groups
   should be displayed (`FALSE`).
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - riskdiff:
 
-  (`flag`)  
+  (`flag`)\
   whether a risk difference column is present. When set to `TRUE`,
   [`add_riskdiff()`](https://insightsengineering.github.io/tern/reference/add_riskdiff.md)
   must be used as `split_fun` in the prior column split of the table
@@ -142,12 +142,12 @@ a_count_occurrences_by_grade(
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -159,20 +159,20 @@ a_count_occurrences_by_grade(
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'count_fraction', 'count_fraction_fixed_dp'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -180,29 +180,29 @@ a_count_occurrences_by_grade(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -210,26 +210,26 @@ a_count_occurrences_by_grade(
 
 - .var, var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - .N_row:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   row-wise N (row group count) for the group of observations being
   analyzed (i.e. with no column-based subsetting) that is typically
   passed by `rtables`.
 
 - .N_col:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   column-wise N (column count) for the full column being analyzed that
   is typically passed by `rtables`.
 
 - denom:
 
-  (`string`)  
+  (`string`)\
   choice of denominator for proportion. Options are:
 
   - `N_col`: total number of patients in this column across rows.
@@ -306,18 +306,18 @@ df <- data.frame(
   stringsAsFactors = FALSE
 )
 
-df_adsl <- df %>%
-  select(USUBJID, ARM) %>%
+df_adsl <- df |>
+  select(USUBJID, ARM) |>
   unique()
 
 # Layout creating function with custom format.
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_occurrences_by_grade(
     var = "AESEV",
     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
-  ) %>%
+  ) |>
   build_table(df, alt_counts_df = df_adsl)
 #>                  A               B      
 #>                (N=3)           (N=3)    
@@ -333,14 +333,14 @@ grade_groups <- list(
   "Grade 3-5" = c("3", "4", "5")
 )
 
-basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_occurrences_by_grade(
     var = "AETOXGR",
     grade_groups = grade_groups,
     only_grade_groups = TRUE
-  ) %>%
+  ) |>
   build_table(df, alt_counts_df = df_adsl)
 #>                 A           B    
 #>               (N=3)       (N=3)  
@@ -350,13 +350,13 @@ basic_table() %>%
 #> Grade 3-5   2 (66.7%)   1 (33.3%)
 
 # Layout creating function with custom format.
-basic_table() %>%
-  add_colcounts() %>%
-  split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
+basic_table() |>
+  add_colcounts() |>
+  split_rows_by("ARM", child_labels = "visible", nested = TRUE) |>
   summarize_occurrences_by_grade(
     var = "AESEV",
     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
-  ) %>%
+  ) |>
   build_table(df, alt_counts_df = df_adsl)
 #>                 all obs   
 #>                  (N=6)    
@@ -370,13 +370,13 @@ basic_table() %>%
 #>   MODERATE   1.00 (16.67%)
 #>   SEVERE     0.00 (0.00%) 
 
-basic_table() %>%
-  add_colcounts() %>%
-  split_rows_by("ARM", child_labels = "visible", nested = TRUE) %>%
+basic_table() |>
+  add_colcounts() |>
+  split_rows_by("ARM", child_labels = "visible", nested = TRUE) |>
   summarize_occurrences_by_grade(
     var = "AETOXGR",
     grade_groups = grade_groups
-  ) %>%
+  ) |>
   build_table(df, alt_counts_df = df_adsl)
 #>                all obs 
 #>                 (N=6)  

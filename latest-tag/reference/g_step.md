@@ -21,29 +21,29 @@ g_step(
 
 - df:
 
-  (`tibble`)  
+  (`tibble`)\
   result of
   [`tidy.step()`](https://insightsengineering.github.io/tern/reference/tidy.step.md).
 
 - use_percentile:
 
-  (`flag`)  
+  (`flag`)\
   whether to use percentiles for the x axis or actual biomarker values.
 
 - est:
 
-  (named `list`)  
+  (named `list`)\
   `col` and `lty` settings for estimate line.
 
 - ci_ribbon:
 
-  (named `list` or `NULL`)  
+  (named `list` or `NULL`)\
   `fill` and `alpha` settings for the confidence interval ribbon area,
   or `NULL` to not plot a CI ribbon.
 
 - col:
 
-  (`character`)  
+  (`character`)\
   color(s).
 
 ## Value

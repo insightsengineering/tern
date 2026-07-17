@@ -10,6 +10,7 @@
 <url><loc>https://insightsengineering.github.io/tern/articles/tern.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/articles/tern_formats.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/articles/tern_functions_guide.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/articles/uncond_exact_prop_diff_ci.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/authors.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/index.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/news/index.html</loc></url>
@@ -117,6 +118,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/format_fraction.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/format_fraction_fixed_dp.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/format_fraction_threshold.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/format_range_cens.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/format_sigfig.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/format_xx.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/formatting_functions.html</loc></url>
@@ -141,6 +143,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/h_cox_regression.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_data_plot.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_decompose_gg.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/h_find_ci_bound_uniroot.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_format_row.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_g_ipp.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_ggkm.html</loc></url>
@@ -171,6 +174,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/h_tbl_coxph_pairwise.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_tbl_median_surv.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_worsen_counter.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/h_worst_case_tail_probability.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_xticks.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/imputation_rule.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/incidence_rate.html</loc></url>

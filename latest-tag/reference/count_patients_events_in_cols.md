@@ -44,17 +44,17 @@ s_count_patients_and_multiple_events(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - id:
 
-  (`string`)  
+  (`string`)\
   subject variable name.
 
 - filters_list:
 
-  (named `list` of `character`)  
+  (named `list` of `character`)\
   list where each element in this list describes one type of event
   describe by filters, in the same format as
   [`s_count_patients_with_event()`](https://insightsengineering.github.io/tern/reference/count_patients_with_event.md).
@@ -62,13 +62,13 @@ s_count_patients_and_multiple_events(
 
 - empty_stats:
 
-  (`character`)  
+  (`character`)\
   optional names of the statistics that should be returned empty such
   that corresponding table cells will stay blank.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - ...:
@@ -77,7 +77,7 @@ s_count_patients_and_multiple_events(
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   In addition to any statistics added using `filters_list`, statistic
@@ -85,23 +85,23 @@ s_count_patients_and_multiple_events(
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - col_split:
 
-  (`flag`)  
+  (`flag`)\
   whether the columns should be split. Set to `FALSE` when the required
   column split has been done already earlier in the layout pipe.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -109,7 +109,7 @@ s_count_patients_and_multiple_events(
 
 - custom_label:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   if provided and `labelstr` is empty then this will be used as label.
 
 ## Value
@@ -159,7 +159,7 @@ df <- data.frame(
 )
 
 # `summarize_patients_events_in_cols()`
-basic_table() %>%
+basic_table() |>
   summarize_patients_events_in_cols(
     filters_list = list(
       related = formatters::with_label(c(AEREL = "Y"), "Events (Related)"),
@@ -167,7 +167,7 @@ basic_table() %>%
       fatal_related = c(AEREL = "Y", AESDTH = "Y")
     ),
     custom_label = "%s Total number of patients and events"
-  ) %>%
+  ) |>
   build_table(df)
 #>                                          Patients (All)   Events (All)   Events (Related)   fatal   fatal_related
 #> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————

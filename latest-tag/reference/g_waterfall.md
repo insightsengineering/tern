@@ -24,43 +24,43 @@ g_waterfall(
 
 - height:
 
-  (`numeric`)  
+  (`numeric`)\
   vector containing values to be plotted as the waterfall bars.
 
 - id:
 
-  (`character`)  
+  (`character`)\
   vector containing identifiers to use as the x-axis label for the
   waterfall bars.
 
 - col_var:
 
-  (`factor`, `character`, or `NULL`)  
+  (`factor`, `character`, or `NULL`)\
   categorical variable for bar coloring. `NULL` by default.
 
 - col:
 
-  (`character`)  
+  (`character`)\
   color(s).
 
 - xlab:
 
-  (`string`)  
+  (`string`)\
   x label. Default is `"ID"`.
 
 - ylab:
 
-  (`string`)  
+  (`string`)\
   y label. Default is `"Value"`.
 
 - col_legend_title:
 
-  (`string`)  
+  (`string`)\
   text to be displayed as legend title.
 
 - title:
 
-  (`string`)  
+  (`string`)\
   text to be displayed as plot title.
 
 ## Value
@@ -82,11 +82,11 @@ g_waterfall(
 )
 
 
-adsl_f <- tern_ex_adsl %>%
+adsl_f <- tern_ex_adsl |>
   select(USUBJID, STUDYID, ARM, ARMCD, SEX)
 
-adrs_f <- tern_ex_adrs %>%
-  filter(PARAMCD == "OVRINV") %>%
+adrs_f <- tern_ex_adrs |>
+  filter(PARAMCD == "OVRINV") |>
   mutate(pchg = rnorm(n(), 10, 50))
 
 adrs_f <- head(adrs_f, 30)

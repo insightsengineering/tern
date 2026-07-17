@@ -60,17 +60,17 @@ a_count_patients_with_event(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - filters:
 
-  (`character`)  
+  (`character`)\
   a character vector specifying the column names and flag variables to
   be used for counting the number of unique identifiers satisfying such
   conditions. Multiple column names and flags are accepted in this
@@ -79,7 +79,7 @@ a_count_patients_with_event(
 
 - riskdiff:
 
-  (`flag`)  
+  (`flag`)\
   whether a risk difference column is present. When set to `TRUE`,
   [`add_riskdiff()`](https://insightsengineering.github.io/tern/reference/add_riskdiff.md)
   must be used as `split_fun` in the prior column split of the table
@@ -89,12 +89,12 @@ a_count_patients_with_event(
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -102,7 +102,7 @@ a_count_patients_with_event(
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - ...:
@@ -111,13 +111,13 @@ a_count_patients_with_event(
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are:
@@ -125,7 +125,7 @@ a_count_patients_with_event(
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -133,47 +133,47 @@ a_count_patients_with_event(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   name of the column that contains the unique identifier.
 
 - .N_col:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   column-wise N (column count) for the full column being analyzed that
   is typically passed by `rtables`.
 
 - .N_row:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   row-wise N (row group count) for the group of observations being
   analyzed (i.e. with no column-based subsetting) that is typically
   passed by `rtables`.
 
 - denom:
 
-  (`string`)  
+  (`string`)\
   choice of denominator for proportion. Options are:
 
   - `n`: number of values in this row and column intersection.
@@ -184,7 +184,7 @@ a_count_patients_with_event(
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -230,27 +230,27 @@ a_count_patients_with_event(
 ## Examples
 
 ``` r
-lyt <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
+lyt <- basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_values(
     "STUDYID",
     values = "AB12345",
     .stats = "count",
     .labels = c(count = "Total AEs")
-  ) %>%
+  ) |>
   count_patients_with_event(
     "SUBJID",
     filters = c("TRTEMFL" = "Y"),
     .labels = c(count_fraction = "Total number of patients with at least one adverse event"),
     table_names = "tbl_all"
-  ) %>%
+  ) |>
   count_patients_with_event(
     "SUBJID",
     filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
     .labels = c(count_fraction = "Total number of patients with fatal AEs"),
     table_names = "tbl_fatal"
-  ) %>%
+  ) |>
   count_patients_with_event(
     "SUBJID",
     filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL", "AEREL" = "Y"),

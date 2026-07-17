@@ -16,7 +16,7 @@ decorate_grob_set(grobs, ...)
 
 - grobs:
 
-  (`list` of `grob`)  
+  (`list` of `grob`)\
   a list of grid grobs.
 
 - ...:

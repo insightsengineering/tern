@@ -15,27 +15,27 @@ get_smooths(df, x, y, groups = NULL, level = 0.95)
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - x:
 
-  (`string`)  
+  (`string`)\
   x column name.
 
 - y:
 
-  (`string`)  
+  (`string`)\
   y column name.
 
 - groups:
 
-  (`character` or `NULL`)  
+  (`character` or `NULL`)\
   vector with optional grouping variables names.
 
 - level:
 
-  (`proportion`)  
+  (`proportion`)\
   level of confidence interval to use (0.95 by default).
 
 ## Value

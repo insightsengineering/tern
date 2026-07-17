@@ -16,17 +16,17 @@ combine_groups(fct, ref = NULL, collapse = "/")
 
 - fct:
 
-  (`factor`)  
+  (`factor`)\
   the variable with levels which needs to be grouped.
 
 - ref:
 
-  (`character`)  
+  (`character`)\
   the reference level(s).
 
 - collapse:
 
-  (`string`)  
+  (`string`)\
   a character string to separate `fct` and `ref`.
 
 ## Value
@@ -42,10 +42,10 @@ groups <- combine_groups(
   ref = c("B: Placebo")
 )
 
-basic_table() %>%
-  split_cols_by_groups("ARM", groups) %>%
-  add_colcounts() %>%
-  analyze_vars("AGE") %>%
+basic_table() |>
+  split_cols_by_groups("ARM", groups) |>
+  add_colcounts() |>
+  analyze_vars("AGE") |>
   build_table(DM)
 #>             B: Placebo    A: Drug X/C: Combination
 #>               (N=106)             (N=250)         

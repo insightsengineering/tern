@@ -14,23 +14,23 @@ stat_mean_pval(x, na.rm = TRUE, n_min = 2, test_mean = 0)
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze.
 
 - na.rm:
 
-  (`flag`)  
+  (`flag`)\
   whether `NA` values should be removed from `x` prior to analysis.
 
 - n_min:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   a minimum number of non-missing `x` to estimate the p-value of the
   mean.
 
 - test_mean:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   mean value to test under the null hypothesis.
 
 ## Value
@@ -46,5 +46,5 @@ stat_mean_pval(sample(10))
 
 stat_mean_pval(rnorm(10), test_mean = 0.5)
 #>   p_value 
-#> 0.4815848 
+#> 0.4479036 
 ```

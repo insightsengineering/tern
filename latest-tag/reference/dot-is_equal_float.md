@@ -12,12 +12,12 @@ Uses `.Machine$double.eps` as the tolerance for the comparison.
 
 - x:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   a float number.
 
 - y:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   a float number.
 
 ## Value

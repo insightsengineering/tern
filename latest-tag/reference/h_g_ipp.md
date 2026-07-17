@@ -29,63 +29,63 @@ h_g_ipp(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - xvar:
 
-  (`string`)  
+  (`string`)\
   time point variable to be plotted on x-axis.
 
 - yvar:
 
-  (`string`)  
+  (`string`)\
   continuous analysis variable to be plotted on y-axis.
 
 - xlab:
 
-  (`string`)  
+  (`string`)\
   plot label for x-axis.
 
 - ylab:
 
-  (`string`)  
+  (`string`)\
   plot label for y-axis.
 
 - id_var:
 
-  (`string`)  
+  (`string`)\
   variable used as patient identifier.
 
 - title:
 
-  (`string`)  
+  (`string`)\
   title for plot.
 
 - subtitle:
 
-  (`string`)  
+  (`string`)\
   subtitle for plot.
 
 - caption:
 
-  (`string`)  
+  (`string`)\
   optional caption below the plot.
 
 - add_baseline_hline:
 
-  (`flag`)  
+  (`flag`)\
   adds horizontal line at baseline y-value on plot when `TRUE`.
 
 - yvar_baseline:
 
-  (`string`)  
+  (`string`)\
   variable with baseline values only. Ignored when `add_baseline_hline`
   is `FALSE`.
 
 - ggtheme:
 
-  (`theme`)  
+  (`theme`)\
   optional graphical theme function as provided by `ggplot2` to control
   outlook of plot. Use
   [`ggplot2::theme()`](https://ggplot2.tidyverse.org/reference/theme.html)
@@ -93,7 +93,7 @@ h_g_ipp(
 
 - col:
 
-  (`character`)  
+  (`character`)\
   line colors.
 
 ## Value
@@ -111,8 +111,8 @@ which uses this function.
 library(dplyr)
 
 # Select a small sample of data to plot.
-adlb <- tern_ex_adlb %>%
-  filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) %>%
+adlb <- tern_ex_adlb |>
+  filter(PARAMCD == "ALT", !(AVISIT %in% c("SCREENING", "BASELINE"))) |>
   slice(1:36)
 
 p <- h_g_ipp(

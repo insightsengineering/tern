@@ -59,50 +59,56 @@ a_coxph_pairwise(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - strata:
 
-  (`character` or `NULL`)  
+  (`character` or `NULL`)\
   variable names indicating stratification factors.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   parameters for comparison details, specified by using the helper
   function
   [`control_coxph()`](https://insightsengineering.github.io/tern/reference/control_coxph.md).
   Some possible parameter options are:
 
-  - `pval_method` (`string`)  
+  - `pval_method` (`string`)\
     p-value method for testing the null hypothesis that hazard ratio
     = 1. Default method is `"log-rank"` which comes from
     [`survival::survdiff()`](https://rdrr.io/pkg/survival/man/survdiff.html),
     can also be set to `"wald"` or `"likelihood"` (from
     [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html)).
 
-  - `ties` (`string`)  
+  - `ties` (`string`)\
     specifying the method for tie handling. Default is `"efron"`, can
     also be set to `"breslow"` or `"exact"`. See more in
     [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html).
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for HR.
+
+  - `alternative` (`string`)\
+    alternative hypothesis for the p-value test. Default is
+    `"two.sided"`, can also be set to `"less"` or `"greater"` for
+    one-sided testing. Note that one-sided testing is not supported when
+    `pval_method = "likelihood"`.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -114,30 +120,31 @@ a_coxph_pairwise(
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
-  Options are: `'pvalue', 'hr', 'hr_ci', 'n_tot', 'n_tot_events'`
+  Options are:
+  `'pvalue', 'hr', 'hr_ci', 'hr_ci_3d', 'lr_stat_df', 'n_tot', 'n_tot_events'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -145,45 +152,45 @@ a_coxph_pairwise(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .ref_group:
 
-  (`data.frame` or `vector`)  
+  (`data.frame` or `vector`)\
   the data corresponding to the reference group.
 
 - .in_ref_col:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` when working with the reference level, `FALSE` otherwise.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - is_event:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` if event, `FALSE` if time to event is censored.
 
 - strat:
@@ -236,21 +243,21 @@ a_coxph_pairwise(
 ``` r
 library(dplyr)
 
-adtte_f <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
+adtte_f <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
   mutate(is_event = CNSR == 0)
 
-df <- adtte_f %>% filter(ARMCD == "ARM A")
-df_ref_group <- adtte_f %>% filter(ARMCD == "ARM B")
+df <- adtte_f |> filter(ARMCD == "ARM A")
+df_ref_group <- adtte_f |> filter(ARMCD == "ARM B")
 
-basic_table() %>%
-  split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM A") |>
+  add_colcounts() |>
   coxph_pairwise(
     vars = "AVAL",
     is_event = "is_event",
     var_labels = "Unstratified Analysis"
-  ) %>%
+  ) |>
   build_table(df = adtte_f)
 #>                         ARM A       ARM B          ARM C    
 #>                         (N=69)      (N=73)         (N=58)   
@@ -260,16 +267,16 @@ basic_table() %>%
 #>   Hazard Ratio                       1.41           1.81    
 #>   95% CI                         (0.95, 2.09)   (1.16, 2.84)
 
-basic_table() %>%
-  split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARMCD", ref_group = "ARM A") |>
+  add_colcounts() |>
   coxph_pairwise(
     vars = "AVAL",
     is_event = "is_event",
     var_labels = "Stratified Analysis",
     strata = "SEX",
     control = control_coxph(pval_method = "wald")
-  ) %>%
+  ) |>
   build_table(df = adtte_f)
 #>                       ARM A       ARM B          ARM C    
 #>                       (N=69)      (N=73)         (N=58)   

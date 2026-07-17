@@ -384,6 +384,13 @@ These functions are useful in defining an analysis.
 - [`h_ggkm()`](https://insightsengineering.github.io/tern/reference/h_ggkm.md)
   **\[deprecated\]** : Helper function to create a KM plot
 
+- [`h_incidence_rate()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  [`h_incidence_rate_normal()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  [`h_incidence_rate_normal_log()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  [`h_incidence_rate_exact()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  [`h_incidence_rate_byar()`](https://insightsengineering.github.io/tern/reference/h_incidence_rate.md)
+  **\[stable\]** : Helper functions for incidence rate
+
 - [`h_km_layout()`](https://insightsengineering.github.io/tern/reference/h_km_layout.md)
   **\[deprecated\]** : Helper function to prepare a KM layout
 
@@ -418,12 +425,11 @@ These functions are useful in defining an analysis.
 - [`h_ppmeans()`](https://insightsengineering.github.io/tern/reference/h_ppmeans.md)
   : Function to return the estimated means using predicted probabilities
 
-- [`prop_diff_wald()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
-  [`prop_diff_ha()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
-  [`prop_diff_nc()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
-  [`prop_diff_cmh()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
-  [`prop_diff_strat_nc()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
-  **\[stable\]** : Helper functions to calculate proportion difference
+- [`prop_chisq()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
+  [`prop_cmh()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
+  [`prop_schouten()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
+  [`prop_fisher()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
+  : Helper functions to test proportion differences
 
 - [`prop_wilson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
   [`prop_strat_wilson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
@@ -606,6 +612,9 @@ These functions provide customized formatting rules to work with the
 
 - [`format_fraction_threshold()`](https://insightsengineering.github.io/tern/reference/format_fraction_threshold.md)
   **\[stable\]** : Format fraction with lower threshold
+
+- [`format_range_cens()`](https://insightsengineering.github.io/tern/reference/format_range_cens.md)
+  **\[experimental\]** : Format range with censoring indicators
 
 - [`format_sigfig()`](https://insightsengineering.github.io/tern/reference/format_sigfig.md)
   : Format numeric values by significant figures

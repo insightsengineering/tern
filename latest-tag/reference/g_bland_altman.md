@@ -14,17 +14,17 @@ g_bland_altman(x, y, conf_level = 0.95)
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze.
 
 - y:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze, to be compared with `x`.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 ## Value

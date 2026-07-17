@@ -28,22 +28,24 @@
 
 - **Jennifer Li**. Author.
 
+- **David Munoz Tord**. Contributor.
+
 - **F. Hoffmann-La Roche AG**. Copyright holder, funder.
 
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/insightsengineering/tern/blob/v0.9.10/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/insightsengineering/tern/blob/v0.9.11/DESCRIPTION)
 
 Zhu J, Sabanés Bové D, Stoilova J, Garolini D, de la Rua E, Yogasekaram
-A, Wang H, Collin F, Waddell A, Rucki P, Liao C, Li J (2025). *tern:
-Create Common TLGs Used in Clinical Trials*. R package version 0.9.10,
+A, Wang H, Collin F, Waddell A, Rucki P, Liao C, Li J (2026). *tern:
+Create Common TLGs Used in Clinical Trials*. R package version 0.9.11,
 <https://insightsengineering.github.io/tern/>.
 
     @Manual{,
       title = {tern: Create Common TLGs Used in Clinical Trials},
       author = {Joe Zhu and Daniel {Sabanés Bové} and Jana Stoilova and Davide Garolini and Emily {de la Rua} and Abinaya Yogasekaram and Heng Wang and Francois Collin and Adrian Waddell and Pawel Rucki and Chendi Liao and Jennifer Li},
-      year = {2025},
-      note = {R package version 0.9.10},
+      year = {2026},
+      note = {R package version 0.9.11},
       url = {https://insightsengineering.github.io/tern/},
     }

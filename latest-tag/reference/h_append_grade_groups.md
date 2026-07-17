@@ -24,18 +24,18 @@ h_append_grade_groups(
 
 - grade_groups:
 
-  (named `list` of `character`)  
+  (named `list` of `character`)\
   list containing groupings of grades.
 
 - refs:
 
-  (named `list` of `numeric`)  
+  (named `list` of `numeric`)\
   named list where each name corresponds to a reference grade level and
   each entry represents a count.
 
 - remove_single:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` to not include the elements of one-element grade groups in the
   the output list; in this case only the grade groups names will be
   included in the output. If `only_grade_groups` is set to `TRUE` this
@@ -43,7 +43,7 @@ h_append_grade_groups(
 
 - only_grade_groups:
 
-  (`flag`)  
+  (`flag`)\
   whether only the specified grade groups should be included, with
   individual grade rows removed (`TRUE`), or all grades and grade groups
   should be displayed (`FALSE`).

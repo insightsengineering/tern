@@ -85,39 +85,39 @@ a_count_occurrences(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - id:
 
-  (`string`)  
+  (`string`)\
   subject variable name.
 
 - drop:
 
-  (`flag`)  
+  (`flag`)\
   whether non-appearing occurrence levels should be dropped from the
   resulting table. Note that in that case the remaining occurrence
   levels in the table are sorted alphabetically.
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - riskdiff:
 
-  (`flag`)  
+  (`flag`)\
   whether a risk difference column is present. When set to `TRUE`,
   [`add_riskdiff()`](https://insightsengineering.github.io/tern/reference/add_riskdiff.md)
   must be used as `split_fun` in the prior column split of the table
@@ -127,12 +127,12 @@ a_count_occurrences(
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -144,13 +144,13 @@ a_count_occurrences(
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are:
@@ -158,7 +158,7 @@ a_count_occurrences(
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -166,53 +166,53 @@ a_count_occurrences(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var, var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - .N_col:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   column-wise N (column count) for the full column being analyzed that
   is typically passed by `rtables`.
 
 - .N_row:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   row-wise N (row group count) for the group of observations being
   analyzed (i.e. with no column-based subsetting) that is typically
   passed by `rtables`.
 
 - .df_row:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data frame across all of the columns for the given row split.
 
 - denom:
 
-  (`string`)  
+  (`string`)\
   choice of denominator for proportion. Options are:
 
   - `N_col`: total number of patients in this column across rows.
@@ -223,7 +223,7 @@ a_count_occurrences(
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -306,19 +306,19 @@ df <- data.frame(
   ARM = rep(c("A", "B"), each = 6),
   SEX = c("F", "F", "M", "M", "M", "M", "F", "F", "F", "M", "M", "F")
 )
-df_adsl <- df %>%
-  select(USUBJID, ARM) %>%
+df_adsl <- df |>
+  select(USUBJID, ARM) |>
   unique()
 
 # Create table layout
-lyt <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
+lyt <- basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
   count_occurrences(vars = "MHDECOD", .stats = c("count_fraction"))
 
 # Apply table layout to data and produce `rtable` object
-tbl <- lyt %>%
-  build_table(df, alt_counts_df = df_adsl) %>%
+tbl <- lyt |>
+  build_table(df, alt_counts_df = df_adsl) |>
   prune_table()
 
 tbl
@@ -331,13 +331,13 @@ tbl
 #> MH4       0       1 (33.3%)
 
 # Layout creating function with custom format.
-basic_table() %>%
-  add_colcounts() %>%
-  split_rows_by("SEX", child_labels = "visible") %>%
+basic_table() |>
+  add_colcounts() |>
+  split_rows_by("SEX", child_labels = "visible") |>
   summarize_occurrences(
     var = "MHDECOD",
     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
-  ) %>%
+  ) |>
   build_table(df, alt_counts_df = df_adsl)
 #>          all obs 
 #>           (N=6)  

@@ -11,6 +11,10 @@ prop_diff_ha(rsp, grp, conf_level)
 
 prop_diff_nc(rsp, grp, conf_level, correct = FALSE)
 
+h_diff_cmh(tbl)
+
+h_diff_cmh_se(cmh_results, diff_se = c("standard", "sato"))
+
 prop_diff_cmh(
   rsp,
   grp,
@@ -27,47 +31,61 @@ prop_diff_strat_nc(
   conf_level = 0.95,
   correct = FALSE
 )
+
+prop_diff_uncond_exact(rsp, grp, conf_level = 0.95)
 ```
 
 ## Arguments
 
 - rsp:
 
-  (`logical`)  
+  (`logical`)\
   vector indicating whether each subject is a responder or not.
 
 - grp:
 
-  (`factor`)  
+  (`factor`)\
   vector assigning observations to one out of two groups (e.g. reference
   and treatment group).
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - correct:
 
-  (`flag`)  
+  (`flag`)\
   whether to include the continuity correction. For further information,
   see [`stats::prop.test()`](https://rdrr.io/r/stats/prop.test.html).
 
-- strata:
+- tbl:
 
-  (`factor`)  
-  variable with one level per stratum and same length as `rsp`.
+  (`array`)\
+  3-dimensional array with dimensions corresponding to group, response,
+  and strata. The second dimension (response) should have names "TRUE"
+  and "FALSE".
+
+- cmh_results:
+
+  (`list`)\
+  output of `h_diff_cmh()`.
 
 - diff_se:
 
-  (`string`)  
+  (`string`)\
   method to estimate the standard error for the difference, either
   `standard`, `sato` (Sato et al. 1989) or `miettinen_nurminen`
   (Miettinen and Nurminen 1985) .
 
+- strata:
+
+  (`factor`)\
+  variable with one level per stratum and same length as `rsp`.
+
 - weights_method:
 
-  (`string`)  
+  (`string`)\
   weights method. Can be either `"cmh"` or `"heuristic"` and directs the
   way weights are estimated.
 
@@ -90,6 +108,12 @@ A named `list` of elements `diff` (proportion difference) and `diff_ci`
   Wilson score confidence interval for a single binomial proportion
   (Newcombe 1998) .
 
+- `h_diff_cmh()`: Helper function to calculate the CMH weighted
+  difference in proportions.
+
+- `h_diff_cmh_se()`: Helper function to calculate the standard error for
+  the CMH weighted difference in proportions.
+
 - `prop_diff_cmh()`: Calculates the weighted difference. This is defined
   as the difference in response rates between the experimental treatment
   group and the control treatment group, adjusted for stratification
@@ -106,27 +130,38 @@ A named `list` of elements `diff` (proportion difference) and `diff_ci`
   [`prop_strat_wilson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
   or from CMH-derived weights (see `prop_diff_cmh()`).
 
+- `prop_diff_uncond_exact()`: Unconditional exact confidence interval
+  for the difference in proportions by inverting one-sided tail tests
+  over a nuisance parameter. This is the "tail method" described by
+  Santner and Snell (Santner and Snell 1980) .
+
 ## References
 
 Hauck WW, Anderson S (1986). “A Comparison of Large-Sample Confidence
 Interval Methods for the Difference of Two Binomial Probabilities.” *The
 American Statistician*, **40**(4), 318–322.
-[doi:10.2307/2684618](https://doi.org/10.2307/2684618) .  
-  
+[doi:10.2307/2684618](https://doi.org/10.2307/2684618) .\
+\
 Miettinen OS, Nurminen M (1985). “Comparative analysis of two rates.”
 *Statistics in Medicine*, **4**(2), 213–226.
-[doi:10.1002/sim.4780040211](https://doi.org/10.1002/sim.4780040211) .  
-  
+[doi:10.1002/sim.4780040211](https://doi.org/10.1002/sim.4780040211) .\
+\
 Newcombe RG (1998). “Interval estimation for the difference between
 independent proportions: comparison of eleven methods.” *Statistics in
 Medicine*, **17**(8), 873-890.
 [doi:10.1002/(SICI)1097-0258(19980430)17:8\<873::AID-SIM779\>3.0.CO;2-I](https://doi.org/10.1002/%28SICI%291097-0258%2819980430%2917%3A8%3C873%3A%3AAID-SIM779%3E3.0.CO%3B2-I)
-.  
-  
+.\
+\
+Santner TJ, Snell MK (1980). “Small-Sample Confidence Intervals for p1 -
+p2 and p1/p2 in 2 x 2 Contingency Tables.” *Journal of the American
+Statistical Association*, **75**(370), 386–394.
+[doi:10.1080/01621459.1980.10477482](https://doi.org/10.1080/01621459.1980.10477482)
+.\
+\
 Sato T, Greenland S, Robins JM (1989). “On the variance estimator for
 the Mantel-Haenszel Risk Difference.” *Biometrics*, **45**(4),
-1323–1324. <http://www.jstor.org/stable/2531784>.  
-  
+1323–1324. <http://www.jstor.org/stable/2531784>.\
+\
 Yan X, Su XG (2010). “Stratified Wilson and Newcombe Confidence
 Intervals for Multiple Binomial Proportions.” *Stat. Biopharm. Res.*,
 **2**(3), 329–335.
@@ -321,5 +356,21 @@ prop_diff_strat_nc(
 #> $diff_ci
 #>      lower      upper 
 #> -0.2540844  0.1027720 
+#> 
+
+# Unconditional exact confidence interval
+n11 <- 40
+n21 <- 5
+n1 <- 78
+n2 <- 17
+rsp <- c(rep(TRUE, n21), rep(FALSE, n2 - n21), rep(TRUE, n11), rep(FALSE, n1 - n11))
+grp <- factor(c(rep("B", n2), rep("A", n1)), levels = c("B", "A"))
+
+prop_diff_uncond_exact(rsp = rsp, grp = grp, conf_level = 0.95)
+#> $diff
+#> [1] 0.2187029
+#> 
+#> $diff_ci
+#> [1] -0.04659335  0.46760887
 #> 
 ```

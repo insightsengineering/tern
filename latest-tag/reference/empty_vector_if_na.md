@@ -12,7 +12,7 @@ empty_vector_if_na(x)
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector.
 
 ## Value

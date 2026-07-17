@@ -12,7 +12,7 @@ d_count_missed_doses(thresholds)
 
 - thresholds:
 
-  (`numeric`)  
+  (`numeric`)\
   minimum number of missed doses the patients had.
 
 ## Value

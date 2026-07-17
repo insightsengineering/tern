@@ -93,39 +93,39 @@ a_num_patients(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - required:
 
-  (`character` or `NULL`)  
+  (`character` or `NULL`)\
   name of a variable that is required to be non-missing.
 
 - count_by:
 
-  (`character` or `NULL`)  
+  (`character` or `NULL`)\
   name of a variable to be combined with `vars` when counting
   `nonunique` records.
 
 - unique_count_suffix:
 
-  (`flag`)  
+  (`flag`)\
   whether the `"(n)"` suffix should be added to `unique_count` labels.
   Defaults to `TRUE`.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -133,12 +133,12 @@ a_num_patients(
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - riskdiff:
 
-  (`flag`)  
+  (`flag`)\
   whether a risk difference column is present. When set to `TRUE`,
   [`add_riskdiff()`](https://insightsengineering.github.io/tern/reference/add_riskdiff.md)
   must be used as `split_fun` in the prior column split of the table
@@ -152,14 +152,14 @@ a_num_patients(
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'unique', 'nonunique', 'unique_count'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -167,29 +167,29 @@ a_num_patients(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - x:
 
-  (`character` or `factor`)  
+  (`character` or `factor`)\
   vector of patient IDs.
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -197,18 +197,18 @@ a_num_patients(
 
 - .N_col:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   column-wise N (column count) for the full column being analyzed that
   is typically passed by `rtables`.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var, var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
@@ -302,10 +302,10 @@ df <- data.frame(
 )
 
 # analyze_num_patients
-tbl <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  add_colcounts() %>%
-  analyze_num_patients("USUBJID", .stats = c("unique")) %>%
+tbl <- basic_table() |>
+  split_cols_by("ARM") |>
+  add_colcounts() |>
+  analyze_num_patients("USUBJID", .stats = c("unique")) |>
   build_table(df)
 
 tbl
@@ -315,10 +315,10 @@ tbl
 #> Number of patients with at least one event   3 (60.0%)   3 (75.0%)
 
 # summarize_num_patients
-tbl <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("SEX") %>%
-  summarize_num_patients("USUBJID", .stats = "unique_count") %>%
+tbl <- basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("SEX") |>
+  summarize_num_patients("USUBJID", .stats = "unique_count") |>
   build_table(df)
 
 tbl

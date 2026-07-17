@@ -19,13 +19,13 @@ control_coxreg(
 
 - pval_method:
 
-  (`string`)  
+  (`string`)\
   the method used for estimation of p.values; `wald` (default) or
   `likelihood`.
 
 - ties:
 
-  (`string`)  
+  (`string`)\
   among `exact` (equivalent to `DISCRETE` in SAS), `efron` and
   `breslow`, see
   [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html).
@@ -33,12 +33,12 @@ control_coxreg(
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - interaction:
 
-  (`flag`)  
+  (`flag`)\
   if `TRUE`, the model includes the interaction between the studied
   treatment and candidate covariate. Note that for univariate models
   without treatment arm, and multivariate models, no interaction can be

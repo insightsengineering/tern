@@ -15,17 +15,17 @@ sas_na(x, empty = TRUE, whitespaces = TRUE)
 
 - x:
 
-  (`factor` or `character`)  
+  (`factor` or `character`)\
   values for which any missing values should be substituted.
 
 - empty:
 
-  (`flag`)  
+  (`flag`)\
   if `TRUE`, empty strings get replaced by `NA`.
 
 - whitespaces:
 
-  (`flag`)  
+  (`flag`)\
   if `TRUE`, strings made from only whitespaces get replaced with `NA`.
 
 ## Value

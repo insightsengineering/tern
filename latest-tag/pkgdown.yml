@@ -1,4 +1,4 @@
-pandoc: 3.7.0.2
+pandoc: '3.9'
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -7,7 +7,8 @@ articles:
   tern_formats: tern_formats.html
   tern_functions_guide: tern_functions_guide.html
   tern: tern.html
-last_built: 2025-12-18T09:48Z
+  uncond_exact_prop_diff_ci: uncond_exact_prop_diff_ci.html
+last_built: 2026-07-17T15:07Z
 urls:
   reference: https://insightsengineering.github.io/tern/reference
   article: https://insightsengineering.github.io/tern/articles

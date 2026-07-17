@@ -38,38 +38,38 @@ h_step_rsp_est(
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   biomarker value(s) to use (without `NA`).
 
 - control:
 
-  (named `list`)  
+  (named `list`)\
   output from
   [`control_step()`](https://insightsengineering.github.io/tern/reference/control_step.md).
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - model:
 
-  (`coxph` or `glm`)  
+  (`coxph` or `glm`)\
   the regression model object.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - formula:
 
-  (`formula`)  
+  (`formula`)\
   the regression model formula.
 
 - subset:
 
-  (`logical`)  
+  (`logical`)\
   subset vector.
 
 ## Value

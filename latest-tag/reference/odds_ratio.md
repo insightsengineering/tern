@@ -63,33 +63,33 @@ a_odds_ratio(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - groups_list:
 
-  (named `list` of `character`)  
+  (named `list` of `character`)\
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
 - method:
 
-  (`string`)  
+  (`string`)\
   whether to use the correct (`"exact"`) calculation in the conditional
   likelihood or one of the approximations. See
   [`survival::clogit()`](https://rdrr.io/pkg/survival/man/clogit.html)
@@ -97,12 +97,12 @@ a_odds_ratio(
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -117,30 +117,30 @@ a_odds_ratio(
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'or_ci', 'n_tot'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -148,45 +148,45 @@ a_odds_ratio(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - .ref_group:
 
-  (`data.frame` or `vector`)  
+  (`data.frame` or `vector`)\
   the data corresponding to the reference group.
 
 - .in_ref_col:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` when working with the reference level, `FALSE` otherwise.
 
 - .df_row:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data frame across all of the columns for the given row split.
 
 ## Value
@@ -250,8 +250,8 @@ dta <- data.frame(
   strata = factor(sample(c("C", "D"), 100, TRUE))
 )
 
-l <- basic_table() %>%
-  split_cols_by(var = "grp", ref_group = "B") %>%
+l <- basic_table() |>
+  split_cols_by(var = "grp", ref_group = "B") |>
   estimate_odds_ratio(vars = "rsp")
 
 build_table(l, df = dta)

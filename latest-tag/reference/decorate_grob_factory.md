@@ -12,7 +12,7 @@ decorate_grob_factory(npages, ...)
 
 - npages:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   total number of pages.
 
 - ...:

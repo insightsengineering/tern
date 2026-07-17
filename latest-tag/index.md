@@ -86,6 +86,7 @@ created using `tern` functionality.
 version with:
 
 ``` r
+
 install.packages("tern")
 ```
 
@@ -93,6 +94,7 @@ or you can install the latest development version directly from GitHub
 by running the following:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("insightsengineering/tern")
 ```
@@ -122,18 +124,3 @@ this package.
 This package is the result of the joint efforts by many developers and
 stakeholders. We would like to thank everyone who has contributed so
 far!
-
-## Stargazers and Forkers
-
-### Stargazers over time
-
-[![Stargazers over
-time](https://starchart.cc/insightsengineering/tern.svg)](https://starchart.cc/insightsengineering/tern)
-
-### Stargazers
-
-[![Stargazers roster for
-tern](https://reporoster.com/stars/insightsengineering/tern)](https://github.com/insightsengineering/tern/stargazers)
-
-[![Forkers roster for
-tern](https://reporoster.com/forks/insightsengineering/tern)](https://github.com/insightsengineering/tern/network/members)

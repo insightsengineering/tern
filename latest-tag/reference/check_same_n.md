@@ -12,12 +12,12 @@ check_same_n(..., omit_null = TRUE)
 
 - ...:
 
-  (`data.frame` or `vector`)  
+  (`data.frame` or `vector`)\
   any data frames or vectors.
 
 - omit_null:
 
-  (`flag`)  
+  (`flag`)\
   whether `NULL` elements in `...` should be omitted from the check.
 
 ## Value

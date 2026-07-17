@@ -23,17 +23,17 @@ control_analyze_vars(
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - quantiles:
 
-  (`numeric(2)`)  
+  (`numeric(2)`)\
   vector of length two to specify the quantiles to calculate.
 
 - quantile_type:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number between 1 and 9 selecting quantile algorithms to be used.
   Default is set to 2 as this matches the default quantile algorithm in
   SAS `proc univariate` set by `QNTLDEF=5`. This differs from R's
@@ -42,7 +42,7 @@ control_analyze_vars(
 
 - test_mean:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number to test against the mean under the null hypothesis when
   calculating p-value.
 

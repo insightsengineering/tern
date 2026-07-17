@@ -42,29 +42,29 @@ h_adlb_abnormal_by_worst_grade(
 
 - adlb:
 
-  (`data.frame`)  
+  (`data.frame`)\
   ADLB data frame.
 
 - atoxgr:
 
-  (`string`)  
+  (`string`)\
   name of the analysis toxicity grade variable. This must be a `factor`
   variable.
 
 - avisit:
 
-  (`string`)  
+  (`string`)\
   name of the analysis visit variable.
 
 - worst_flag_low:
 
-  (`string`)  
+  (`string`)\
   name of the worst low lab grade flag variable. This variable is set to
   `"Y"` when indicating records of worst low lab grades.
 
 - worst_flag_high:
 
-  (`string`)  
+  (`string`)\
   name of the worst high lab grade flag variable. This variable is set
   to `"Y"` when indicating records of worst high lab grades.
 
@@ -80,8 +80,8 @@ two new variables: `GRADE_DIR` and `GRADE_ANL`.
 ## Examples
 
 ``` r
-h_adlb_abnormal_by_worst_grade(tern_ex_adlb) %>%
-  dplyr::select(ATOXGR, GRADE_DIR, GRADE_ANL) %>%
+h_adlb_abnormal_by_worst_grade(tern_ex_adlb) |>
+  dplyr::select(ATOXGR, GRADE_DIR, GRADE_ANL) |>
   head(10)
 #> # A tibble: 10 × 3
 #>    ATOXGR GRADE_DIR GRADE_ANL

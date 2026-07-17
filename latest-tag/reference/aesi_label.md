@@ -12,13 +12,13 @@ aesi_label(aesi, scope = NULL)
 
 - aesi:
 
-  (`character`)  
+  (`character`)\
   vector with standardized MedDRA query name (e.g. `SMQxxNAM`) or
   customized query name (e.g. `CQxxNAM`).
 
 - scope:
 
-  (`character`)  
+  (`character`)\
   vector with scope of query (e.g. `SMQxxSC`).
 
 ## Value

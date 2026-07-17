@@ -76,28 +76,28 @@ a_count_abnormal_by_marked(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - category:
 
-  (`list`)  
+  (`list`)\
   a list with different marked category names for single and last or
   replicated.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -109,14 +109,14 @@ a_count_abnormal_by_marked(
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'count_fraction', 'count_fraction_fixed_dp'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -124,35 +124,35 @@ a_count_abnormal_by_marked(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var, var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - .spl_context:
 
-  (`data.frame`)  
+  (`data.frame`)\
   gives information about ancestor split states that is passed by
   `rtables`.
 
@@ -215,7 +215,7 @@ df <- data.frame(
   stringsAsFactors = FALSE
 )
 
-df <- df %>%
+df <- df |>
   mutate(abn_dir = factor(
     case_when(
       ANRIND == "LOW LOW" ~ "Low",
@@ -226,9 +226,9 @@ df <- df %>%
   ))
 
 # Select only post-baseline records.
-df <- df %>% filter(ONTRTFL == "Y")
-df_crp <- df %>%
-  filter(PARAMCD == "CRP") %>%
+df <- df |> filter(ONTRTFL == "Y")
+df_crp <- df |>
+  filter(PARAMCD == "CRP") |>
   droplevels()
 full_parent_df <- list(df_crp, "not_needed")
 cur_col_subset <- list(rep(TRUE, nrow(df_crp)), "not_needed")
@@ -240,22 +240,22 @@ spl_context <- data.frame(
 
 map <- unique(
   df[df$abn_dir %in% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
-) %>%
-  lapply(as.character) %>%
-  as.data.frame() %>%
+) |>
+  lapply(as.character) |>
+  as.data.frame() |>
   arrange(PARAMCD, abn_dir)
 
-basic_table() %>%
-  split_cols_by("ARMCD") %>%
-  split_rows_by("PARAMCD") %>%
+basic_table() |>
+  split_cols_by("ARMCD") |>
+  split_rows_by("PARAMCD") |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = "unique_count"
-  ) %>%
+  ) |>
   split_rows_by(
     "abn_dir",
     split_fun = trim_levels_to_map(map)
-  ) %>%
+  ) |>
   count_abnormal_by_marked(
     var = "AVALCAT1",
     variables = list(
@@ -263,7 +263,7 @@ basic_table() %>%
       param = "PARAMCD",
       direction = "abn_dir"
     )
-  ) %>%
+  ) |>
   build_table(df = df)
 #>                           ARM A      ARM B  
 #> ————————————————————————————————————————————
@@ -278,17 +278,17 @@ basic_table() %>%
 #>     Last or replicated      0       1 (100%)
 #>     Any Abnormality      1 (100%)   1 (100%)
 
-basic_table() %>%
-  split_cols_by("ARMCD") %>%
-  split_rows_by("PARAMCD") %>%
+basic_table() |>
+  split_cols_by("ARMCD") |>
+  split_rows_by("PARAMCD") |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = "unique_count"
-  ) %>%
+  ) |>
   split_rows_by(
     "abn_dir",
     split_fun = trim_levels_in_group("abn_dir")
-  ) %>%
+  ) |>
   count_abnormal_by_marked(
     var = "AVALCAT1",
     variables = list(
@@ -296,7 +296,7 @@ basic_table() %>%
       param = "PARAMCD",
       direction = "abn_dir"
     )
-  ) %>%
+  ) |>
   build_table(df = df)
 #>                           ARM A      ARM B  
 #> ————————————————————————————————————————————

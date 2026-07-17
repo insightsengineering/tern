@@ -19,7 +19,7 @@ tidy(x, ...)
 
 - x:
 
-  (`list`)  
+  (`list`)\
   result of the Cox regression model fitted by
   [`fit_coxreg_univar()`](https://insightsengineering.github.io/tern/reference/fit_coxreg.md)
   (for univariate models) or
@@ -32,7 +32,7 @@ tidy(x, ...)
 
 ## Value
 
-[`broom::tidy()`](https://broom.tidymodels.org/reference/reexports.html)
+[`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html)
 returns:
 
 - For `summary.coxph` objects, a `data.frame` with columns: `Pr(>|z|)`,

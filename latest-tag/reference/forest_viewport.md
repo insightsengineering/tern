@@ -20,37 +20,37 @@ forest_viewport(
 
 - tbl:
 
-  (`VTableTree`)  
+  (`VTableTree`)\
   `rtables` table object.
 
 - width_row_names:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   width of row names.
 
 - width_columns:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   width of column spans.
 
 - width_forest:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   width of the forest plot.
 
 - gap_column:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   gap width between the columns.
 
 - gap_header:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   gap width between the header.
 
 - mat_form:
 
-  (`MatrixPrintForm`)  
+  (`MatrixPrintForm`)\
   matrix print form of the table.
 
 ## Value

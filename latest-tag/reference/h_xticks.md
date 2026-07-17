@@ -17,12 +17,12 @@ h_xticks(data, xticks = NULL, max_time = NULL)
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   survival data as pre-processed by `h_data_plot`.
 
 - xticks:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   numeric vector of tick positions or a single number with spacing
   between ticks on the x-axis. If `NULL` (default),
   [`labeling::extended()`](https://rdrr.io/pkg/labeling/man/extended.html)
@@ -30,7 +30,7 @@ h_xticks(data, xticks = NULL, max_time = NULL)
 
 - max_time:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   maximum value to show on x-axis. Only data values less than or up to
   this threshold value will be plotted (defaults to `NULL`).
 
@@ -44,9 +44,9 @@ A vector of positions to use for x-axis ticks on a `ggplot` object.
 library(dplyr)
 library(survival)
 
-data <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
-  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+data <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
+  (\(x) survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = x))() |>
   h_data_plot()
 
 h_xticks(data)

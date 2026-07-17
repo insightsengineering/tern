@@ -24,19 +24,19 @@ control_riskdiff(
 
 - arm_x:
 
-  (`string`)  
+  (`string`)\
   name of reference arm to use in risk difference calculations.
 
 - arm_y:
 
-  (`character`)  
+  (`character`)\
   names of one or more arms to compare to reference arm in risk
   difference calculations. A new column will be added for each value of
   `arm_y`.
 
 - format:
 
-  (`string` or `function`)  
+  (`string` or `function`)\
   the format label (string) or formatting function to apply to the risk
   difference statistic. See the `3d` string options in
   [`formatters::list_valid_format_labels()`](https://insightsengineering.github.io/formatters/latest-tag/reference/list_formats.html)
@@ -44,7 +44,7 @@ control_riskdiff(
 
 - col_label:
 
-  (`character`)  
+  (`character`)\
   labels to use when rendering the risk difference column within the
   table. If more than one comparison arm is specified in `arm_y`,
   default labels will specify which two arms are being compared
@@ -52,7 +52,7 @@ control_riskdiff(
 
 - pct:
 
-  (`flag`)  
+  (`flag`)\
   whether output should be returned as percentages. Defaults to `TRUE`.
 
 ## Value

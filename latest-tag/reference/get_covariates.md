@@ -12,7 +12,7 @@ get_covariates(covariates)
 
 - covariates:
 
-  (`character`)  
+  (`character`)\
   a vector that can contain single variable names (such as `"X1"`),
   and/or interaction terms indicated by `"X1 * X2"`.
 

@@ -13,8 +13,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Summarize analysis of covariance (ANCOVA) results — summarize_ancova">
 <meta name="description" content="
@@ -47,7 +47,7 @@ the ANCOVA results via the interaction_y parameter.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.11</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,7 @@ the ANCOVA results via the interaction_y parameter.">
     <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
     <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
     <li><a class="dropdown-item" href="../articles/tern_functions_guide.html">Understanding `tern` functions</a></li>
+    <li><a class="dropdown-item" href="../articles/uncond_exact_prop_diff_ci.html">Unconditional Exact Confidence Interval for Difference in Proportions</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -82,6 +83,7 @@ the ANCOVA results via the interaction_y parameter.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.11">v0.9.11</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
@@ -128,7 +130,7 @@ the ANCOVA results via the interaction_y parameter.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Summarize analysis of covariance (ANCOVA) results</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/summarize_ancova.R" class="external-link"><code>R/summarize_ancova.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.11/R/summarize_ancova.R" class="external-link"><code>R/summarize_ancova.R</code></a></small>
       <div class="d-none name"><code>summarize_ancova.Rd</code></div>
     </div>
 
@@ -281,7 +283,7 @@ times, to avoid warnings from <code>rtables</code>.</p></dd>
 </dt>
 <dd>
 <p>(<code>character</code>)<br> statistics to select for the table.</p>
-<p>Options are: <code>'n', 'lsmean', 'lsmean_diff', 'lsmean_diff_ci', 'pval'</code></p>
+<p>Options are: <code>'n', 'lsmean', 'lsmean_se', 'lsmean_ci', 'lsmean_diff', 'lsmean_diff_ci', 'lsmean_diff_with_ci', 'pval'</code></p>
 </dd>
 
 
@@ -346,14 +348,18 @@ the statistics from <code>s_ancova()</code> to the table layout.</p></li>
 </ul>
 <ul>
 <li>
-<p><code>s_ancova()</code> returns a named list of 5 statistics:</p>
+<p><code>s_ancova()</code> returns a named list of 8 statistics:</p>
 <ul>
 <li><p><code>n</code>: Count of complete sample size for the group.</p></li>
 <li><p><code>lsmean</code>: Estimated marginal means in the group.</p></li>
+<li><p><code>lsmean_se</code>: Adjusted mean with standard error as a 2-element vector <code>c(emmean, SE)</code>.</p></li>
+<li><p><code>lsmean_ci</code>: Adjusted mean with confidence interval as a 3-element vector <code>c(emmean, lower.CL, upper.CL)</code>.</p></li>
 <li><p><code>lsmean_diff</code>: Difference in estimated marginal means in comparison to the reference group.
 If working with the reference group, this will be empty.</p></li>
 <li><p><code>lsmean_diff_ci</code>: Confidence level for difference in estimated marginal means in comparison
 to the reference group.</p></li>
+<li><p><code>lsmean_diff_with_ci</code>: Difference in adjusted means with confidence interval as a 3-element vector
+<code>c(estimate, lower.CL, upper.CL)</code>.</p></li>
 <li><p><code>pval</code>: p-value (not adjusted for multiple comparisons).</p></li>
 </ul>
 </li>
@@ -378,22 +384,22 @@ of the investigated linear model.</p></li>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a>
 </h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"Species"</span>, ref_group <span class="op">=</span> <span class="st">"setosa"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">add_colcounts</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"Species"</span>, ref_group <span class="op">=</span> <span class="st">"setosa"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_colcounts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_ancova</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"Petal.Length"</span>,</span></span>
 <span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"Species"</span>, covariates <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    table_names <span class="op">=</span> <span class="st">"unadj"</span>,</span></span>
 <span class="r-in"><span>    conf_level <span class="op">=</span> <span class="fl">0.95</span>, var_labels <span class="op">=</span> <span class="st">"Unadjusted comparison"</span>,</span></span>
 <span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>lsmean <span class="op">=</span> <span class="st">"Mean"</span>, lsmean_diff <span class="op">=</span> <span class="st">"Difference in Means"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_ancova</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"Petal.Length"</span>,</span></span>
 <span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"Species"</span>, covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sepal.Length"</span>, <span class="st">"Sepal.Width"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    table_names <span class="op">=</span> <span class="st">"adj"</span>,</span></span>
 <span class="r-in"><span>    conf_level <span class="op">=</span> <span class="fl">0.95</span>, var_labels <span class="op">=</span> <span class="st">"Adjusted comparison (covariates: Sepal.Length and Sepal.Width)"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                  setosa    versicolor     virginica  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                  (N=50)      (N=50)         (N=50)   </span>

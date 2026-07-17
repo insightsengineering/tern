@@ -12,12 +12,12 @@ reapply_varlabels(x, varlabels, ...)
 
 - x:
 
-  (`vector`)  
+  (`vector`)\
   vector of elements that needs new labels.
 
 - varlabels:
 
-  (`character`)  
+  (`character`)\
   vector of labels for `x`.
 
 - ...:

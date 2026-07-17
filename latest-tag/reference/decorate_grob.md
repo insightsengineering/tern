@@ -31,29 +31,29 @@ decorate_grob(
 
 - grob:
 
-  (`grob`)  
+  (`grob`)\
   a grid grob object, optionally `NULL` if only a `grob` with the
   decoration should be shown.
 
 - titles:
 
-  (`character`)  
+  (`character`)\
   titles given as a vector of strings that are each separated by a
   newline and wrapped according to the page width.
 
 - footnotes:
 
-  (`character`)  
+  (`character`)\
   footnotes. Uses the same formatting rules as `titles`.
 
 - page:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   page numeration. If `NULL` then no page number is displayed.
 
 - width_titles:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   width of titles. Usually defined as all the available space
   `grid::unit(1, "npc")`, it is affected by the parameter
   `outer_margins`. Right margins (`outer_margins[4]`) need to be
@@ -61,18 +61,18 @@ decorate_grob(
 
 - width_footnotes:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   width of footnotes. Same default and margin correction as
   `width_titles`.
 
 - border:
 
-  (`flag`)  
+  (`flag`)\
   whether a border should be drawn around the plot or not.
 
 - padding:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   padding. A unit object of length 4. Innermost margin between the plot
   (`grob`) and, possibly, the border of the plot. Usually expressed in 4
   identical values (usually `"lines"`). It defaults to
@@ -80,7 +80,7 @@ decorate_grob(
 
 - margins:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   margins. A unit object of length 4. Margins between the plot and the
   other elements in the list (e.g. titles, plot, and footers). This is
   usually expressed in 4 `"lines"`, where the lateral ones are 0s, while
@@ -89,7 +89,7 @@ decorate_grob(
 
 - outer_margins:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   outer margins. A unit object of length 4. It defines the general
   margin of the plot, considering also decorations like titles,
   footnotes, and page numbers. It defaults to
@@ -97,12 +97,12 @@ decorate_grob(
 
 - gp_titles:
 
-  (`gpar`)  
+  (`gpar`)\
   a `gpar` object. Mainly used to set different `"fontsize"`.
 
 - gp_footnotes:
 
-  (`gpar`)  
+  (`gpar`)\
   a `gpar` object. Mainly used to set different `"fontsize"`.
 
 - name:
