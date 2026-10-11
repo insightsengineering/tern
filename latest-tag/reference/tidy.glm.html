@@ -35,7 +35,7 @@ with binomial family.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.13</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,6 +73,7 @@ with binomial family.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.13">v0.9.13</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.12">v0.9.12</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.11">v0.9.11</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.10">v0.9.10</a>
@@ -121,13 +122,13 @@ with binomial family.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Custom tidy method for binomial GLM results</h1>
-      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.12/R/logistic_regression.R" class="external-link"><code>R/logistic_regression.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.13/R/logistic_regression.R" class="external-link"><code>R/logistic_regression.R</code></a></small>
       <div class="d-none name"><code>tidy.glm.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
-<p>Helper method (for <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code>) to prepare a data frame from a <code>glm</code> object
+<p>Helper method (for <code><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">broom::tidy()</a></code>) to prepare a data frame from a <code>glm</code> object
 with <code>binomial</code> family.</p>
     </div>
 
@@ -135,7 +136,7 @@ with <code>binomial</code> family.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a>
 </h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'glm'</span></span>
-<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span>, at <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span>, at <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -211,8 +212,8 @@ with <code>binomial</code> family.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>glm.fit: fitted probabilities numerically 0 or 1 occurred</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod1</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod2</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod1</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod2</span>, conf_level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

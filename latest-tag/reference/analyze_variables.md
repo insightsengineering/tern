@@ -163,7 +163,7 @@ a_summary(
   (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   with `make_ard = TRUE`.
 
 - .formats:
@@ -188,7 +188,7 @@ a_summary(
 
   (`NULL` or `string`)\
   Passed to
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
   `.formats` must be `"default"` and `format` must be `NULL` when this
   is non-NULL.
 
@@ -201,7 +201,7 @@ a_summary(
 
   (`NULL`, `list`, `string` or `function`)\
   Passed to
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
   `.formats` must be `"default"` and `formats_var` must be `NULL` when
   this is non-NULL.
 
@@ -248,7 +248,7 @@ a_summary(
 
 - `analyze_vars()` returns a layout object suitable for passing to
   further layouting functions, or to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
   Adding this function to an `rtable` layout will add formatted rows
   containing the statistics from `s_summary()` to the table layout.
 
@@ -364,7 +364,7 @@ a_summary(
 &nbsp;
 
 - `a_summary()` returns the corresponding list with formatted
-  [`rtables::CellValue()`](https://rdrr.io/pkg/rtables/man/CellValue.html).
+  [`rtables::CellValue()`](https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html).
 
 ## Details
 
@@ -375,7 +375,7 @@ certain statistics by setting the statistic format to `"auto"` in
 [`format_auto()`](https://pharmaverse.github.io/tern/reference/format_auto.md)
 formatting function. Note that only data for the current row & variable
 (for all columns) will be considered (`.df_row[[.var]]`, see
-[`rtables::additional_fun_params`](https://rdrr.io/pkg/rtables/man/additional_fun_params.html))
+[`rtables::additional_fun_params`](https://insightsengineering.github.io/rtables/latest-tag/reference/additional_fun_params.html))
 and not the whole dataset.
 
 ## Functions
@@ -383,7 +383,7 @@ and not the whole dataset.
 - `analyze_vars()`: Layout-creating function which can take statistics
   function arguments and additional format arguments. This function is a
   wrapper for
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 
 - `s_summary()`: S3 generic function to produces a variable summary.
 
@@ -433,7 +433,7 @@ and not the whole dataset.
   this very likely can fail. It is therefore better to always
   pre-process the dataset such that factors are manually created from
   character variables before passing the dataset to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
 
 &nbsp;
 

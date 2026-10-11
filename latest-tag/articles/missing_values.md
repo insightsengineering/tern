@@ -3,7 +3,7 @@
 The packages used in this vignette are:
 
 \
-[`library`](https://rdrr.io/r/base/library.html)`(`[`rtables`](https://github.com/insightsengineering/rtables)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`rtables`](https://github.com/pharmaverse/rtables)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`formatters`](https://pharmaverse.github.io/formatters/)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`tern`](https://pharmaverse.github.io/tern/)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`
@@ -29,14 +29,14 @@ being generated.
 `  ``"Continous Level Biomarker 1"`\
 `)`\
 \
-`result`` ``<-`` `[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``show_colcounts ``=`` ``TRUE``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
+`result`` ``<-`` `[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``show_colcounts ``=`` ``TRUE``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
 `  `[`analyze_vars`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)`(`\
 `    vars ``=`` ``vars``,`\
 `    var_labels ``=`` ``var_labels`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``adsl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``adsl``)`\
 `result`\
 `#>                                                A: Drug X    B: Placebo    C: Combination   All Patients`\
 `#>                                                 (N=69)        (N=73)          (N=58)         (N=200)   `\
@@ -85,14 +85,14 @@ the denominator value for calculating the percent values.
 `  ``"Sex"`\
 `)`\
 \
-`result`` ``<-`` `[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``show_colcounts ``=`` ``TRUE``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
+`result`` ``<-`` `[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``show_colcounts ``=`` ``TRUE``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
 `  `[`analyze_vars`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)`(`\
 `    vars ``=`` ``vars``,`\
 `    var_labels ``=`` ``var_labels`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``adsl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``adsl``)`\
 `result`\
 `#>                A: Drug X    B: Placebo    C: Combination   All Patients`\
 `#>                 (N=69)        (N=73)          (N=58)         (N=200)   `\
@@ -116,14 +116,14 @@ the `na_level` argument.
 `adsl``$``SEX``[``adsl``$``SEX`` ``==`` ``"M"``]`` ``<-`` ``NA`\
 `adsl`` ``<-`` `[`df_explicit_na`](https://pharmaverse.github.io/tern/reference/df_explicit_na.md)`(``adsl``, na_level ``=`` ``"Missing Values"``)`\
 \
-`result`` ``<-`` `[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``show_colcounts ``=`` ``TRUE``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
+`result`` ``<-`` `[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``show_colcounts ``=`` ``TRUE``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
 `  `[`analyze_vars`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)`(`\
 `    vars ``=`` ``vars``,`\
 `    var_labels ``=`` ``var_labels`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``adsl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``adsl``)`\
 `result`\
 `#>                     A: Drug X    B: Placebo    C: Combination   All Patients`\
 `#>                      (N=69)        (N=73)          (N=58)         (N=200)   `\
@@ -159,14 +159,14 @@ included in the table below.
 `  ``"Sex"`\
 `)`\
 \
-`result`` ``<-`` `[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``show_colcounts ``=`` ``TRUE``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
+`result`` ``<-`` `[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``show_colcounts ``=`` ``TRUE``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
 `  `[`analyze_vars`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)`(`\
 `    vars ``=`` ``vars``,`\
 `    var_labels ``=`` ``var_labels`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``adsl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``adsl``)`\
 `result`\
 `#>                A: Drug X    B: Placebo    C: Combination   All Patients`\
 `#>                 (N=69)        (N=73)          (N=58)         (N=200)   `\

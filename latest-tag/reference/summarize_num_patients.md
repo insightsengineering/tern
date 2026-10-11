@@ -162,7 +162,7 @@ a_num_patients(
   (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   with `make_ard = TRUE`.
 
 - .formats:
@@ -192,7 +192,7 @@ a_num_patients(
   (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
   for more information.
 
 - .N_col:
@@ -216,7 +216,7 @@ a_num_patients(
 
 - `analyze_num_patients()` returns a layout object suitable for passing
   to further layouting functions, or to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
   Adding this function to an `rtable` layout will add formatted rows
   containing the statistics from `s_num_patients_content()` to the table
   layout.
@@ -225,7 +225,7 @@ a_num_patients(
 
 - `summarize_num_patients()` returns a layout object suitable for
   passing to further layouting functions, or to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
   Adding this function to an `rtable` layout will add formatted rows
   containing the statistics from `s_num_patients_content()` to the table
   layout.
@@ -248,15 +248,15 @@ a_num_patients(
 &nbsp;
 
 - `a_num_patients()` returns the corresponding list with formatted
-  [`rtables::CellValue()`](https://rdrr.io/pkg/rtables/man/CellValue.html).
+  [`rtables::CellValue()`](https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html).
 
 ## Details
 
 In general, functions that starts with `analyze*` are expected to work
 like
-[`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html),
+[`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html),
 while functions that starts with `summarize*` are based upon
-[`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+[`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).
 The latter provides a value for each dividing split in the row and
 column space, but, being it bound to the fundamental splits, it is
 repeated by design in every page when pagination is involved.
@@ -266,12 +266,12 @@ repeated by design in every page when pagination is involved.
 - `analyze_num_patients()`: Layout-creating function which can take
   statistics function arguments and additional format arguments. This
   function is a wrapper for
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 
 - `summarize_num_patients()`: Layout-creating function which can take
   statistics function arguments and additional format arguments. This
   function is a wrapper for
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).
 
 - `s_num_patients()`: Statistics function which counts the number of
   unique patients, the corresponding percentage taken with respect to

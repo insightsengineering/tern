@@ -20,7 +20,7 @@ is the main function that is available to the user. You can find lists
 of these functions in
 [`?tern::analyze_functions`](https://pharmaverse.github.io/tern/reference/analyze_functions.md).
 All of these are build around
-[`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html)
+[`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html)
 function, which is the core analysis function in `rtables`. All these
 wrapper functions call specific analysis functions (always written as
 `a_*`) that are meant to handle the statistic functions (always written
@@ -60,7 +60,6 @@ Data set and library loading.
 `#> The following object is masked from 'package:base':`\
 `#> `\
 `#>     %||%`\
-`#> Loading required package: magrittr`\
 `#> `\
 `#> Attaching package: 'rtables'`\
 `#> The following object is masked from 'package:utils':`\
@@ -89,14 +88,14 @@ Classic use of
 [`summarize_change()`](https://pharmaverse.github.io/tern/reference/summarize_change.md).
 
 \
-`fix_layout`` ``<-`` `[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``"ARM"``)`` ``|>`\
-`  `[`split_rows_by`](https://rdrr.io/pkg/rtables/man/split_rows_by.html)`(``"AVISIT"``)`\
+`fix_layout`` ``<-`` `[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``"ARM"``)`` ``|>`\
+`  `[`split_rows_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_rows_by.html)`(``"AVISIT"``)`\
 \
 `# Dealing with NAs: na_rm = TRUE`\
 `fix_layout`` ``|>`\
 `  `[`summarize_change`](https://pharmaverse.github.io/tern/reference/summarize_change.md)`(``"CHG"``, variables ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``value ``=`` ``"AVAL"``, baseline_flag ``=`` ``"ABLFLL"``)``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``dta_test``)`` ``|>`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``dta_test``)`` ``|>`\
 `  `[`print`](https://rdrr.io/r/base/print.html)`(``)`\
 `#>                     A               B         C `\
 `#> ————————————————————————————————————————————————`\
@@ -119,7 +118,7 @@ Classic use of
 `# Dealing with NAs: na_rm = FALSE`\
 `fix_layout`` ``|>`\
 `  `[`summarize_change`](https://pharmaverse.github.io/tern/reference/summarize_change.md)`(``"CHG"``, variables ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``value ``=`` ``"AVAL"``, baseline_flag ``=`` ``"ABLFLL"``)``, na_rm ``=`` ``FALSE``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``dta_test``)`` ``|>`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``dta_test``)`` ``|>`\
 `  `[`print`](https://rdrr.io/r/base/print.html)`(``)`\
 `#>                     A         B    C `\
 `#> —————————————————————————————————————`\
@@ -142,7 +141,7 @@ Classic use of
 `# changing the NA string (it is done on all levels)`\
 `fix_layout`` ``|>`\
 `  `[`summarize_change`](https://pharmaverse.github.io/tern/reference/summarize_change.md)`(``"CHG"``, variables ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``value ``=`` ``"AVAL"``, baseline_flag ``=`` ``"ABLFLL"``)``, na_str ``=`` ``"my_na"``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``dta_test``)`` ``|>`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``dta_test``)`` ``|>`\
 `  `[`print`](https://rdrr.io/r/base/print.html)`(``)`\
 `#>                     A               B           C  `\
 `#> ———————————————————————————————————————————————————`\
@@ -175,7 +174,7 @@ Classic use of
 `    .labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``n ``=`` ``"NnNn"``)``,`\
 `    .indent_mods ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``n ``=`` ``5``)``, na_str ``=`` ``"nA"`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``dta_test``)`` ``|>`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``dta_test``)`` ``|>`\
 `  `[`print`](https://rdrr.io/r/base/print.html)`(``)`\
 `#>                     A      B      C  `\
 `#> —————————————————————————————————————`\
@@ -199,7 +198,7 @@ What if I want something special for the format?
 `    .stats ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"n"``, ``"mean"``)``, ``# reducing the number of stats for visual appreciation`\
 `    .formats ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``n ``=`` ``function``(``x``, ``...``)`` `[`as.character`](https://rdrr.io/r/base/character.html)`(``x`` ``*`` ``100``)``)`\
 `  ``)`` ``|>`` ``# Note you need ...!!!`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``dta_test``)`` ``|>`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``dta_test``)`` ``|>`\
 `  `[`print`](https://rdrr.io/r/base/print.html)`(``)`\
 `#>           A      B     C `\
 `#> —————————————————————————`\
@@ -228,7 +227,7 @@ Adding a custom statistic (and custom format):
 `    ``}``)``,`\
 `    .formats ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"my_stat"`` ``=`` ``function``(``x``, ``...``)`` `[`sprintf`](https://rdrr.io/r/base/sprintf.html)`(``"%.2f"``, ``x``)``)`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``dta_test``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``dta_test``)`\
 `#>              A      B     C `\
 `#> ————————————————————————————`\
 `#> V1                          `\
@@ -253,16 +252,16 @@ Level 1:
 all parameters without a starting dot `.*` are used or added to
 `extra_args`. Specifically, here we solve `NA` values by using
 `inclNAs = TRUE` always in
-[`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+[`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 This will keep `NA` values to the analysis function `a_*`. Please follow
 the way `na_rm` is used in `summarize_change`, and you will see how to
 retrieve it from `...` only when you need it. In this case, only at the
 [`summary()`](https://rdrr.io/r/base/summary.html) level. `na_str`,
 instead is set only on the top level (in the
-[`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html)
+[`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html)
 call). We may want to be statistic-dependent in the future, but we still
 need to think how to accomplish that. We add the
-[`rtables::additional_fun_params`](https://rdrr.io/pkg/rtables/man/additional_fun_params.html)
+[`rtables::additional_fun_params`](https://insightsengineering.github.io/rtables/latest-tag/reference/additional_fun_params.html)
 to the analysis function so to make them available as `...` in the next
 level. Note that they all can be retrieved with `list(...)[["na_rm"]]`.
 

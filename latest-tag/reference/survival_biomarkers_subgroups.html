@@ -41,7 +41,7 @@ A forest plot can be created from the resulting table using the g_forest() funct
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.13</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,6 +79,7 @@ A forest plot can be created from the resulting table using the g_forest() funct
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.13">v0.9.13</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.12">v0.9.12</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.11">v0.9.11</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.10">v0.9.10</a>
@@ -127,7 +128,7 @@ A forest plot can be created from the resulting table using the g_forest() funct
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Tabulate biomarker effects on survival by subgroup</h1>
-      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.12/R/survival_biomarkers_subgroups.R" class="external-link"><code>R/survival_biomarkers_subgroups.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.13/R/survival_biomarkers_subgroups.R" class="external-link"><code>R/survival_biomarkers_subgroups.R</code></a></small>
       <div class="d-none name"><code>survival_biomarkers_subgroups.Rd</code></div>
     </div>
 
@@ -223,7 +224,7 @@ levels that belong to it in the character vectors that are elements of the list.
 <dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
-(<code>.stats</code>). This option is visible when producing <code><a href="https://rdrr.io/pkg/rtables/man/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -394,7 +395,7 @@ created by combining multiple subtables.</p>
 <span class="r-in"><span><span class="fu">tabulate_survival_biomarkers</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modifying subtable (or row) names to ensure uniqueness among direct siblings</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [root  -&gt; { root, root[2] }]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                  Total n   Total Events   Median   Hazard Ratio   95% Wald CI    p-value (Wald)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Age                                                                                                            </span>
@@ -418,7 +419,7 @@ created by combining multiple subtables.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modifying subtable (or row) names to ensure uniqueness among direct siblings</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [root  -&gt; { root, root[2] }]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Finally produce the forest plot.</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>

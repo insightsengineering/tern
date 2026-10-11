@@ -170,7 +170,7 @@ the format as needed.
 `example2``$``diff`\
 `#> [1] -0.5263158`\
 `example2``$``diff_ci`\
-`#> [1] -0.9056315  0.1196765`\
+`#> [1] -0.9056315  0.1196768`\
 \
 `# Expected from SAS (only 4 digits are available):`\
 `expected_estimate2`` ``<-`` ``-``0.5263`\

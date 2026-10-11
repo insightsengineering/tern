@@ -59,7 +59,7 @@ has_counts_difference(atleast, ...)
 ## Value
 
 - `keep_rows()` returns a pruning function that can be used with
-  [`rtables::prune_table()`](https://rdrr.io/pkg/rtables/man/prune_table.html)
+  [`rtables::prune_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/prune_table.html)
   to prune an `rtables` table.
 
 &nbsp;
@@ -140,7 +140,7 @@ Since most table specifications are worded positively, we name our
 constructor and condition functions positively, too. However, note that
 the result of `keep_rows()` says what should be pruned, to conform with
 the
-[`rtables::prune_table()`](https://rdrr.io/pkg/rtables/man/prune_table.html)
+[`rtables::prune_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/prune_table.html)
 interface.
 
 ## Examples

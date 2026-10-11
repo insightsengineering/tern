@@ -52,4 +52,6 @@ Other contributors:
 
 - David Munoz Tord <david.munoztord@mailbox.org> \[contributor\]
 
+- Wojciech Wojciak <wojciech.wojciak@gmail.com> \[contributor\]
+
 - F. Hoffmann-La Roche AG \[copyright holder, funder\]

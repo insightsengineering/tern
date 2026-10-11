@@ -2,7 +2,7 @@
 
 **\[stable\]** Important additional parameters, useful to modify
 behavior of analysis and summary functions are listed in
-[rtables::additional_fun_params](https://rdrr.io/pkg/rtables/man/additional_fun_params.html).
+[rtables::additional_fun_params](https://insightsengineering.github.io/rtables/latest-tag/reference/additional_fun_params.html).
 With these utility functions we can retrieve a curated list of these
 parameters from the environment, and pass them to the analysis functions
 with dedicated `...`; notice that the final `s_*` function will get them
@@ -23,7 +23,7 @@ get_additional_afun_params(add_alt_df = FALSE)
   (`list`)\
   list of additional parameters (`character`) to be retrieved from the
   environment. Curated list is present in
-  [rtables::additional_fun_params](https://rdrr.io/pkg/rtables/man/additional_fun_params.html).
+  [rtables::additional_fun_params](https://insightsengineering.github.io/rtables/latest-tag/reference/additional_fun_params.html).
 
 - add_alt_df:
 
@@ -47,5 +47,5 @@ get_additional_afun_params(add_alt_df = FALSE)
 
 - `get_additional_afun_params()`: Curated list of additional parameters
   for analysis functions. Please check
-  [rtables::additional_fun_params](https://rdrr.io/pkg/rtables/man/additional_fun_params.html)
+  [rtables::additional_fun_params](https://insightsengineering.github.io/rtables/latest-tag/reference/additional_fun_params.html)
   for precise descriptions.

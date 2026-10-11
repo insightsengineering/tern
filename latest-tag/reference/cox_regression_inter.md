@@ -172,7 +172,7 @@ is obtained as \$sqrt(Var b2 + Var b5 + 2 \* covariance (b2,b5))\$.
   can be generated correctly. It is therefore better to always
   pre-process the dataset such that factors are manually created from
   character variables before passing the dataset to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
 
 ## Examples
 

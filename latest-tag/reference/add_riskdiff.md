@@ -3,11 +3,11 @@
 **\[stable\]**
 
 Wrapper function for
-[`rtables::add_combo_levels()`](https://rdrr.io/pkg/rtables/man/add_overall_level.html)
+[`rtables::add_combo_levels()`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_level.html)
 which configures settings for the risk difference column to be added to
 an `rtables` object. To add a risk difference column to a table, this
 function should be used as `split_fun` in calls to
-[`rtables::split_cols_by()`](https://rdrr.io/pkg/rtables/man/split_cols_by.html),
+[`rtables::split_cols_by()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html),
 followed by setting argument `riskdiff` to `TRUE` in all following
 analyze function calls.
 
@@ -53,7 +53,7 @@ add_riskdiff(
 ## Value
 
 A closure suitable for use as a split function (`split_fun`) within
-[`rtables::split_cols_by()`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)
+[`rtables::split_cols_by()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)
 when creating a table layout.
 
 ## See also

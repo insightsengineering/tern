@@ -178,7 +178,7 @@ g_forest(
   vector of positive row indices specifying rows to exclude from the
   forest plot. Row indices are specified relative to the data frame
   obtained by applying
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   to `tbl`. No elements of `exclude_rows` may be missing. The specified
   rows are removed before plotting. This can be used to omit rows that
   should not be displayed in the forest plot, such as rows containing
@@ -206,7 +206,7 @@ g_forest(
 ## Details
 
 Given a
-[`rtables::rtable()`](https://rdrr.io/pkg/rtables/man/rtable.html)
+[`rtables::rtable()`](https://insightsengineering.github.io/rtables/latest-tag/reference/rtable.html)
 object with at least one column with a single value and one column with
 2 values, converts table to a
 [`ggplot2::ggplot()`](https://ggplot2.tidyverse.org/reference/ggplot.html)
@@ -337,7 +337,7 @@ tbl <- rtable(
 )
 #> Modifying subtable (or row) names to ensure uniqueness among direct siblings
 #> [  -> { , [2] }]
-#>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.FALSE
+#>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.
 g_forest(
   tbl = tbl,
   col_x = 1,

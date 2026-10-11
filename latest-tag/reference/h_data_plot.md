@@ -6,8 +6,8 @@ Convert the survival fit data into a data frame designed for plotting
 within `g_km`.
 
 This starts from the
-[`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html)
-result, and then:
+[`broom::tidy()`](https://rdrr.io/pkg/generics/man/tidy.html) result,
+and then:
 
 - Post-processes the `strata` column into a factor.
 

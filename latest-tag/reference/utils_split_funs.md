@@ -4,15 +4,15 @@
 
 Collection of useful functions that are expanding on the core list of
 functions provided by `rtables`. See
-[rtables::custom_split_funs](https://rdrr.io/pkg/rtables/man/custom_split_funs.html)
+[rtables::custom_split_funs](https://insightsengineering.github.io/rtables/latest-tag/reference/custom_split_funs.html)
 and
-[`rtables::make_split_fun()`](https://rdrr.io/pkg/rtables/man/make_split_fun.html)
+[`rtables::make_split_fun()`](https://insightsengineering.github.io/rtables/latest-tag/reference/make_split_fun.html)
 for more information on how to make a custom split function. All these
 functions work with
-[`rtables::split_rows_by()`](https://rdrr.io/pkg/rtables/man/split_rows_by.html)
+[`rtables::split_rows_by()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_rows_by.html)
 argument `split_fun` to modify the way the split happens. For other
 split functions, consider consulting
-[`rtables::split_funcs`](https://rdrr.io/pkg/rtables/man/split_funcs.html).
+[`rtables::split_funcs`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_funcs.html).
 
 ## Usage
 
@@ -57,7 +57,7 @@ level_order(order)
 
 ## See also
 
-[`rtables::make_split_fun()`](https://rdrr.io/pkg/rtables/man/make_split_fun.html)
+[`rtables::make_split_fun()`](https://insightsengineering.github.io/rtables/latest-tag/reference/make_split_fun.html)
 
 ## Examples
 

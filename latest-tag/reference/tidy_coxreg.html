@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.13</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,6 +69,7 @@
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.13">v0.9.13</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.12">v0.9.12</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.11">v0.9.11</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.10">v0.9.10</a>
@@ -117,7 +118,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Custom tidy methods for Cox regression</h1>
-      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.12/R/cox_regression.R" class="external-link"><code>R/cox_regression.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.13/R/cox_regression.R" class="external-link"><code>R/cox_regression.R</code></a></small>
       <div class="d-none name"><code>tidy_coxreg.Rd</code></div>
     </div>
 
@@ -129,13 +130,13 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a>
 </h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'summary.coxph'</span></span>
-<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'coxreg.univar'</span></span>
-<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'coxreg.multivar'</span></span>
-<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -159,7 +160,7 @@ or <code><a href="fit_coxreg.html">fit_coxreg_multivar()</a></code> (for multiva
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a>
 </h2>
-    <p><code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code> returns:</p>
+    <p><code><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">broom::tidy()</a></code> returns:</p>
 <ul>
 <li><p>For <code>summary.coxph</code> objects,  a <code>data.frame</code> with columns: <code>Pr(&gt;|z|)</code>, <code>exp(coef)</code>, <code>exp(-coef)</code>, <code>lower .95</code>,
 <code>upper .95</code>, <code>level</code>, and <code>n</code>.</p></li>
@@ -221,7 +222,7 @@ or <code><a href="fit_coxreg.html">fit_coxreg_multivar()</a></code> (for multiva
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">formula</span> <span class="op">&lt;-</span> <span class="st">"survival::Surv(time, status) ~ armcd + covar1"</span></span></span>
 <span class="r-in"><span><span class="va">msum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">formula</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dta_bladder</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">msum</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">msum</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Pr(&gt;|z|) exp(coef) exp(-coef)  lower .95 upper .95   level   n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.287954e-02 0.6110123   1.636628 0.41442417 0.9008549  armcd2 340</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 6.407916e-04 0.4460731   2.241785 0.28061816 0.7090818 covar12 340</span>
@@ -248,14 +249,14 @@ or <code><a href="fit_coxreg.html">fit_coxreg_multivar()</a></code> (for multiva
 <span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="control_coxreg.html">control_coxreg</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.91</span>, interaction <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            effect   term        term_label level   n        hr       lcl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ref    Treatment:  armcd  2 vs control (1)     2 340 0.6386426 0.4557586</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> covar1 Covariate: covar1 A Covariate Label     2 340  0.607037 0.4324571</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              ucl       pval                   ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ref    0.8949131 0.02423805 0.4557586, 0.8949131</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> covar1 0.8520935 0.01257339 0.4324571, 0.8520935</span>
-<span class="r-in"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">mod2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                           effect   term        term_label level   n        hr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ref                   Treatment:  armcd  2 vs control (1)     2 340 0.6386426</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> covar1.1              Covariate: covar1 A Covariate Label       340          </span>
@@ -294,7 +295,7 @@ or <code><a href="fit_coxreg.html">fit_coxreg_multivar()</a></code> (for multiva
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">dta_bladder</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">multivar_model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">multivar_model</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       term         pval                        term_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> armcd.1              armcd                            ARM (reference = 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> armcd.2                ARM   0.01232761                                 2</span>

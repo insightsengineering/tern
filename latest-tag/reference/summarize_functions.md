@@ -1,7 +1,7 @@
 # Summarize functions
 
 These functions are wrappers for
-[`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html),
+[`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html),
 applying corresponding `tern` content functions to add summary rows to a
 given table layout:
 
@@ -11,7 +11,7 @@ given table layout:
 
 - [`estimate_multinomial_response()`](https://pharmaverse.github.io/tern/reference/estimate_multinomial_rsp.md)
   (with
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html))
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html))
 
 - [`logistic_summary_by_flag()`](https://pharmaverse.github.io/tern/reference/logistic_summary_by_flag.md)
 
@@ -28,17 +28,17 @@ given table layout:
 Additionally, the
 [`summarize_coxreg()`](https://pharmaverse.github.io/tern/reference/cox_regression.md)
 function utilizes
-[`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+[`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
 (in combination with several other `rtables` functions like
-[`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html))
+[`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html))
 to output a Cox regression summary table.
 
 ## See also
 
 - [analyze_functions](https://pharmaverse.github.io/tern/reference/analyze_functions.md)
   for functions which are wrappers for
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 
 - [analyze_colvars_functions](https://pharmaverse.github.io/tern/reference/analyze_colvars_functions.md)
   for functions that are wrappers for
-  [`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html).
+  [`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html).

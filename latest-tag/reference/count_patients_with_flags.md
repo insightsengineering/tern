@@ -141,7 +141,7 @@ a_count_patients_with_flags(
   (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   with `make_ard = TRUE`.
 
 - .formats:
@@ -200,14 +200,14 @@ a_count_patients_with_flags(
   (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
   for more information.
 
 ## Value
 
 - `count_patients_with_flags()` returns a layout object suitable for
   passing to further layouting functions, or to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
   Adding this function to an `rtable` layout will add formatted rows
   containing the statistics from `s_count_patients_with_flags()` to the
   table layout.
@@ -223,14 +223,14 @@ a_count_patients_with_flags(
 
 - `a_count_patients_with_flags()` returns the corresponding list with
   formatted
-  [`rtables::CellValue()`](https://rdrr.io/pkg/rtables/man/CellValue.html).
+  [`rtables::CellValue()`](https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html).
 
 ## Functions
 
 - `count_patients_with_flags()`: Layout-creating function which can take
   statistics function arguments and additional format arguments. This
   function is a wrapper for
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 
 - `s_count_patients_with_flags()`: Statistics function which counts the
   number of patients for which a particular flag variable is `TRUE`.

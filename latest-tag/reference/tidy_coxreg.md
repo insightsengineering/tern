@@ -32,8 +32,7 @@ tidy(x, ...)
 
 ## Value
 
-[`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html)
-returns:
+[`broom::tidy()`](https://rdrr.io/pkg/generics/man/tidy.html) returns:
 
 - For `summary.coxph` objects, a `data.frame` with columns: `Pr(>|z|)`,
   `exp(coef)`, `exp(-coef)`, `lower .95`, `upper .95`, `level`, and `n`.

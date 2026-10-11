@@ -6,13 +6,13 @@ The analyze function `summarize_colvars()` uses the statistics function
 [`s_summary()`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)
 to analyze variables that are arranged in columns. The variables to
 analyze should be specified in the table layout via column splits (see
-[`rtables::split_cols_by()`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)
+[`rtables::split_cols_by()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)
 and
-[`rtables::split_cols_by_multivar()`](https://rdrr.io/pkg/rtables/man/split_cols_by_multivar.html))
+[`rtables::split_cols_by_multivar()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by_multivar.html))
 prior to using `summarize_colvars()`.
 
 The function is a minimal wrapper for
-[`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html),
+[`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html),
 a function typically used to apply different analysis methods in rows
 for each column variable. To use the analysis methods as column labels,
 please refer to the
@@ -61,7 +61,7 @@ summarize_colvars(
   (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   with `make_ard = TRUE`.
 
 - .formats:
@@ -86,14 +86,14 @@ summarize_colvars(
 
 A layout object suitable for passing to further layouting functions, or
 to
-[`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+[`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
 Adding this function to an `rtable` layout will summarize the given
 variables, arrange the output in columns, and add it to the table
 layout.
 
 ## See also
 
-[`rtables::split_cols_by_multivar()`](https://rdrr.io/pkg/rtables/man/split_cols_by_multivar.html)
+[`rtables::split_cols_by_multivar()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by_multivar.html)
 and
 [`analyze_colvars_functions`](https://pharmaverse.github.io/tern/reference/analyze_colvars_functions.md).
 

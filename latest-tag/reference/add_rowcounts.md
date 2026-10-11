@@ -3,9 +3,9 @@
 **\[stable\]**
 
 This works analogously to
-[`rtables::add_colcounts()`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)
+[`rtables::add_colcounts()`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)
 but on the rows. This function is a wrapper for
-[`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+[`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).
 
 ## Usage
 

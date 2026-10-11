@@ -70,9 +70,9 @@ score_occurrences_cont_cols(...)
 - `score_occurrences_cont_cols()`: Produces a score function for sorting
   table by summing the first content row in specified columns. Note that
   this is extending
-  [`rtables::cont_n_onecol()`](https://rdrr.io/pkg/rtables/man/score_funs.html)
+  [`rtables::cont_n_onecol()`](https://insightsengineering.github.io/rtables/latest-tag/reference/score_funs.html)
   and
-  [`rtables::cont_n_allcols()`](https://rdrr.io/pkg/rtables/man/score_funs.html).
+  [`rtables::cont_n_allcols()`](https://insightsengineering.github.io/rtables/latest-tag/reference/score_funs.html).
 
 ## See also
 

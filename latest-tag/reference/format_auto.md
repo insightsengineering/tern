@@ -26,7 +26,7 @@ format_auto(dt_var, x_stat)
   significant digits. In
   [analyze_vars](https://pharmaverse.github.io/tern/reference/analyze_variables.md)
   this comes from `.df_row` (see
-  [rtables::additional_fun_params](https://rdrr.io/pkg/rtables/man/additional_fun_params.html)),
+  [rtables::additional_fun_params](https://insightsengineering.github.io/rtables/latest-tag/reference/additional_fun_params.html)),
   and it is the row data after the above row splits. No column split is
   considered.
 

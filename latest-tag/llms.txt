@@ -153,7 +153,7 @@ formatted analysis functions.
 - **Formatted analysis functions** (denoted by `a_` prefix) apply
   formatting to results from their corresponding statistics functions.
   They are used as `afun` in
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 
 - [`analyze_vars()`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)
   [`s_summary()`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)
@@ -551,6 +551,14 @@ These functions are useful in defining an analysis.
 - [`h_prepare_rsp_table()`](https://pharmaverse.github.io/tern/reference/h_prepare_rsp_table.md)
   **\[experimental\]** : Helper Function to Prepare Data for Proportion
   Analyses
+
+- [`prop_diff_wald()`](https://pharmaverse.github.io/tern/reference/h_prop_diff.md)
+  [`prop_diff_ha()`](https://pharmaverse.github.io/tern/reference/h_prop_diff.md)
+  [`prop_diff_nc()`](https://pharmaverse.github.io/tern/reference/h_prop_diff.md)
+  [`prop_diff_cmh()`](https://pharmaverse.github.io/tern/reference/h_prop_diff.md)
+  [`prop_diff_strat_nc()`](https://pharmaverse.github.io/tern/reference/h_prop_diff.md)
+  [`prop_diff_uncond_exact()`](https://pharmaverse.github.io/tern/reference/h_prop_diff.md)
+  **\[stable\]** : Helper functions to calculate proportion difference
 
 - [`prop_chisq()`](https://pharmaverse.github.io/tern/reference/h_prop_diff_test.md)
   [`prop_cmh()`](https://pharmaverse.github.io/tern/reference/h_prop_diff_test.md)

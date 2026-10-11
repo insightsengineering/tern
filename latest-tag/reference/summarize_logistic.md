@@ -53,7 +53,7 @@ summarize_logistic(
 
 A layout object suitable for passing to further layouting functions, or
 to
-[`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+[`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
 Adding this function to an `rtable` layout will add a logistic
 regression variable summary to the table layout.
 

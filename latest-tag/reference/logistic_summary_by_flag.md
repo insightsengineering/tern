@@ -5,7 +5,7 @@
 Constructor for content functions to be used in
 [`summarize_logistic()`](https://pharmaverse.github.io/tern/reference/summarize_logistic.md)
 to summarize logistic regression results. This function is a wrapper for
-[`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+[`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).
 
 ## Usage
 

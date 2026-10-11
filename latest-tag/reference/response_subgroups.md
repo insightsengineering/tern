@@ -113,7 +113,7 @@ a_response_subgroups(
   (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   with `make_ard = TRUE`.
 
 - .formats:
@@ -138,7 +138,7 @@ a_response_subgroups(
   (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
   for more information.
 
 - .stats:
@@ -151,7 +151,7 @@ a_response_subgroups(
 An `rtables` table summarizing binary response by subgroup.
 
 - `a_response_subgroups()` returns the corresponding list with formatted
-  [`rtables::CellValue()`](https://rdrr.io/pkg/rtables/man/CellValue.html).
+  [`rtables::CellValue()`](https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html).
 
 ## Details
 
@@ -164,9 +164,9 @@ forest plot.
 - `tabulate_rsp_subgroups()`: Table-creating function which creates a
   table summarizing binary response by subgroup. This function is a
   wrapper for
-  [`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html)
+  [`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html)
   and
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).
 
 - `a_response_subgroups()`: Formatted analysis function which is used as
   `afun` in `tabulate_rsp_subgroups()`.

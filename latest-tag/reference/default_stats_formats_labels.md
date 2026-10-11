@@ -275,7 +275,7 @@ methods according to more reasonable groupings.
 
 Formats in `tern` and `rtables` can be functions that take in the table
 cell value and return a string. This is well documented in
-[`vignette("custom_appearance", package = "rtables")`](https://cran.rstudio.com/web/packages/rtables/vignettes/custom_appearance.html).
+[`vignette("custom_appearance", package = "rtables")`](https://insightsengineering.github.io/rtables/latest-tag/articles/custom_appearance.html).
 
 ## See also
 

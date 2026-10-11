@@ -144,7 +144,7 @@ a_count_patients_sum_exposure(
   (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   with `make_ard = TRUE`.
 
 - .formats:
@@ -178,7 +178,7 @@ a_count_patients_sum_exposure(
   (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
   for more information.
 
 - .N_col:
@@ -191,7 +191,7 @@ a_count_patients_sum_exposure(
 
 - `analyze_patients_exposure_in_cols()` returns a layout object suitable
   for passing to further layouting functions, or to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
   Adding this function to an `rtable` layout will add formatted data
   rows, with the statistics from `s_count_patients_sum_exposure()`
   arranged in columns, to the table layout.
@@ -200,7 +200,7 @@ a_count_patients_sum_exposure(
 
 - `summarize_patients_exposure_in_cols()` returns a layout object
   suitable for passing to further layouting functions, or to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
   Adding this function to an `rtable` layout will add formatted content
   rows, with the statistics from `s_count_patients_sum_exposure()`
   arranged in columns, to the table layout.
@@ -217,32 +217,32 @@ a_count_patients_sum_exposure(
 &nbsp;
 
 - `a_count_patients_sum_exposure()` returns formatted
-  [`rtables::CellValue()`](https://rdrr.io/pkg/rtables/man/CellValue.html).
+  [`rtables::CellValue()`](https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html).
 
 ## Functions
 
 - `analyze_patients_exposure_in_cols()`: Layout-creating function which
   can take statistics function arguments and additional format
   arguments. This function is a wrapper for
-  [`rtables::split_cols_by_multivar()`](https://rdrr.io/pkg/rtables/man/split_cols_by_multivar.html)
+  [`rtables::split_cols_by_multivar()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by_multivar.html)
   and
-  [`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html).
+  [`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html).
 
 - `summarize_patients_exposure_in_cols()`: Layout-creating function
   which can take statistics function arguments and additional format
   arguments. This function is a wrapper for
-  [`rtables::split_cols_by_multivar()`](https://rdrr.io/pkg/rtables/man/split_cols_by_multivar.html)
+  [`rtables::split_cols_by_multivar()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by_multivar.html)
   and
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).
 
 - `s_count_patients_sum_exposure()`: Statistics function which counts
   numbers of patients and the sum of exposure across all patients.
 
 - `a_count_patients_sum_exposure()`: Analysis function which is used as
   `afun` in
-  [`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html)
+  [`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html)
   within `analyze_patients_exposure_in_cols()` and as `cfun` in
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
   within `summarize_patients_exposure_in_cols()`.
 
 ## Note

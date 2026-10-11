@@ -4,7 +4,7 @@
 
 Layout-creating function which creates a multivariate column layout
 summarizing logistic regression results. This function is a wrapper for
-[`rtables::split_cols_by_multivar()`](https://rdrr.io/pkg/rtables/man/split_cols_by_multivar.html).
+[`rtables::split_cols_by_multivar()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by_multivar.html).
 
 ## Usage
 

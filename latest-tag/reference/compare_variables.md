@@ -15,7 +15,7 @@ parameter to specify the statistics to include in your output summary
 table.
 
 Prior to using this function in your table layout you must use
-[`rtables::split_cols_by()`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)
+[`rtables::split_cols_by()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)
 to create a column split on the variable to be used in comparisons, and
 specify a reference group via the `ref_group` parameter. Comparisons can
 be performed for each group (column) against the specified reference
@@ -146,7 +146,7 @@ s_compare(x, ...)
   (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   with `make_ard = TRUE`.
 
 - .formats:
@@ -176,7 +176,7 @@ s_compare(x, ...)
 
 - `compare_vars()` returns a layout object suitable for passing to
   further layouting functions, or to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
   Adding this function to an `rtable` layout will add formatted rows
   containing the statistics from `s_compare()` to the table layout.
 
@@ -191,7 +191,7 @@ s_compare(x, ...)
 - `compare_vars()`: Layout-creating function which can take statistics
   function arguments and additional format arguments. This function is a
   wrapper for
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 
 - `s_compare()`: S3 generic function to produce a comparison summary.
 

@@ -14,7 +14,7 @@ vignettes.
 The packages used in this vignette are:
 
 \
-[`library`](https://rdrr.io/r/base/library.html)`(`[`rtables`](https://github.com/insightsengineering/rtables)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`rtables`](https://github.com/pharmaverse/rtables)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`tern`](https://pharmaverse.github.io/tern/)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`
 
@@ -31,11 +31,11 @@ Analyze functions are used in combination with the `rtables` layout
 functions, in the pipeline which creates the `rtables` table. They apply
 some statistical logic to the layout of the `rtables` table. The table
 layout is materialized with the
-[`rtables::build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)
+[`rtables::build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)
 function and the data.
 
 The `tern` analyze functions are wrappers around
-[`rtables::analyze`](https://rdrr.io/pkg/rtables/man/analyze.html)
+[`rtables::analyze`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html)
 function, they offer various methods useful from the perspective of
 clinical trials and other statistical projects.
 
@@ -66,14 +66,14 @@ The descriptions for each function type:
 - formatted analysis functions `a_*`. These apply formatting to results
   from their corresponding statistics functions. They are used as `afun`
   in
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 - analyze functions `rtables::analyze(..., afun = tern::a_*)`. Analyze
   functions are used in combination with the `rtables` layout functions,
   in the pipeline which creates the table. They are the last element of
   the chain.
 
 We will use the native
-[`rtables::analyze`](https://rdrr.io/pkg/rtables/man/analyze.html)
+[`rtables::analyze`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html)
 function with the `tern` formatted analysis functions as a `afun`
 parameter.
 
@@ -111,15 +111,15 @@ and the remaining layout functions are from `rtables`.
 `vars`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``"AGE"``, ``"SEX"``)`\
 `var_labels`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Age (yr)"``, ``"Sex"``)`\
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`analyze_vars`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)`(`\
 `    vars ``=`` ``vars``,`\
 `    var_labels ``=`` ``var_labels`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``adsl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``adsl``)`\
 `#>                       A: Drug X    B: Placebo    C: Combination   All Patients`\
 `#>                        (N=134)       (N=134)        (N=132)         (N=400)   `\
 `#> ——————————————————————————————————————————————————————————————————————————————`\
@@ -148,15 +148,15 @@ processing steps (not used below).
 `# Reorder the levels in the SEX variable.`\
 `adsl``$``SEX`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``adsl``$``SEX``, levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"M"``, ``"F"``, ``"U"``, ``"UNDIFFERENTIATED"``)``)`\
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`analyze_vars`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)`(`\
 `    vars ``=`` ``vars``,`\
 `    var_labels ``=`` ``var_labels`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``adsl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``adsl``)`\
 `#>                      B: Placebo     A: Drug X    C: Combination   All Patients`\
 `#>                        (N=134)       (N=134)        (N=132)         (N=400)   `\
 `#> ——————————————————————————————————————————————————————————————————————————————`\
@@ -177,10 +177,11 @@ The `tern` package includes many functions similar to
 These functions are called layout creating functions and are used in
 combination with other `rtables` layout functions just like in the
 examples above. Layout creating functions are wrapping calls to
-`rtables` [`analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html),
-[`analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html)
+`rtables`
+[`analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html),
+[`analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html)
 and
-[`summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+[`summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
 and provide options for easy formatting and analysis modifications.
 
 To customize the display for the demographics table, we can do so via
@@ -205,17 +206,17 @@ of just one.
 
 \
 `# Select statistics and modify default formats.`\
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`analyze_vars`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)`(`\
 `    vars ``=`` ``vars``,`\
 `    var_labels ``=`` ``var_labels``,`\
 `    .stats ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"n"``, ``"mean_sd"``, ``"count"``)``,`\
 `    .formats ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``mean_sd ``=`` ``"xx.xx (xx.xx)"``)`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``adsl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``adsl``)`\
 `#>                       B: Placebo     A: Drug X     C: Combination   All Patients`\
 `#>                        (N=134)        (N=134)         (N=132)         (N=400)   `\
 `#> ————————————————————————————————————————————————————————————————————————————————`\
@@ -235,16 +236,16 @@ the same summary of demographics for the Brazil and China subgroups,
 respectively:
 
 \
-`lyt`` ``<-`` `[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+`lyt`` ``<-`` `[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``"All Patients"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`analyze_vars`](https://pharmaverse.github.io/tern/reference/analyze_variables.md)`(`\
 `    vars ``=`` ``vars``,`\
 `    var_labels ``=`` ``var_labels`\
 `  ``)`\
 \
-[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``lyt``, df ``=`` ``adsl`` ``|>`` ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``COUNTRY`` ``==`` ``"BRA"``)``)`\
+[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``lyt``, df ``=`` ``adsl`` ``|>`` ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``COUNTRY`` ``==`` ``"BRA"``)``)`\
 `#>                      B: Placebo     A: Drug X    C: Combination   All Patients`\
 `#>                         (N=7)        (N=13)          (N=10)          (N=30)   `\
 `#> ——————————————————————————————————————————————————————————————————————————————`\
@@ -260,7 +261,7 @@ respectively:
 `#>   U                       0             0              0               0      `\
 `#>   UNDIFFERENTIATED        0             0              0               0`\
 \
-[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``lyt``, df ``=`` ``adsl`` ``|>`` ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``COUNTRY`` ``==`` ``"CHN"``)``)`\
+[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``lyt``, df ``=`` ``adsl`` ``|>`` ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``COUNTRY`` ``==`` ``"CHN"``)``)`\
 `#>                      B: Placebo     A: Drug X    C: Combination   All Patients`\
 `#>                        (N=81)        (N=74)          (N=64)         (N=219)   `\
 `#> ——————————————————————————————————————————————————————————————————————————————`\
@@ -291,10 +292,10 @@ function in `tern` that can do this is
 [`summarize_num_patients()`](https://pharmaverse.github.io/tern/reference/summarize_num_patients.md):
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ACTARM"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``label ``=`` ``"All Patients"``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ACTARM"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``label ``=`` ``"All Patients"``)`` ``|>`\
 `  `[`summarize_num_patients`](https://pharmaverse.github.io/tern/reference/summarize_num_patients.md)`(`\
 `    var ``=`` ``"USUBJID"``,`\
 `    .stats ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"unique"``, ``"nonunique"``)``,`\
@@ -303,7 +304,7 @@ function in `tern` that can do this is
 `      nonunique ``=`` ``"Overall total number of events"`\
 `    ``)`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(`\
 `    df ``=`` ``adae``,`\
 `    alt_counts_df ``=`` ``adsl`\
 `  ``)`\
@@ -317,7 +318,7 @@ Note that for this table, the denominator used for percentages and shown
 in the header of the table `(N = xx)` is defined based on the
 subject-level dataset `adsl`. This is done by using the `alt_df_counts`
 argument in
-[`build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html),
+[`build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html),
 which provides an alternative data set for deriving the counts in the
 header. This is often required when we work with data sets that include
 multiple records per patient as `df`, such as `adae` here.
@@ -380,16 +381,16 @@ update in both the `.stats` and `.labels` argument of
 [`summarize_num_patients()`](https://pharmaverse.github.io/tern/reference/summarize_num_patients.md).
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ACTARM"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``label ``=`` ``"All Patients"``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ACTARM"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``label ``=`` ``"All Patients"``)`` ``|>`\
 `  `[`summarize_num_patients`](https://pharmaverse.github.io/tern/reference/summarize_num_patients.md)`(`\
 `    var ``=`` ``"USUBJID"``,`\
 `    .stats ``=`` ``"unique_count"``,`\
 `    .labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``unique_count ``=`` ``"Total number of patients with at least one AE"``)`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(`\
 `    df ``=`` ``adae``,`\
 `    alt_counts_df ``=`` ``adsl`\
 `  ``)`\
@@ -403,15 +404,15 @@ Let’s now continue building on the layout for the adverse event table.
 After we have the top-level summary, we can repeat the same summary at
 each system organ class level. To do this we split the analysis data
 with
-[`split_rows_by()`](https://rdrr.io/pkg/rtables/man/split_rows_by.html)
+[`split_rows_by()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_rows_by.html)
 before calling again
 [`summarize_num_patients()`](https://pharmaverse.github.io/tern/reference/summarize_num_patients.md).
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ACTARM"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``label ``=`` ``"All Patients"``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ACTARM"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``label ``=`` ``"All Patients"``)`` ``|>`\
 `  `[`summarize_num_patients`](https://pharmaverse.github.io/tern/reference/summarize_num_patients.md)`(`\
 `    var ``=`` ``"USUBJID"``,`\
 `    .stats ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"unique"``, ``"nonunique"``)``,`\
@@ -420,7 +421,7 @@ before calling again
 `      nonunique ``=`` ``"Overall total number of events"`\
 `    ``)`\
 `  ``)`` ``|>`\
-`  `[`split_rows_by`](https://rdrr.io/pkg/rtables/man/split_rows_by.html)`(`\
+`  `[`split_rows_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_rows_by.html)`(`\
 `    ``"AEBODSYS"``,`\
 `    child_labels ``=`` ``"visible"``,`\
 `    nested ``=`` ``FALSE``,`\
@@ -435,7 +436,7 @@ before calling again
 `      nonunique ``=`` ``"Overall total number of events"`\
 `    ``)`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(`\
 `    df ``=`` ``adae``,`\
 `    alt_counts_df ``=`` ``adsl`\
 `  ``)`\
@@ -474,12 +475,12 @@ Let’s first try using this function in a simpler layout without row
 splits:
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ACTARM"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``label ``=`` ``"All Patients"``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ACTARM"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``label ``=`` ``"All Patients"``)`` ``|>`\
 `  `[`count_occurrences`](https://pharmaverse.github.io/tern/reference/count_occurrences.md)`(``vars ``=`` ``"AEDECOD"``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(`\
 `    df ``=`` ``adae``,`\
 `    alt_counts_df ``=`` ``adsl`\
 `  ``)`\
@@ -500,10 +501,10 @@ splits:
 Putting everything together, the final AE table looks like this:
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ACTARM"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
-`  `[`add_overall_col`](https://rdrr.io/pkg/rtables/man/add_overall_col.html)`(``label ``=`` ``"All Patients"``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ACTARM"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
+`  `[`add_overall_col`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_col.html)`(``label ``=`` ``"All Patients"``)`` ``|>`\
 `  `[`summarize_num_patients`](https://pharmaverse.github.io/tern/reference/summarize_num_patients.md)`(`\
 `    var ``=`` ``"USUBJID"``,`\
 `    .stats ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"unique"``, ``"nonunique"``)``,`\
@@ -512,7 +513,7 @@ Putting everything together, the final AE table looks like this:
 `      nonunique ``=`` ``"Overall total number of events"`\
 `    ``)`\
 `  ``)`` ``|>`\
-`  `[`split_rows_by`](https://rdrr.io/pkg/rtables/man/split_rows_by.html)`(`\
+`  `[`split_rows_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_rows_by.html)`(`\
 `    ``"AEBODSYS"``,`\
 `    child_labels ``=`` ``"visible"``,`\
 `    nested ``=`` ``FALSE``,`\
@@ -528,7 +529,7 @@ Putting everything together, the final AE table looks like this:
 `    ``)`\
 `  ``)`` ``|>`\
 `  `[`count_occurrences`](https://pharmaverse.github.io/tern/reference/count_occurrences.md)`(``vars ``=`` ``"AEDECOD"``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(`\
 `    df ``=`` ``adae``,`\
 `    alt_counts_df ``=`` ``adsl`\
 `  ``)`\
@@ -601,14 +602,14 @@ group, use the
 layout creating function:
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`estimate_proportion`](https://pharmaverse.github.io/tern/reference/estimate_proportion.md)`(`\
 `    vars ``=`` ``"is_rsp"``,`\
 `    table_names ``=`` ``"est_prop"`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``anl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``anl``)`\
 `#>                                   A: Drug X      B: Placebo    C: Combination`\
 `#>                                    (N=134)        (N=134)         (N=132)    `\
 `#> —————————————————————————————————————————————————————————————————————————————`\
@@ -617,18 +618,18 @@ layout creating function:
 
 To specify which arm in the table should be used as the reference, use
 the argument `ref_group` from
-[`split_cols_by()`](https://rdrr.io/pkg/rtables/man/split_cols_by.html).
+[`split_cols_by()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html).
 Below we change the reference arm to “B: Placebo” and so this arm is
 displayed as the first column:
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`estimate_proportion`](https://pharmaverse.github.io/tern/reference/estimate_proportion.md)`(`\
 `    vars ``=`` ``"is_rsp"`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``anl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``anl``)`\
 `#>                                   A: Drug X      B: Placebo    C: Combination`\
 `#>                                    (N=134)        (N=134)         (N=132)    `\
 `#> —————————————————————————————————————————————————————————————————————————————`\
@@ -640,15 +641,15 @@ To further customize the analysis, we can use the `method` and
 calculated:
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`estimate_proportion`](https://pharmaverse.github.io/tern/reference/estimate_proportion.md)`(`\
 `    vars ``=`` ``"is_rsp"``,`\
 `    method ``=`` ``"clopper-pearson"``,`\
 `    conf_level ``=`` ``0.9`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``anl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``anl``)`\
 `#>                             A: Drug X      B: Placebo    C: Combination`\
 `#>                              (N=134)        (N=134)         (N=132)    `\
 `#> ———————————————————————————————————————————————————————————————————————`\
@@ -661,15 +662,15 @@ response rates between the reference arm each comparison arm. Use
 layout creating function for this:
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`estimate_proportion_diff`](https://pharmaverse.github.io/tern/reference/prop_diff.md)`(`\
 `    vars ``=`` ``"is_rsp"``,`\
 `    show_labels ``=`` ``"visible"``,`\
 `    var_labels ``=`` ``"Unstratified Analysis"`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``anl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``anl``)`\
 `#>                                       A: Drug X    B: Placebo   C: Combination`\
 `#>                                        (N=134)      (N=134)        (N=132)    `\
 `#> ——————————————————————————————————————————————————————————————————————————————`\
@@ -683,11 +684,11 @@ test for the difference in response rates. Use the
 layout creating function for this:
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`test_proportion_diff`](https://pharmaverse.github.io/tern/reference/prop_diff_test.md)`(``vars ``=`` ``"is_rsp"``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``anl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``anl``)`\
 `#>                                A: Drug X   B: Placebo   C: Combination`\
 `#>                                 (N=134)     (N=134)        (N=132)    `\
 `#> ——————————————————————————————————————————————————————————————————————`\
@@ -697,14 +698,14 @@ To customize the output, we use the `method` argument to select a
 Chi-Squared test with Schouten correction.
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`test_proportion_diff`](https://pharmaverse.github.io/tern/reference/prop_diff_test.md)`(`\
 `    vars ``=`` ``"is_rsp"``,`\
 `    method ``=`` ``"schouten"`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``anl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``anl``)`\
 `#>                                                         A: Drug X   B: Placebo   C: Combination`\
 `#>                                                          (N=134)     (N=134)        (N=132)    `\
 `#> ———————————————————————————————————————————————————————————————————————————————————————————————`\
@@ -717,9 +718,9 @@ each sub-table a unique name. This is done by adding the `table_names`
 argument and providing unique names through that:
 
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
-`  `[`split_cols_by`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
-`  `[`add_colcounts`](https://rdrr.io/pkg/rtables/man/add_colcounts.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
+`  `[`split_cols_by`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)`(``var ``=`` ``"ARM"``, ref_group ``=`` ``"B: Placebo"``)`` ``|>`\
+`  `[`add_colcounts`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_colcounts.html)`(``)`` ``|>`\
 `  `[`estimate_proportion`](https://pharmaverse.github.io/tern/reference/estimate_proportion.md)`(`\
 `    vars ``=`` ``"is_rsp"``,`\
 `    method ``=`` ``"clopper-pearson"``,`\
@@ -737,7 +738,7 @@ argument and providing unique names through that:
 `    method ``=`` ``"schouten"``,`\
 `    table_names ``=`` ``"test_prop_diff"`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``anl``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``anl``)`\
 `#>                                                          A: Drug X      B: Placebo    C: Combination`\
 `#>                                                           (N=134)        (N=134)         (N=132)    `\
 `#> ————————————————————————————————————————————————————————————————————————————————————————————————————`\

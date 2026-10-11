@@ -1,7 +1,7 @@
 # Analyze functions
 
 These functions are wrappers of
-[`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html)
+[`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html)
 which apply corresponding `tern` statistics functions to add an analysis
 to a given table layout:
 
@@ -51,7 +51,7 @@ to a given table layout:
 
 - [`summarize_colvars()`](https://pharmaverse.github.io/tern/reference/summarize_colvars.md):
   even if this function uses
-  [`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html),
+  [`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html),
   it applies the analysis methods as different rows for one or more
   variables that are split into different columns. In comparison,
   [analyze_colvars_functions](https://pharmaverse.github.io/tern/reference/analyze_colvars_functions.md)
@@ -70,8 +70,8 @@ to a given table layout:
 
 - [analyze_colvars_functions](https://pharmaverse.github.io/tern/reference/analyze_colvars_functions.md)
   for functions that are wrappers for
-  [`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html).
+  [`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html).
 
 - [summarize_functions](https://pharmaverse.github.io/tern/reference/summarize_functions.md)
   for functions which are wrappers for
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).

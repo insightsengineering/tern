@@ -9,7 +9,6 @@
 `#> The following object is masked from 'package:base':`\
 `#> `\
 `#>     %||%`\
-`#> Loading required package: magrittr`\
 `#> `\
 `#> Attaching package: 'rtables'`\
 `#> The following object is masked from 'package:utils':`\

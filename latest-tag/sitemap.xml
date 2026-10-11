@@ -91,6 +91,7 @@
 <url><loc>https://pharmaverse.github.io/tern/reference/dot-is_equal_float.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/draw_grob.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/empty_vector_if_na.html</loc></url>
+<url><loc>https://pharmaverse.github.io/tern/reference/escape_regex.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/estimate_coef.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/estimate_multinomial_rsp.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/estimate_proportion.html</loc></url>
@@ -140,6 +141,7 @@
 <url><loc>https://pharmaverse.github.io/tern/reference/h_ancova.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_append_grade_groups.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_biomarkers_subgroups.html</loc></url>
+<url><loc>https://pharmaverse.github.io/tern/reference/h_cmh_sato_var.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_col_indices.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_count_cumulative.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_cox_regression.html</loc></url>
@@ -158,11 +160,13 @@
 <url><loc>https://pharmaverse.github.io/tern/reference/h_km_layout.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_logistic_regression.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_map_for_count_abnormal.html</loc></url>
-<url><loc>https://pharmaverse.github.io/tern/reference/h_miettinen_nurminen_var_est.html</loc></url>
+<url><loc>https://pharmaverse.github.io/tern/reference/h_miettinen_nurminen_stratified_ci.html</loc></url>
+<url><loc>https://pharmaverse.github.io/tern/reference/h_miettinen_nurminen_var.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_odds_ratio.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_pkparam_sort.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_ppmeans.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_prepare_rsp_table.html</loc></url>
+<url><loc>https://pharmaverse.github.io/tern/reference/h_prop_cmh.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_prop_diff.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_prop_diff_test.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/h_proportions.html</loc></url>
@@ -234,6 +238,7 @@
 <url><loc>https://pharmaverse.github.io/tern/reference/to_n.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/to_string_matrix.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/try_car_anova.html</loc></url>
+<url><loc>https://pharmaverse.github.io/tern/reference/uniroot_catch_na.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/univariate.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/unlist_and_blank_na.html</loc></url>
 <url><loc>https://pharmaverse.github.io/tern/reference/update_weights_strat_wilson.html</loc></url>

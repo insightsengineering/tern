@@ -22,7 +22,7 @@ that are used repeatedly to express an analysis.
   (`integer`)\
   vector where each value represents a global count for a column. Values
   are taken from `alt_counts_df` if specified (see
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html)).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)).
 
 - .df_row:
 
@@ -85,7 +85,7 @@ that are used repeatedly to express an analysis.
   (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   with `make_ard = TRUE`.
 
 - .var:
@@ -165,7 +165,7 @@ that are used repeatedly to express an analysis.
   (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
   for more information.
 
 - lyt:

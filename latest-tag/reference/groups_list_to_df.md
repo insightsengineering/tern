@@ -2,7 +2,7 @@
 
 This converts a list of group levels into a data frame format which is
 expected by
-[`rtables::add_combo_levels()`](https://rdrr.io/pkg/rtables/man/add_overall_level.html).
+[`rtables::add_combo_levels()`](https://insightsengineering.github.io/rtables/latest-tag/reference/add_overall_level.html).
 
 ## Usage
 

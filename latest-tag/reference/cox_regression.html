@@ -33,7 +33,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.13</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,6 +71,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.13">v0.9.13</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.12">v0.9.12</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.11">v0.9.11</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.10">v0.9.10</a>
@@ -119,7 +120,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Cox proportional hazards regression</h1>
-      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.12/R/summarize_coxreg.R" class="external-link"><code>R/summarize_coxreg.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.13/R/summarize_coxreg.R" class="external-link"><code>R/summarize_coxreg.R</code></a></small>
       <div class="d-none name"><code>cox_regression.Rd</code></div>
     </div>
 
@@ -255,7 +256,7 @@ treatment and covariate sections and the second between different covariates.</p
 <dt id="arg-model-df">model_df<a class="anchor" aria-label="anchor" href="#arg-model-df"></a>
 </dt>
 <dd><p>(<code>data.frame</code>)<br> contains the resulting model fit from a <a href="fit_coxreg.html">fit_coxreg</a>
-function with tidying applied via <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code>.</p></dd>
+function with tidying applied via <code><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">broom::tidy()</a></code>.</p></dd>
 
 
 <dt id="arg--which-vars">.which_vars<a class="anchor" aria-label="anchor" href="#arg--which-vars"></a>
@@ -282,7 +283,7 @@ is <code>"var_main"</code>, <code>.var_nms</code> should be only the variable na
 <dt id="arg-labelstr">labelstr<a class="anchor" aria-label="anchor" href="#arg-labelstr"></a>
 </dt>
 <dd><p>(<code>string</code>)<br> label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions). See <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
+(must be present as second argument in Content Row Functions). See <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
 for more information.</p></dd>
 
 
@@ -315,14 +316,14 @@ avoid repeatedly fitting the same model for every row in the table. Defaults to 
 
 <ul>
 <li><p><code>summarize_coxreg()</code> returns a layout object suitable for passing to further layouting functions,
-or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add a Cox regression table
+or to <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add a Cox regression table
 containing the chosen statistics to the table layout.</p></li>
 </ul>
 <ul>
 <li><p><code>s_coxreg()</code> returns the selected statistic for from the Cox regression model for the selected variable(s).</p></li>
 </ul>
 <ul>
-<li><p><code>a_coxreg()</code> returns formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
+<li><p><code>a_coxreg()</code> returns formatted <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
 </ul>
 </div>
     <div class="section level2">
@@ -342,11 +343,11 @@ analysis (NEST Team, 2020).</p>
 <ul>
 <li><p><code>summarize_coxreg()</code>: Layout-creating function which creates a Cox regression summary table
 layout. This function is a wrapper for several <code>rtables</code> layouting functions. This function
-is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code> and <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>.</p></li>
+is a wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code> and <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>.</p></li>
 <li><p><code>s_coxreg()</code>: Statistics function that transforms results tabulated
 from <code><a href="fit_coxreg.html">fit_coxreg_univar()</a></code> or <code><a href="fit_coxreg.html">fit_coxreg_multivar()</a></code> into a list.</p></li>
-<li><p><code>a_coxreg()</code>: Analysis function which is used as <code>afun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>
-and <code>cfun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code> within <code>summarize_coxreg()</code>.</p></li>
+<li><p><code>a_coxreg()</code>: Analysis function which is used as <code>afun</code> in <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html" class="external-link">rtables::analyze()</a></code>
+and <code>cfun</code> in <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code> within <code>summarize_coxreg()</code>.</p></li>
 </ul>
 </div>
     <div class="section level2">
@@ -468,7 +469,7 @@ Cox regression models, respectively.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Univariate</span></span></span>
 <span class="r-in"><span><span class="va">univar_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_coxreg.html">fit_coxreg_univar</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="va">u1_variables</span>, data <span class="op">=</span> <span class="va">dta_bladder</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">univar_model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">univar_model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">s_coxreg</span><span class="op">(</span>model_df <span class="op">=</span> <span class="va">df1</span>, .stats <span class="op">=</span> <span class="st">"hr"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $hr</span>
@@ -491,7 +492,7 @@ Cox regression models, respectively.</p>
 <span class="r-in"><span><span class="va">univar_model_inter</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_coxreg.html">fit_coxreg_univar</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="va">u1_variables</span>, control <span class="op">=</span> <span class="fu"><a href="control_coxreg.html">control_coxreg</a></span><span class="op">(</span>interaction <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dta_bladder</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df1_inter</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">univar_model_inter</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df1_inter</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">univar_model_inter</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">s_coxreg</span><span class="op">(</span>model_df <span class="op">=</span> <span class="va">df1_inter</span>, .stats <span class="op">=</span> <span class="st">"hr"</span>, .which_vars <span class="op">=</span> <span class="st">"inter"</span>, .var_nms <span class="op">=</span> <span class="st">"COVAR1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $hr</span>
@@ -511,7 +512,7 @@ Cox regression models, respectively.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Univariate without treatment arm - only "COVAR2" covariate effects</span></span></span>
 <span class="r-in"><span><span class="va">univar_covs_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_coxreg.html">fit_coxreg_univar</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="va">u2_variables</span>, data <span class="op">=</span> <span class="va">dta_bladder</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df1_covs</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">univar_covs_model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df1_covs</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">univar_covs_model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">s_coxreg</span><span class="op">(</span>model_df <span class="op">=</span> <span class="va">df1_covs</span>, .stats <span class="op">=</span> <span class="st">"hr"</span>, .var_nms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"COVAR2"</span>, <span class="st">"Sex (F/M)"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $hr</span>
@@ -527,7 +528,7 @@ Cox regression models, respectively.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Multivariate.</span></span></span>
 <span class="r-in"><span><span class="va">multivar_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_coxreg.html">fit_coxreg_multivar</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="va">m1_variables</span>, data <span class="op">=</span> <span class="va">dta_bladder</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">multivar_model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">multivar_model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">s_coxreg</span><span class="op">(</span>model_df <span class="op">=</span> <span class="va">df2</span>, .stats <span class="op">=</span> <span class="st">"pval"</span>, .which_vars <span class="op">=</span> <span class="st">"var_main"</span>, .var_nms <span class="op">=</span> <span class="st">"COVAR1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
@@ -553,7 +554,7 @@ Cox regression models, respectively.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Multivariate without treatment arm - only "COVAR1" main effect</span></span></span>
 <span class="r-in"><span><span class="va">multivar_covs_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_coxreg.html">fit_coxreg_multivar</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="va">m2_variables</span>, data <span class="op">=</span> <span class="va">dta_bladder</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df2_covs</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">multivar_covs_model</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df2_covs</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">multivar_covs_model</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">s_coxreg</span><span class="op">(</span>model_df <span class="op">=</span> <span class="va">df2_covs</span>, .stats <span class="op">=</span> <span class="st">"hr"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $hr</span>

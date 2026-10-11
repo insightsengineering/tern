@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.13</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +67,7 @@
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.13">v0.9.13</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.12">v0.9.12</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.11">v0.9.11</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.10">v0.9.10</a>
@@ -115,15 +116,33 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.12/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.13/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.9.13" id="tern-0913">tern 0.9.13<a class="anchor" aria-label="anchor" href="#tern-0913"></a>
+</h2>
+<p class="text-muted">CRAN release: 2026-10-09</p>
+<div class="section level4">
+<h4 id="bug-fixes-0-9-13">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-13"></a>
+</h4>
+<ul>
+<li>Fixed overly narrow confidence intervals in <code><a href="../reference/h_prop_diff.html">prop_diff_uncond_exact()</a></code> caused by floating-point comparisons excluding tied tables from the tails. Tail comparisons now use integer cross-products to preserve ties without a numerical tolerance.</li>
+</ul>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.12" id="tern-0912">tern 0.9.12<a class="anchor" aria-label="anchor" href="#tern-0912"></a>
 </h2>
 <p class="text-muted">CRAN release: 2026-09-29</p>
 <ul>
 <li>Fixing CRAN release issue.</li>
+<li>Fixed <code><a href="../reference/h_prop_diff.html">prop_diff_cmh()</a></code> giving wrong Sato and Miettinen-Nurminen results when some strata have only one group, and failing with a single stratum. (<a href="https://github.com/pharmaverse/tern/issues/1535" class="external-link">#1535</a>)</li>
+<li>
+<code><a href="../reference/h_prop_diff.html">prop_diff_cmh()</a></code> returns <code>weights</code>, <code>n1</code> and <code>n2</code> for all strata now, with <code>NA</code> weights for empty strata. It returns <code>NA</code> instead of <code>0</code> when no stratum has both groups. (<a href="https://github.com/pharmaverse/tern/issues/1535" class="external-link">#1535</a>)</li>
+<li>
+<code><a href="../reference/h_prop_diff_test.html">prop_cmh()</a></code> returns <code>NA</code> instead of <code>1</code> for the Sato p-value when the response has no variation. (<a href="https://github.com/pharmaverse/tern/issues/1535" class="external-link">#1535</a>)</li>
+<li>Fixed <code><a href="../reference/summarize_ancova.html">summarize_ancova()</a></code> returning empty difference, confidence interval and p-value cells when arm levels contain regular expression metacharacters such as <code>+</code>, <code>(</code> or <code>.</code>. (<a href="https://github.com/pharmaverse/tern/issues/1471" class="external-link">#1471</a>)</li>
 </ul>
 </div>
     <div class="section level2">
@@ -243,7 +262,7 @@
 <h4 id="enhancements-0-9-9">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-9-9"></a>
 </h4>
 <ul>
-<li>Updated <code><a href="../reference/response_subgroups.html">tabulate_rsp_subgroups()</a></code> and <code><a href="../reference/survival_duration_subgroups.html">tabulate_survival_subgroups()</a></code> to specify parameter <code>parent_name</code> when using <code><a href="https://rdrr.io/pkg/rtables/man/split_rows_by.html" class="external-link">split_rows_by()</a></code> and <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">analyze()</a></code> internally to enhance table paths.</li>
+<li>Updated <code><a href="../reference/response_subgroups.html">tabulate_rsp_subgroups()</a></code> and <code><a href="../reference/survival_duration_subgroups.html">tabulate_survival_subgroups()</a></code> to specify parameter <code>parent_name</code> when using <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/split_rows_by.html" class="external-link">split_rows_by()</a></code> and <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html" class="external-link">analyze()</a></code> internally to enhance table paths.</li>
 </ul>
 </div>
 <div class="section level4">
@@ -270,7 +289,7 @@
 <h4 id="enhancements-0-9-8">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-9-8"></a>
 </h4>
 <ul>
-<li>Refactored <code><a href="../reference/abnormal.html">count_abnormal()</a></code>, <code><a href="../reference/abnormal_by_baseline.html">count_abnormal_by_baseline()</a></code>, <code><a href="../reference/abnormal_by_marked.html">count_abnormal_by_marked()</a></code>, <code><a href="../reference/abnormal_by_worst_grade.html">count_abnormal_by_worst_grade()</a></code>, <code><a href="../reference/abnormal_lab_worsen_by_baseline.html">count_abnormal_lab_worsen_by_baseline()</a></code>, <code><a href="../reference/count_cumulative.html">count_cumulative()</a></code>, <code><a href="../reference/count_missed_doses.html">count_missed_doses()</a></code>, <code><a href="../reference/survival_coxph_pairwise.html">coxph_pairwise()</a></code>, <code><a href="../reference/estimate_multinomial_rsp.html">estimate_multinomial_rsp()</a></code>, <code><a href="../reference/estimate_proportion.html">estimate_proportion()</a></code>, <code><a href="../reference/prop_diff.html">estimate_proportion_diff()</a></code>, <code><a href="../reference/odds_ratio.html">estimate_odds_ratio()</a></code>, <code><a href="../reference/summarize_ancova.html">summarize_ancova()</a></code>, <code><a href="../reference/summarize_glm_count.html">summarize_glm_count()</a></code>, <code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code>, <code><a href="../reference/survival_timepoint.html">surv_timepoint()</a></code>, and <code><a href="../reference/prop_diff_test.html">test_proportion_diff()</a></code> to work without <code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun()</a></code>.</li>
+<li>Refactored <code><a href="../reference/abnormal.html">count_abnormal()</a></code>, <code><a href="../reference/abnormal_by_baseline.html">count_abnormal_by_baseline()</a></code>, <code><a href="../reference/abnormal_by_marked.html">count_abnormal_by_marked()</a></code>, <code><a href="../reference/abnormal_by_worst_grade.html">count_abnormal_by_worst_grade()</a></code>, <code><a href="../reference/abnormal_lab_worsen_by_baseline.html">count_abnormal_lab_worsen_by_baseline()</a></code>, <code><a href="../reference/count_cumulative.html">count_cumulative()</a></code>, <code><a href="../reference/count_missed_doses.html">count_missed_doses()</a></code>, <code><a href="../reference/survival_coxph_pairwise.html">coxph_pairwise()</a></code>, <code><a href="../reference/estimate_multinomial_rsp.html">estimate_multinomial_rsp()</a></code>, <code><a href="../reference/estimate_proportion.html">estimate_proportion()</a></code>, <code><a href="../reference/prop_diff.html">estimate_proportion_diff()</a></code>, <code><a href="../reference/odds_ratio.html">estimate_odds_ratio()</a></code>, <code><a href="../reference/summarize_ancova.html">summarize_ancova()</a></code>, <code><a href="../reference/summarize_glm_count.html">summarize_glm_count()</a></code>, <code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code>, <code><a href="../reference/survival_timepoint.html">surv_timepoint()</a></code>, and <code><a href="../reference/prop_diff_test.html">test_proportion_diff()</a></code> to work without <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/make_afun.html" class="external-link">make_afun()</a></code>.</li>
 <li>Refactored <code><a href="../reference/afun_riskdiff.html">afun_riskdiff()</a></code>, <code><a href="../reference/count_occurrences.html">count_occurrences()</a></code>, <code><a href="../reference/count_occurrences_by_grade.html">count_occurrences_by_grade()</a></code>, <code><a href="../reference/count_patients_with_event.html">count_patients_with_event()</a></code>, <code><a href="../reference/count_patients_with_flags.html">count_patients_with_flags()</a></code>, <code><a href="../reference/count_values.html">count_values()</a></code>, <code><a href="../reference/incidence_rate.html">estimate_incidence_rate()</a></code>, <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_one_biomarker()</a></code>, <code><a href="../reference/summarize_change.html">summarize_change()</a></code>, <code><a href="../reference/summarize_colvars.html">summarize_colvars()</a></code>, <code><a href="../reference/summarize_patients_exposure_in_cols.html">summarize_patients_exposure_in_cols()</a></code>, <code><a href="../reference/survival_time.html">survival_time()</a></code>, <code><a href="../reference/response_subgroups.html">tabulate_rsp_subgroups()</a></code>, <code><a href="../reference/survival_duration_subgroups.html">tabulate_survival_subgroups()</a></code>, <code><a href="../reference/response_biomarkers_subgroups.html">tabulate_rsp_biomarkers()</a></code>, and <code><a href="../reference/survival_biomarkers_subgroups.html">tabulate_survival_biomarkers()</a></code> to align with new analysis function style.</li>
 <li>Added <code>geom_sd</code> and <code>geom_mean_sd</code> to <code><a href="../reference/analyze_variables.html">s_summary()</a></code> as default available statistics.</li>
 <li>Added <code>denom</code> parameter to <code><a href="../reference/estimate_proportion.html">estimate_proportion()</a></code>.</li>
@@ -295,7 +314,7 @@
 <li>Began deprecation of the unused <code><a href="../reference/h_split_param.html">h_split_param()</a></code> function.</li>
 <li>Began deprecation of the unused <code>label_all</code> parameter to <code><a href="../reference/response_subgroups.html">tabulate_rsp_subgroups()</a></code>, with redirection to the same parameter in <code><a href="../reference/extract_rsp_subgroups.html">extract_rsp_subgroups()</a></code>.</li>
 <li>Began deprecation of the no longer used helper functions <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_one_biomarker()</a></code>, <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_rsp_one_biomarker()</a></code>, and <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_surv_one_biomarker()</a></code>.</li>
-<li>Updated documentation to remove suggestions to use <code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun()</a></code>.</li>
+<li>Updated documentation to remove suggestions to use <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/make_afun.html" class="external-link">make_afun()</a></code>.</li>
 <li>Added warnings for <code>geom_mean</code> statistical output.</li>
 <li>Moved helper functions <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_rsp_one_biomarker()</a></code> and <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_surv_one_biomarker()</a></code> into <code>h_biomarkers_subgroups.R</code>.</li>
 <li>Reorganized the utility documentation related to factors (<code>utils_factor.R</code>) into a single file.</li>
@@ -318,11 +337,11 @@
 <li>Added <code>rel_height_plot</code> parameter to <code><a href="../reference/g_lineplot.html">g_lineplot()</a></code> to control the line plot height relative to annotation table height.</li>
 <li>Added <code>as_list</code> parameter to <code><a href="../reference/g_lineplot.html">g_lineplot()</a></code> to allow users to return the line plot and annotation table elements as a list instead of stacked for more complex customization.</li>
 <li>Added vignette “Understanding <code>tern</code> functions” for future reference.</li>
-<li>Added to <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> statistical names that are used by <code><a href="https://rdrr.io/pkg/rtables/man/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code>.</li>
+<li>Added to <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> statistical names that are used by <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code>.</li>
 <li>Added the possibility to integrate custom statistical functions to default ones in <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code>.</li>
-<li>Refactored <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> and <code><a href="../reference/analyze_variables.html">a_summary()</a></code> to take all options from <code><a href="https://rdrr.io/pkg/rtables/man/additional_fun_params.html" class="external-link">?rtables::additional_fun_params</a></code>.</li>
-<li>Refactored <code><a href="../reference/summarize_change.html">summarize_change()</a></code> and <code><a href="../reference/count_values.html">count_values()</a></code> to work without <code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun()</a></code>.</li>
-<li>Refactored <code><a href="../reference/count_occurrences_by_grade.html">a_count_occurrences_by_grade()</a></code>, <code><a href="../reference/count_patients_with_event.html">a_count_patients_with_event()</a></code>, and <code><a href="../reference/count_patients_with_flags.html">a_count_patients_with_flags()</a></code> to no longer use <code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun()</a></code>.</li>
+<li>Refactored <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> and <code><a href="../reference/analyze_variables.html">a_summary()</a></code> to take all options from <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/additional_fun_params.html" class="external-link">?rtables::additional_fun_params</a></code>.</li>
+<li>Refactored <code><a href="../reference/summarize_change.html">summarize_change()</a></code> and <code><a href="../reference/count_values.html">count_values()</a></code> to work without <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/make_afun.html" class="external-link">make_afun()</a></code>.</li>
+<li>Refactored <code><a href="../reference/count_occurrences_by_grade.html">a_count_occurrences_by_grade()</a></code>, <code><a href="../reference/count_patients_with_event.html">a_count_patients_with_event()</a></code>, and <code><a href="../reference/count_patients_with_flags.html">a_count_patients_with_flags()</a></code> to no longer use <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/make_afun.html" class="external-link">make_afun()</a></code>.</li>
 <li>Refactored <code><a href="../reference/default_stats_formats_labels.html">get_labels_from_stats()</a></code> to use a named list of levels for each statistic instead of row names.</li>
 <li>Updated the <code>table_font_size</code> parameter of <code><a href="../reference/g_lineplot.html">g_lineplot()</a></code> to control the size of all text in the annotation table, including labels.</li>
 <li>Merged <code><a href="../reference/compare_variables.html">compare_vars()</a></code> into <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> as overlap was significant.</li>

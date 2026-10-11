@@ -3,7 +3,7 @@
 **\[experimental\]**
 
 Given a
-[`rtables::rtable()`](https://rdrr.io/pkg/rtables/man/rtable.html)
+[`rtables::rtable()`](https://insightsengineering.github.io/rtables/latest-tag/reference/rtable.html)
 object, performs basic conversion to a
 [`ggplot2::ggplot()`](https://ggplot2.tidyverse.org/reference/ggplot.html)
 object built using functions from the `ggplot2` package. Any table

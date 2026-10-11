@@ -137,7 +137,7 @@ a_coxreg(
   contains the resulting model fit from a
   [fit_coxreg](https://pharmaverse.github.io/tern/reference/fit_coxreg.md)
   function with tidying applied via
-  [`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html).
+  [`broom::tidy()`](https://rdrr.io/pkg/generics/man/tidy.html).
 
 - .which_vars:
 
@@ -168,7 +168,7 @@ a_coxreg(
   (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
   for more information.
 
 - eff:
@@ -198,7 +198,7 @@ a_coxreg(
 
 - `summarize_coxreg()` returns a layout object suitable for passing to
   further layouting functions, or to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
   Adding this function to an `rtable` layout will add a Cox regression
   table containing the chosen statistics to the table layout.
 
@@ -210,7 +210,7 @@ a_coxreg(
 &nbsp;
 
 - `a_coxreg()` returns formatted
-  [`rtables::CellValue()`](https://rdrr.io/pkg/rtables/man/CellValue.html).
+  [`rtables::CellValue()`](https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html).
 
 ## Details
 
@@ -226,9 +226,9 @@ survival analysis (NEST Team, 2020).
 - `summarize_coxreg()`: Layout-creating function which creates a Cox
   regression summary table layout. This function is a wrapper for
   several `rtables` layouting functions. This function is a wrapper for
-  [`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html)
+  [`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html)
   and
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).
 
 - `s_coxreg()`: Statistics function that transforms results tabulated
   from
@@ -238,9 +238,9 @@ survival analysis (NEST Team, 2020).
   into a list.
 
 - `a_coxreg()`: Analysis function which is used as `afun` in
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html)
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html)
   and `cfun` in
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
   within `summarize_coxreg()`.
 
 ## See also

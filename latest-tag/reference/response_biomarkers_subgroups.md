@@ -69,7 +69,7 @@ tabulate_rsp_biomarkers(
   (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   with `make_ard = TRUE`.
 
 - .formats:
@@ -141,7 +141,7 @@ df <- extract_rsp_biomarkers(
 tabulate_rsp_biomarkers(df)
 #> Modifying subtable (or row) names to ensure uniqueness among direct siblings
 #> [root  -> { root, root[2] }]
-#>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.FALSE
+#>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.
 #>                                  Total n   Responders   Response (%)   Odds Ratio      95% CI      p-value (Wald)
 #> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 #> Age                                                                                                              
@@ -164,7 +164,7 @@ tab <- tabulate_rsp_biomarkers(
 )
 #> Modifying subtable (or row) names to ensure uniqueness among direct siblings
 #> [root  -> { root, root[2] }]
-#>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.FALSE
+#>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.
 
 ## Finally produce the forest plot.
 g_forest(tab, xlim = c(0.7, 1.4))

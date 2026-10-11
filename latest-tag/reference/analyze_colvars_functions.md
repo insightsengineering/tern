@@ -1,7 +1,7 @@
 # Analyze functions in columns
 
 These functions are wrappers of
-[`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html)
+[`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html)
 which apply corresponding `tern` statistics functions to add an analysis
 to a given table layout. In particular, these functions where designed
 to have the analysis methods split into different columns.
@@ -26,22 +26,22 @@ to have the analysis methods split into different columns.
   based only on `analyze_colvars`. It needs
   [`summarize_patients_exposure_in_cols()`](https://pharmaverse.github.io/tern/reference/summarize_patients_exposure_in_cols.md)
   to leverage nesting of label rows analysis with
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).
 
 - [`summarize_coxreg()`](https://pharmaverse.github.io/tern/reference/cox_regression.md):
   generally based on
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html),
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html),
   it behaves similarly to `tabulate_*` functions described above as it
   is designed to provide specific standard tables that may contain
   nested structure with a combination of `summarize_row_groups()` and
-  [`rtables::analyze_colvars()`](https://rdrr.io/pkg/rtables/man/analyze_colvars.html).
+  [`rtables::analyze_colvars()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html).
 
 ## See also
 
 - [summarize_functions](https://pharmaverse.github.io/tern/reference/summarize_functions.md)
   for functions which are wrappers for
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).
 
 - [analyze_functions](https://pharmaverse.github.io/tern/reference/analyze_functions.md)
   for functions which are wrappers for
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).

@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Variance Estimates in Strata following Miettinen and Nurminen — h_miettinen_nurminen_var_est • tern</title>
+<title>Sato Variance Estimate for the CMH-weighted Difference in Proportions — h_cmh_sato_var • tern</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,13 +16,27 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Variance Estimates in Strata following Miettinen and Nurminen — h_miettinen_nurminen_var_est">
-<meta name="description" content="The variable names in this function follow the notation in the original
-paper by Miettinen and Nurminen (1985)
-, cf. Appendix 1.">
-<meta property="og:description" content="The variable names in this function follow the notation in the original
-paper by Miettinen and Nurminen (1985)
-, cf. Appendix 1.">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Sato Variance Estimate for the CMH-weighted Difference in Proportions — h_cmh_sato_var">
+<meta name="description" content="
+Calculates the Sato variance estimate for the difference between two
+Cochran-Mantel-Haenszel (CMH)-weighted proportions. The estimate is used to
+obtain the standard error and confidence interval for the stratified
+difference in response proportions.
+The calculation follows the variance estimator proposed by
+Sato et al. (1989)
+. The required stratum-specific counts,
+sample sizes, CMH weights, and overall CMH-weighted proportion estimates are
+supplied in the prop object returned by h_prop_cmh().">
+<meta property="og:description" content="
+Calculates the Sato variance estimate for the difference between two
+Cochran-Mantel-Haenszel (CMH)-weighted proportions. The estimate is used to
+obtain the standard error and confidence interval for the stratified
+difference in response proportions.
+The calculation follows the variance estimator proposed by
+Sato et al. (1989)
+. The required stratum-specific counts,
+sample sizes, CMH weights, and overall CMH-weighted proportion estimates are
+supplied in the prop object returned by h_prop_cmh().">
 <meta property="og:image" content="https://pharmaverse.github.io/tern/logo.png">
 <link rel="stylesheet" href="../consent.css">
 <script src="../consent.js" type="text/javascript" charset="utf-8"></script>
@@ -35,7 +49,7 @@ paper by Miettinen and Nurminen (1985)
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.13</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,6 +87,7 @@ paper by Miettinen and Nurminen (1985)
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.13">v0.9.13</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.12">v0.9.12</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.11">v0.9.11</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.10">v0.9.10</a>
@@ -120,21 +135,28 @@ paper by Miettinen and Nurminen (1985)
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Variance Estimates in Strata following Miettinen and Nurminen</h1>
-      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.12/R/prop_diff.R" class="external-link"><code>R/prop_diff.R</code></a></small>
-      <div class="d-none name"><code>h_miettinen_nurminen_var_est.Rd</code></div>
+      <img src="../logo.png" class="logo" alt=""><h1>Sato Variance Estimate for the CMH-weighted Difference in Proportions</h1>
+      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.13/R/prop_diff.R" class="external-link"><code>R/prop_diff.R</code></a></small>
+      <div class="d-none name"><code>h_cmh_sato_var.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
-    <p>The variable names in this function follow the notation in the original
-paper by Miettinen and Nurminen (1985)
-, cf. Appendix 1.</p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
+<p>Calculates the Sato variance estimate for the difference between two
+Cochran-Mantel-Haenszel (CMH)-weighted proportions. The estimate is used to
+obtain the standard error and confidence interval for the stratified
+difference in response proportions.</p>
+<p>The calculation follows the variance estimator proposed by
+Sato et al. (1989)
+. The required stratum-specific counts,
+sample sizes, CMH weights, and overall CMH-weighted proportion estimates are
+supplied in the <code>prop</code> object returned by <code><a href="h_prop_cmh.html">h_prop_cmh()</a></code>.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a>
 </h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">h_miettinen_nurminen_var_est</span><span class="op">(</span><span class="va">n1</span>, <span class="va">n2</span>, <span class="va">x1</span>, <span class="va">x2</span>, <span class="va">diff_par</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">h_cmh_sato_var</span><span class="op">(</span><span class="va">prop</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -143,51 +165,81 @@ paper by Miettinen and Nurminen (1985)
 
 
 <dl>
-<dt id="arg-n-">n1<a class="anchor" aria-label="anchor" href="#arg-n-"></a>
+<dt id="arg-prop">prop<a class="anchor" aria-label="anchor" href="#arg-prop"></a>
 </dt>
-<dd><p>(<code>numeric</code>)<br> sample sizes in group 1.</p></dd>
+<dd>
+<p>(<code>list</code>)<br>
+A named list returned by <code><a href="h_prop_cmh.html">h_prop_cmh()</a></code>. It must contain the following
+atomic vectors:</p>
+<dl>
+<dt><code>est1</code></dt>
+<dd><p>CMH-weighted estimated proportion for group 1.
+May be <code>NA_real_</code> when a CMH-weighted estimate cannot be calculated.</p></dd>
+
+<dt><code>est2</code></dt>
+<dd><p>CMH-weighted estimated proportion for group 2.
+May be <code>NA_real_</code> when a CMH-weighted estimate cannot be calculated.</p></dd>
+
+<dt><code>x1</code></dt>
+<dd><p>Number of responders in group 1 for each stratum.</p></dd>
+
+<dt><code>x2</code></dt>
+<dd><p>Number of responders in group 2 for each stratum.</p></dd>
+
+<dt><code>n1</code></dt>
+<dd><p>Number of observations in group 1 for each stratum.</p></dd>
+
+<dt><code>n2</code></dt>
+<dd><p>Number of observations in group 2 for each stratum.</p></dd>
+
+<dt><code>w</code></dt>
+<dd><p>Unnormalized CMH weights for each stratum.</p></dd>
 
 
-<dt id="arg-n-">n2<a class="anchor" aria-label="anchor" href="#arg-n-"></a>
-</dt>
-<dd><p>(<code>numeric</code>)<br> sample sizes in group 2.</p></dd>
-
-
-<dt id="arg-x-">x1<a class="anchor" aria-label="anchor" href="#arg-x-"></a>
-</dt>
-<dd><p>(<code>numeric</code>)<br> number of responders in group 1.</p></dd>
-
-
-<dt id="arg-x-">x2<a class="anchor" aria-label="anchor" href="#arg-x-"></a>
-</dt>
-<dd><p>(<code>numeric</code>)<br> number of responders in group 2.</p></dd>
-
-
-<dt id="arg-diff-par">diff_par<a class="anchor" aria-label="anchor" href="#arg-diff-par"></a>
-</dt>
-<dd><p>(<code>numeric</code>)<br> assumed difference in true proportions
-(group 2 minus group 1).</p></dd>
+</dl>
+<p>The vectors <code>x1</code>, <code>x2</code>, <code>n1</code>, <code>n2</code>, and <code>w</code> must be of the same length.</p>
+<p>The unnormalized CMH weights for stratum \(i\) given by
+$$
+   \frac{n_{1i} n_{2i}}{n_{1i} + n_{2i}},
+  $$
+for \(n_{1i} + n_{2i} &gt; 0\), where \(n_{1i}\) is the total number of
+observations in group \(1\) in stratum \(i\), and \(n_{2i}\) is the
+total number of observations in group \(2\) in stratum \(i\).</p>
+<p>Missing weights in <code>w</code> are allowed and are ignored when calculating their
+sum.</p>
+</dd>
 
 </dl>
 </div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a>
 </h2>
-    <p>A named <code>list</code> with elements:</p>
-<ul>
-<li><p><code>p1_hat</code>: estimated proportion in group 1</p></li>
-<li><p><code>p2_hat</code>: estimated proportion in group 2</p></li>
-<li><p><code>var_est</code>: variance estimate of the difference in proportions</p></li>
-</ul>
-</div>
+    <p>A <code>numeric(1)</code> containing the Sato estimate of the variance of
+the CMH-weighted difference in proportions. Returns <code>NA_real_</code> when
+the variance cannot be estimated because there are no usable strata
+or the sum of the supplied CMH weights is zero.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a>
+</h2>
+    <p><code>h_cmh_sato_var()</code> takes a <code>prop</code> list as returned by <code><a href="h_prop_cmh.html">h_prop_cmh()</a></code>.
+The <code>prop</code> object must contain vectors <code>est1</code>, <code>est2</code>, <code>x1</code>, <code>x2</code>,
+<code>n1</code>, <code>n2</code>, and <code>w</code>, which provide the overall CMH-weighted estimates
+and the stratum-specific quantities required for the Sato variance
+calculation.</p>
+    </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-    <p>Miettinen OS, Nurminen M (1985).
-“Comparative analysis of two rates.”
-<em>Statistics in Medicine</em>, <b>4</b>(2), 213–226.
-<a href="https://doi.org/10.1002/sim.4780040211" class="external-link">doi:10.1002/sim.4780040211</a>
-.</p>
+    <p>Sato T, Greenland S, Robins JM (1989).
+“On the variance estimator for the Mantel-Haenszel Risk Difference.”
+<em>Biometrics</em>, <b>45</b>(4), 1323–1324.
+<a href="http://www.jstor.org/stable/2531784" class="external-link">http://www.jstor.org/stable/2531784</a>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a>
+</h2>
+    <div class="dont-index"><p><code><a href="h_prop_diff.html">prop_diff_cmh()</a></code>, <code><a href="h_prop_cmh.html">h_prop_cmh()</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

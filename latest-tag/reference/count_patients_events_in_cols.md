@@ -104,7 +104,7 @@ s_count_patients_and_multiple_events(
   (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html)
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
   for more information.
 
 - custom_label:
@@ -116,7 +116,7 @@ s_count_patients_and_multiple_events(
 
 - `summarize_patients_events_in_cols()` returns a layout object suitable
   for passing to further layouting functions, or to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
   Adding this function to an `rtable` layout will add formatted content
   rows containing the statistics from
   `s_count_patients_and_multiple_events()` to the table layout.
@@ -138,7 +138,7 @@ s_count_patients_and_multiple_events(
 - `summarize_patients_events_in_cols()`: Layout-creating function which
   can take statistics function arguments and additional format
   arguments. This function is a wrapper for
-  [`rtables::summarize_row_groups()`](https://rdrr.io/pkg/rtables/man/summarize_row_groups.html).
+  [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html).
 
 - `s_count_patients_and_multiple_events()`: Statistics function which
   counts numbers of patients and multiple events defined by filters.

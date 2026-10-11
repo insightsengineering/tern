@@ -24,7 +24,7 @@ To see the available format strings available in `formatters` see
 The packages used in this vignette are:
 
 \
-[`library`](https://rdrr.io/r/base/library.html)`(`[`rtables`](https://github.com/insightsengineering/rtables)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`rtables`](https://github.com/pharmaverse/rtables)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`formatters`](https://pharmaverse.github.io/formatters/)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`tern`](https://pharmaverse.github.io/tern/)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`
@@ -48,7 +48,7 @@ displayed without also displaying the redundant zero percentage value.
 `df2`` ``<-`` ``df2`` ``|>`\
 `  `[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``ONTRTFL`` ``==`` ``"Y"``)`\
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
 `  `[`count_abnormal`](https://pharmaverse.github.io/tern/reference/abnormal.md)`(`\
 `    var ``=`` ``"RANGE"``,`\
 `    abnormal ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``low ``=`` ``"LOW"``, high ``=`` ``"HIGH"``)``,`\
@@ -56,7 +56,7 @@ displayed without also displaying the redundant zero percentage value.
 `    exclude_base_abn ``=`` ``FALSE``,`\
 `    .formats ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``fraction ``=`` ``format_fraction``)`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``df2``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``df2``)`\
 `#>         all obs  `\
 `#> —————————————————`\
 `#> low    2/2 (100%)`\
@@ -79,7 +79,7 @@ values have a non-zero numerator and so both show a percentage.
 `df2`` ``<-`` ``df2`` ``|>`\
 `  `[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``ONTRTFL`` ``==`` ``"Y"``)`\
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
 `  `[`count_abnormal`](https://pharmaverse.github.io/tern/reference/abnormal.md)`(`\
 `    var ``=`` ``"RANGE"``,`\
 `    abnormal ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``low ``=`` ``"LOW"``, high ``=`` ``"HIGH"``)``,`\
@@ -87,7 +87,7 @@ values have a non-zero numerator and so both show a percentage.
 `    exclude_base_abn ``=`` ``FALSE``,`\
 `    .formats ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``fraction ``=`` ``format_fraction``)`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``df2``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``df2``)`\
 `#>         all obs `\
 `#> ————————————————`\
 `#> low    1/2 (50%)`\
@@ -110,7 +110,7 @@ format.
 `df2`` ``<-`` ``df2`` ``|>`\
 `  `[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``ONTRTFL`` ``==`` ``"Y"``)`\
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
 `  `[`count_abnormal`](https://pharmaverse.github.io/tern/reference/abnormal.md)`(`\
 `    var ``=`` ``"RANGE"``,`\
 `    abnormal ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``low ``=`` ``"LOW"``, high ``=`` ``"HIGH"``)``,`\
@@ -118,7 +118,7 @@ format.
 `    exclude_base_abn ``=`` ``FALSE``,`\
 `    .formats ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``fraction ``=`` ``"xx / xx"``)`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``df2``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``df2``)`\
 `#>        all obs`\
 `#> ——————————————`\
 `#> low     2 / 2 `\
@@ -141,7 +141,7 @@ to see the full list of available formats in `formatters`.
 `df2`` ``<-`` ``df2`` ``|>`\
 `  `[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``ONTRTFL`` ``==`` ``"Y"``)`\
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
 `  `[`count_abnormal`](https://pharmaverse.github.io/tern/reference/abnormal.md)`(`\
 `    var ``=`` ``"RANGE"``,`\
 `    abnormal ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``low ``=`` ``"LOW"``, high ``=`` ``"HIGH"``)``,`\
@@ -149,7 +149,7 @@ to see the full list of available formats in `formatters`.
 `    exclude_base_abn ``=`` ``FALSE``,`\
 `    .formats ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``fraction ``=`` ``"xx.x / xx.x"``)`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``df2``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``df2``)`\
 `#>         all obs `\
 `#> ————————————————`\
 `#> low    2.0 / 2.0`\
@@ -276,7 +276,7 @@ this formatting function is applied.
 `)`` ``|>`\
 `  `[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``ONTRTFL`` ``==`` ``"Y"``)`\
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
 `  `[`count_abnormal`](https://pharmaverse.github.io/tern/reference/abnormal.md)`(`\
 `    var ``=`` ``"RANGE"``,`\
 `    abnormal ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``low ``=`` ``"LOW"``, high ``=`` ``"HIGH"``)``,`\
@@ -284,7 +284,7 @@ this formatting function is applied.
 `    exclude_base_abn ``=`` ``FALSE``,`\
 `    .formats ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``fraction ``=`` ``format_fraction_fixed_dp``)`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``df2``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``df2``)`\
 `#>          all obs   `\
 `#> ———————————————————`\
 `#> low    2/2 (100.0%)`\
@@ -313,7 +313,7 @@ value, and if the numerator value is 0 we only want to display a 0 value
 `  ``result`\
 `}`\
 \
-[`basic_table`](https://rdrr.io/pkg/rtables/man/basic_table.html)`(``)`` ``|>`\
+[`basic_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html)`(``)`` ``|>`\
 `  `[`count_abnormal`](https://pharmaverse.github.io/tern/reference/abnormal.md)`(`\
 `    var ``=`` ``"RANGE"``,`\
 `    abnormal ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``low ``=`` ``"LOW"``, high ``=`` ``"HIGH"``)``,`\
@@ -321,7 +321,7 @@ value, and if the numerator value is 0 we only want to display a 0 value
 `    exclude_base_abn ``=`` ``FALSE``,`\
 `    .formats ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``fraction ``=`` ``custom_format``)`` ``# Here we implement our new custom_format function`\
 `  ``)`` ``|>`\
-`  `[`build_table`](https://rdrr.io/pkg/rtables/man/build_table.html)`(``df2``)`\
+`  `[`build_table`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html)`(``df2``)`\
 `#>           all obs    `\
 `#> —————————————————————`\
 `#> low    2/2 (100.000%)`\

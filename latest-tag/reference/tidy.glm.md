@@ -3,7 +3,7 @@
 **\[stable\]**
 
 Helper method (for
-[`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html)) to
+[`broom::tidy()`](https://rdrr.io/pkg/generics/man/tidy.html)) to
 prepare a data frame from a `glm` object with `binomial` family.
 
 ## Usage

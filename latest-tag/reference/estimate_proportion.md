@@ -148,7 +148,7 @@ a_proportion(
   (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
-  [`rtables::as_result_df()`](https://rdrr.io/pkg/rtables/man/data.frame_export.html)
+  [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
   with `make_ard = TRUE`.
 
 - .formats:
@@ -199,7 +199,7 @@ a_proportion(
 
 - `estimate_proportion()` returns a layout object suitable for passing
   to further layouting functions, or to
-  [`rtables::build_table()`](https://rdrr.io/pkg/rtables/man/build_table.html).
+  [`rtables::build_table()`](https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html).
   Adding this function to an `rtable` layout will add formatted rows
   containing the statistics from `s_proportion()` to the table layout.
 
@@ -211,14 +211,14 @@ a_proportion(
 &nbsp;
 
 - `a_proportion()` returns the corresponding list with formatted
-  [`rtables::CellValue()`](https://rdrr.io/pkg/rtables/man/CellValue.html).
+  [`rtables::CellValue()`](https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html).
 
 ## Functions
 
 - `estimate_proportion()`: Layout-creating function which can take
   statistics function arguments and additional format arguments. This
   function is a wrapper for
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 
 - `s_proportion()`: Statistics function estimating a proportion along
   with its confidence interval.

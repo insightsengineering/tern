@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.13</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,6 +69,7 @@
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.13">v0.9.13</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.12">v0.9.12</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.11">v0.9.11</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/tern/v0.9.10">v0.9.10</a>
@@ -118,7 +119,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Create a forest plot from an <code>rtable</code>
 </h1>
-      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.12/R/g_forest.R" class="external-link"><code>R/g_forest.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/tern/blob/v0.9.13/R/g_forest.R" class="external-link"><code>R/g_forest.R</code></a></small>
       <div class="d-none name"><code>g_forest.Rd</code></div>
     </div>
 
@@ -301,7 +302,7 @@ is no longer used.</p></dd>
 <dd><p>(<code>integerish</code> or <code>NULL</code>)<br> vector of positive row
 indices specifying rows to exclude from the forest plot. Row indices are
 specified relative to the data frame obtained by applying
-<code><a href="https://rdrr.io/pkg/rtables/man/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> to <code>tbl</code>. No elements of <code>exclude_rows</code> may be
+<code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> to <code>tbl</code>. No elements of <code>exclude_rows</code> may be
 missing.
 The specified rows are removed before plotting. This can be used to omit
 rows that should not be displayed in the forest plot, such as rows
@@ -333,7 +334,7 @@ if no forest header is present (i.e., when <code>vline = NULL</code>) or when
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a>
 </h2>
-    <p>Given a <code><a href="https://rdrr.io/pkg/rtables/man/rtable.html" class="external-link">rtables::rtable()</a></code> object with at least one column with a single value and one column with 2
+    <p>Given a <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/rtable.html" class="external-link">rtables::rtable()</a></code> object with at least one column with a single value and one column with 2
 values, converts table to a <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot2::ggplot()</a></code> object and generates an accompanying forest plot. The
 table and forest plot are printed side-by-side.</p>
     </div>
@@ -462,7 +463,7 @@ table and forest plot are printed side-by-side.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modifying subtable (or row) names to ensure uniqueness among direct siblings</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [  -&gt; { , [2] }]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   To control table names use split_rows_by*(, parent_name =.) or  analyze(., table_names = .) when analyzing a single variable, or analyze(., parent_name = .) when analyzing multiple variables in a single call.</span>
 <span class="r-in"><span><span class="fu">g_forest</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tbl <span class="op">=</span> <span class="va">tbl</span>,</span></span>
 <span class="r-in"><span>  col_x <span class="op">=</span> <span class="fl">1</span>,</span></span>

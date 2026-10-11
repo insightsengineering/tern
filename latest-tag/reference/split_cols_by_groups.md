@@ -35,7 +35,7 @@ split_cols_by_groups(lyt, var, groups_list = NULL, ref_group = NULL, ...)
 - ...:
 
   additional arguments to
-  [`rtables::split_cols_by()`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)
+  [`rtables::split_cols_by()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)
   in order. For instance, to control formats (`format`), add a joint
   column for all groups (`incl_all`).
 
@@ -47,7 +47,7 @@ including the given groups to the table layout.
 
 ## See also
 
-[`rtables::split_cols_by()`](https://rdrr.io/pkg/rtables/man/split_cols_by.html)
+[`rtables::split_cols_by()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html)
 
 ## Examples
 
