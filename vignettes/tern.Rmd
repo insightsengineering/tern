@@ -158,6 +158,180 @@ g_lineplot(
 )
 ```
 
+### Line plot customization
+
+The `g_lineplot()` function provides several arguments for customizing
+the summary statistics and appearance of a clinical trial line plot.
+
+The `mid` argument specifies the summary statistic displayed at each
+time point. For example, the default mean can be changed to the median.
+The corresponding confidence interval and whisker variables should
+also be specified.
+
+```{r, fig.alt='Median line plot'}
+g_lineplot(
+  adlb,
+  adsl,
+  mid = "median",
+  interval = "median_ci",
+  whiskers = c("median_ci_lwr", "median_ci_upr"),
+  title = "Plot of Median and 95% Confidence Limits by Visit"
+)
+```
+The confidence level can be customized using the control argument.
+For example, the following plot uses an 80% confidence interval.
+
+```{r, fig.height=10, fig.width=8, fig.alt='Line plot with customized confidence level'}
+g_lineplot(
+  adlb,
+  adsl,
+  table = c("n", "mean", "mean_ci"),
+  control = control_analyze_vars(conf_level = 0.80),
+  title = "Plot of Mean and 80% Confidence Limits by Visit"
+)
+```
+Other commonly used arguments include mid_type for controlling how
+the midpoint is displayed, position for controlling the position of
+groups, and legend_position for changing the legend location. The
+col and linetype arguments can also be used to customize the
+appearance of the plotted groups.
+
+### Kaplan-Meier plot
+
+A Kaplan-Meier plot can be generated using `g_km()`. Kaplan-Meier
+plots are commonly used in clinical trials to visualize time-to-event
+outcomes, such as overall survival or progression-free survival.
+
+The function requires a data set containing the time-to-event variable,
+an event indicator, and a treatment group variable. These variables are
+specified through the `variables` argument.
+
+```{r, fig.alt='Kaplan-Meier plot'}
+adtte <- formatters::ex_adtte |>
+  dplyr::filter(PARAMCD == "OS") |>
+  dplyr::mutate(is_event = CNSR == 0)
+
+variables <- list(
+  tte = "AVAL",
+  is_event = "is_event",
+  arm = "ARMCD"
+)
+
+g_km(
+  df = adtte,
+  variables = variables
+)
+```
+
+In the example above, PARAMCD == "OS" selects the overall survival parameter from the example time-to-event data. The is_event variable is derived from the censoring variable, with CNSR == 0 indicating that the event has occurred.
+The elements of variables specify the variables required by g_km():
+- tte specifies the time-to-event duration variable.
+- is_event specifies whether an event occurred (TRUE) or the
+  observation was censored (FALSE).
+- arm specifies the treatment group variable.
+The resulting plot displays the Kaplan-Meier survival curves for each treatment group. By default, censored observations are shown on the curves, and the plot can include a median survival summary and a patients-at-risk table.
+The Kaplan-Meier plot can be customized using arguments such as yval, ci_ribbon, max_time, annot_at_risk, and annot_surv_med.
+
+```{r, fig.alt='Customized Kaplan-Meier plot'}
+g_km(
+  df = adtte,
+  variables = variables,
+  yval = "Failure",
+  ci_ribbon = TRUE,
+  max_time = 500,
+  annot_at_risk = TRUE,
+  annot_surv_med = TRUE
+)
+```
+
+In this example:
+- yval = "Failure" displays failure probability instead of survival probability.
+- ci_ribbon = TRUE adds confidence interval ribbons around the Kaplan-Meier curves.
+- max_time = 500 limits the x-axis to 500 days.
+- annot_at_risk = TRUE displays the number of patients at risk at the time points shown on the x-axis.
+- annot_surv_med = TRUE adds the estimated median survival time for each treatment group.
+Other arguments can be used to customize the appearance and statistical details of the Kaplan-Meier plot. For example, `control_surv` can be used
+to specify confidence interval settings, while `col`, `lty`, and `lwd` can be used to customize the colors, line types, and line widths of the
+treatment-group curves. The `xticks` argument can be used to control the positions of the x-axis tick marks.
+
+The `max_time` argument should be selected according to the follow-up period of the data. When `max_time` is set substantially beyond the
+observed follow-up period, the patients-at-risk table may contain zero patients at later time points.
+
+### Forest plot
+
+A forest plot can be generated using `g_forest()`. Forest plots are
+commonly used in clinical trials to display treatment-effect estimates
+and their confidence intervals across patient subgroups.
+
+The `g_forest()` function uses a table containing an effect estimate and
+its corresponding confidence interval. For ratio measures such as odds
+ratios, the plot is displayed on a logarithmic x-axis with a reference
+line at 1.
+
+The following example prepares response subgroup data and creates a
+table containing the total number of patients, odds ratio, and
+confidence interval for each subgroup.
+
+```{r, fig.alt='Forest plot'}
+adrs <- tern_ex_adrs
+n_records <- 20
+
+adrs_labels <- formatters::var_labels(adrs, fill = TRUE)
+
+adrs <- adrs |>
+  dplyr::filter(PARAMCD == "BESRSPI") |>
+  dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) |>
+  dplyr::slice(seq_len(n_records)) |>
+  droplevels() |>
+  dplyr::mutate(
+    ARM = forcats::fct_relevel(ARM, "B: Placebo"),
+    rsp = AVALC == "CR"
+  )
+
+formatters::var_labels(adrs) <- c(adrs_labels, "Response")
+
+df <- extract_rsp_subgroups(
+  variables = list(
+    rsp = "rsp",
+    arm = "ARM",
+    subgroups = c("SEX", "STRATA2")
+  ),
+  data = adrs
+)
+
+tbl_or <- basic_table() |>
+  tabulate_rsp_subgroups(
+    df,
+    vars = c("n_tot", "or", "ci")
+  )
+
+g_forest(tbl_or)
+```
+
+In this example, extract_rsp_subgroups() prepares the response subgroup data. The tabulate_rsp_subgroups() function then creates a table containing the selected statistics. The n_tot, or, and ci statistics are used because they provide the total number of patients, the odds ratio, and its confidence interval required for the forest plot.
+The forest plot can be customized using arguments such as forest_header, vline, xlim, x_at, and logx.
+
+```{r, fig.alt='Customized forest plot'}
+g_forest(
+  tbl_or,
+  forest_header = c("Placebo\nBetter", "Drug X\nBetter"),
+  vline = 1,
+  xlim = c(0.1, 10),
+  x_at = c(0.1, 0.5, 1, 2, 10),
+  logx = TRUE
+)
+```
+
+In this example:
+- forest_header specifies the labels displayed on either side of the
+  reference line.
+- vline = 1 adds a reference line at the null value for the odds ratio.
+- xlim specifies the limits of the x-axis.
+- x_at specifies the positions of the x-axis tick marks.
+- logx = TRUE displays the x-axis on a logarithmic scale.
+For ratio measures such as odds ratios, relative risks, and hazard ratios, the null value is generally 1. Therefore, a reference line at 1 is commonly used when displaying these treatment-effect estimates.
+Additional arguments such as col, font_size, and rel_width_forest can be used to customize the appearance and layout of the forest plot.
+
 All `tern` functions used for plot generation are `g_` prefixed and are listed on [the tern website functions reference](https://pharmaverse.github.io/tern/latest-tag/reference/index.html#graphs).
 
 ## Interactive Apps
